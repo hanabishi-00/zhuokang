@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="mysqlgenerator" targetRuntime="MyBatis3DynamicSql">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--数据库连接信息-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://118.24.0.153:3306/litemall?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
+                        userId="litemall"
+                        password="litemall123456"/>
+
+        <javaModelGenerator targetPackage="org.linlinjava.device.domain" targetProject="src/main/java"/>
+        <javaClientGenerator targetPackage="org.linlinjava.device.dao"  targetProject="src/main/java"/>
+        <table tableName="bool_826_2018_02"/>
+        <table tableName="bool_826_2018_02"/>
+    </context>
+</generatorConfiguration>
