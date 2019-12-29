@@ -24,7 +24,7 @@ public class TvfService {
         java.time.Duration duration = java.time.Duration.between(start, end);
         long seconds = duration.getSeconds();
         for(int i = 0; i <= seconds; i++) {
-            LocalDateTime dateTime = start.plusSeconds(1);
+            LocalDateTime dateTime = start.plusSeconds(i);
             searchData.getxList().add(dateTime.toString());
         }
 
