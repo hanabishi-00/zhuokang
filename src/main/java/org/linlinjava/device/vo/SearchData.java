@@ -22,4 +22,5 @@ public class SearchData {
     public void setyList(List<SearchData2> yList) {
         this.yList = yList;
     }
+
 }

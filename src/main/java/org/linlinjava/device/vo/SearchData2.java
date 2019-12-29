@@ -5,7 +5,7 @@ import java.util.List;
 
 public class SearchData2 {
     private String label = "";
-    private List<Integer> value = new ArrayList<>();
+    private List<Object> data = new ArrayList<>();
 
     public String getLabel() {
         return label;
@@ -15,11 +15,11 @@ public class SearchData2 {
         this.label = label;
     }
 
-    public List<Integer> getValue() {
-        return value;
+    public List<Object> getData() {
+        return data;
     }
 
-    public void setValue(List<Integer> value) {
-        this.value = value;
+    public void setData(List<Object> data) {
+        this.data = data;
     }
 }
