@@ -13,8 +13,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -86,5 +86,12 @@ public class SimpleTest {
     }
 
 
-
+    @Test
+    public void test6() throws IOException {
+        List<Map> list = tvfMapper.avgBetweenInM("bool_826_2018_02", 1517414400, 1517673600);
+        System.out.println(list.size());
+        for(Map map : list){
+            System.out.println(map.get("minute") + " " + map.get("avg"));
+        }
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +48,11 @@ public class TvfService {
                 }
 
                 for (int i = 0; i <= seconds; i++) {
-                    Object v = tvfMap.get(i);
+                    String s = searchData.getxList().get(i);
+                    LocalDateTime d = LocalDateTime.parse(s);
+                    long sec = d.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+
+                    Object v = tvfMap.get(sec);
                     if (v != null) {
                         searchData2.getData().add(v);
                     } else {
@@ -76,20 +81,35 @@ public class TvfService {
             return searchData;
         }
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         for(String point : points){
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point);
 
+            long startS = start.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            long endS = end.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
             for(String table : tableList) {
 
-                for (int i = 0; i <= minutes; i++) {
-                    LocalDateTime s = start.plusMinutes(i);
-                    LocalDateTime e = start.plusMinutes(i + 1);
-                    long startM = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-                    long endM = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+                List<Map> list = tvfMapper.avgBetweenInM(table, startS, endS);
+                Map<Object, Object> minuteMap = new HashMap<>();
+                for (Map map : list) {
+                    String s = (String)map.get("minute");
+                    LocalDateTime d = LocalDateTime.parse(s ,formatter);
+                    long m = d.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+                    minuteMap.put(m, map.get("avg"));
+                }
 
-                    Float v = tvfMapper.avgBetween(table, startM, endM);
-                    searchData2.getData().add(v);
+                for (int i = 0; i <= minutes; i++) {
+                    String s = searchData.getxList().get(i);
+                    LocalDateTime d = LocalDateTime.parse(s);
+                    long min = d.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+
+                    Object v = minuteMap.get(min);
+                    if (v != null) {
+                        searchData2.getData().add(v);
+                    } else {
+                        searchData2.getData().add(null);
+                    }
                 }
             }
 
