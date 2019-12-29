@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -30,12 +33,15 @@ public class SearchController {
         logger.debug(searchQuery);
 
         String device = searchQuery.getDevice();
-        List<String> points = searchQuery.getPoints();
-        LocalDateTime start = searchQuery.getStart();
-        LocalDateTime end = searchQuery.getEnd();
+        List<Map<String, String>> points = searchQuery.getPoints();
+
+        LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.valueOf(searchQuery.getStart())), ZoneId.systemDefault());
+        LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochMilli(Long.valueOf(searchQuery.getEnd())), ZoneId.systemDefault());
+//        LocalDateTime start = searchQuery.getStart();
+//        LocalDateTime end = searchQuery.getEnd();
         String level = searchQuery.getLevel();
 
-        List<String> tableList = getTables(device, points, start, end);
+        List<String> tableList = getTables(device, start, end);
         SearchData searchData = null;
         if(level.equals("s")){
             searchData = tvfService.selectInS(tableList, points, start, end);
@@ -56,28 +62,26 @@ public class SearchController {
         return ResponseUtil.ok(searchData);
     }
 
-    private List<String> getTables(String device, List<String> points,LocalDateTime start, LocalDateTime end) {
+    private List<String> getTables(String device,LocalDateTime start, LocalDateTime end) {
         List<String> tableList = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd HH:mm:ss");
 
         for(LocalDateTime s = start; !s.isAfter(end); s = s.plusMonths(1).withDayOfMonth(1)){
-            String table = "bool_826_" + s.format(formatter).substring(0, 7);
-            if(tvfService.tableExist(table)) {
-                tableList.add(table);
-            }
+            String table = "_" + s.format(formatter).substring(0, 7);
+            tableList.add(table);
         }
         return tableList;
     }
 
-    private SearchData selectTest(String device, List<String> points,LocalDateTime start, LocalDateTime end) {
+    private SearchData selectTest(String device, List<Map<String, String>> points,LocalDateTime start, LocalDateTime end) {
         SearchData searchData = new SearchData();
         for(int i = 0; i < 100; i++) {
             searchData.getxList().add(String.valueOf(i));
         }
 
-        for(String point : points){
+        for(Map<String, String> point : points){
             SearchData2 searchData2 = new SearchData2();
-            searchData2.setLabel(point);
+            searchData2.setLabel(point.get("label").toString());
             for(int i = 0; i < 100; i++){
                 searchData2.getData().add(RandomUtil.next100());
             }
