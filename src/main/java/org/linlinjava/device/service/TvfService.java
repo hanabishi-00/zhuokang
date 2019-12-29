@@ -18,7 +18,7 @@ public class TvfService {
     @Autowired
     private TvfMapper tvfMapper;
 
-    public SearchData selectInS(String device, List<String> points, LocalDateTime start, LocalDateTime end) {
+    public SearchData selectInS(List<String> tableList, List<String> points, LocalDateTime start, LocalDateTime end) {
         SearchData searchData = new SearchData();
 
         java.time.Duration duration = java.time.Duration.between(start, end);
@@ -28,26 +28,31 @@ public class TvfService {
             searchData.getxList().add(dateTime.toString());
         }
 
+        if(tableList.isEmpty()){
+            return searchData;
+        }
+
         for(String point : points){
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point);
 
             long startS = start.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
             long endS = end.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-            String table = "bool_826_2018_02";
-            List<Tvf> tvfList = tvfMapper.selectBetween(table, startS, endS);
-            Map<Integer, Object> tvfMap = new HashMap<>();
-            for(Tvf tvf : tvfList){
-                tvfMap.put(tvf.getT(), tvf.getV());
-            }
+            for(String table : tableList) {
 
-            for(int i = 0; i <= seconds; i++) {
-                Object v = tvfMap.get(i);
-                if(v != null){
-                    searchData2.getData().add(v);
+                List<Tvf> tvfList = tvfMapper.selectBetween(table, startS, endS);
+                Map<Integer, Object> tvfMap = new HashMap<>();
+                for (Tvf tvf : tvfList) {
+                    tvfMap.put(tvf.getT(), tvf.getV());
                 }
-                else{
-                    searchData2.getData().add(null);
+
+                for (int i = 0; i <= seconds; i++) {
+                    Object v = tvfMap.get(i);
+                    if (v != null) {
+                        searchData2.getData().add(v);
+                    } else {
+                        searchData2.getData().add(null);
+                    }
                 }
             }
 
@@ -57,7 +62,7 @@ public class TvfService {
         return searchData;
     }
 
-    public SearchData selectInM(String device, List<String> points, LocalDateTime start, LocalDateTime end) {
+    public SearchData selectInM(List<String> tableList, List<String> points, LocalDateTime start, LocalDateTime end) {
         SearchData searchData = new SearchData();
 
         java.time.Duration duration = java.time.Duration.between(start, end);
@@ -67,19 +72,25 @@ public class TvfService {
             searchData.getxList().add(dateTime.toString());
         }
 
+        if(tableList.isEmpty()){
+            return searchData;
+        }
+
         for(String point : points){
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point);
 
-            for(int i = 0; i <= minutes; i++) {
-                LocalDateTime s = start.plusMinutes(i);
-                LocalDateTime e = start.plusMinutes(i+1);
-                long startM = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-                long endM = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            for(String table : tableList) {
 
-                String table = "bool_826_2018_02";
-                Float v = tvfMapper.avgBetween(table, startM, endM);
-                searchData2.getData().add(v);
+                for (int i = 0; i <= minutes; i++) {
+                    LocalDateTime s = start.plusMinutes(i);
+                    LocalDateTime e = start.plusMinutes(i + 1);
+                    long startM = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+                    long endM = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+
+                    Float v = tvfMapper.avgBetween(table, startM, endM);
+                    searchData2.getData().add(v);
+                }
             }
 
             searchData.getyList().add(searchData2);
@@ -88,7 +99,7 @@ public class TvfService {
         return searchData;
     }
 
-    public SearchData selectInH(String device, List<String> points, LocalDateTime start, LocalDateTime end) {
+    public SearchData selectInH(List<String> tableList, List<String> points, LocalDateTime start, LocalDateTime end) {
         SearchData searchData = new SearchData();
 
         java.time.Duration duration = java.time.Duration.between(start, end);
@@ -98,28 +109,33 @@ public class TvfService {
             searchData.getxList().add(dateTime.toString());
         }
 
+        if(tableList.isEmpty()){
+            return searchData;
+        }
+
         for(String point : points){
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point);
 
-            for(int i = 0; i <= hours; i++) {
-                LocalDateTime s = start.plusHours(i);
-                LocalDateTime e = start.plusHours(i+1);
-                long startH = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-                long endH = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            for(String table : tableList) {
 
-                String table = "bool_826_2018_02";
-                Float v = tvfMapper.avgBetween(table, startH, endH);
-                searchData2.getData().add(v);
+                for (int i = 0; i <= hours; i++) {
+                    LocalDateTime s = start.plusHours(i);
+                    LocalDateTime e = start.plusHours(i + 1);
+                    long startH = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+                    long endH = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+
+                    Float v = tvfMapper.avgBetween(table, startH, endH);
+                    searchData2.getData().add(v);
+                }
             }
-
             searchData.getyList().add(searchData2);
         }
 
         return searchData;
     }
 
-    public SearchData selectInD(String device, List<String> points, LocalDateTime start, LocalDateTime end) {
+    public SearchData selectInD(List<String> tableList, List<String> points, LocalDateTime start, LocalDateTime end) {
         SearchData searchData = new SearchData();
 
         java.time.Duration duration = java.time.Duration.between(start, end);
@@ -129,24 +145,32 @@ public class TvfService {
             searchData.getxList().add(dateTime.toString());
         }
 
+        if(tableList.isEmpty()){
+            return searchData;
+        }
+
         for(String point : points){
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point);
 
-            for(int i = 0; i <= days; i++) {
-                LocalDateTime s = start.plusDays(i);
-                LocalDateTime e = start.plusDays(i+1);
-                long startD = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-                long endD = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            for(String table : tableList) {
+                for (int i = 0; i <= days; i++) {
+                    LocalDateTime s = start.plusDays(i);
+                    LocalDateTime e = start.plusDays(i + 1);
+                    long startD = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+                    long endD = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
 
-                String table = "bool_826_2018_02";
-                Float v = tvfMapper.avgBetween(table, startD, endD);
-                searchData2.getData().add(v);
+                    Float v = tvfMapper.avgBetween(table, startD, endD);
+                    searchData2.getData().add(v);
+                }
             }
-
             searchData.getyList().add(searchData2);
         }
 
         return searchData;
+    }
+
+    public boolean tableExist(String table) {
+        return tvfMapper.exist(table) == 1;
     }
 }

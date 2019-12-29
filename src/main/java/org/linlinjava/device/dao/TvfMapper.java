@@ -15,6 +15,9 @@ public interface TvfMapper {
     })
     List<Tvf> select(@Param("table") String table);
 
+    @Select("SELECT count(*) FROM information_schema.TABLES WHERE table_name = #{table}")
+    int exist(@Param("table") String table);
+
     @Select("SELECT * FROM ${table} where t >= #{start} && t < #{end}")
     @Results({
             @Result(property = "t", column = "t"),

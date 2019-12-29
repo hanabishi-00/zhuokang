@@ -29,10 +29,12 @@ public class TvfServiceTest {
         String device = "";
         List<String> points = new ArrayList<>();
         points.add("aaa");
+        List<String> tableList = new ArrayList<>();
+        tableList.add("bool_826_2018_02");
         LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517414400), ZoneId.systemDefault());
         LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517673600), ZoneId.systemDefault());
 
-        SearchData searchData = tvfService.selectInS(device, points, start, end);
+        SearchData searchData = tvfService.selectInS(tableList, points, start, end);
 
         List<String> xList = searchData.getxList();
         for(String x : xList){
@@ -52,10 +54,12 @@ public class TvfServiceTest {
         String device = "";
         List<String> points = new ArrayList<>();
         points.add("aaa");
+        List<String> tableList = new ArrayList<>();
+        tableList.add("bool_826_2018_02");
         LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517414400), ZoneId.systemDefault());
         LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517673600), ZoneId.systemDefault());
 
-        SearchData searchData = tvfService.selectInM(device, points, start, end);
+        SearchData searchData = tvfService.selectInM(tableList, points, start, end);
 
         List<String> xList = searchData.getxList();
         for(String x : xList){
@@ -76,10 +80,12 @@ public class TvfServiceTest {
         String device = "";
         List<String> points = new ArrayList<>();
         points.add("aaa");
+        List<String> tableList = new ArrayList<>();
+        tableList.add("bool_826_2018_02");
         LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517414400), ZoneId.systemDefault());
         LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517673600), ZoneId.systemDefault());
 
-        SearchData searchData = tvfService.selectInH(device, points, start, end);
+        SearchData searchData = tvfService.selectInH(tableList, points, start, end);
 
         List<String> xList = searchData.getxList();
         for(String x : xList){
@@ -99,10 +105,12 @@ public class TvfServiceTest {
         String device = "";
         List<String> points = new ArrayList<>();
         points.add("aaa");
+        List<String> tableList = new ArrayList<>();
+        tableList.add("bool_826_2018_02");
         LocalDateTime start = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517414400), ZoneId.systemDefault());
         LocalDateTime end = LocalDateTime.ofInstant(Instant.ofEpochSecond(1517673600), ZoneId.systemDefault());
 
-        SearchData searchData = tvfService.selectInD(device, points, start, end);
+        SearchData searchData = tvfService.selectInD(tableList, points, start, end);
 
         List<String> xList = searchData.getxList();
         for(String x : xList){

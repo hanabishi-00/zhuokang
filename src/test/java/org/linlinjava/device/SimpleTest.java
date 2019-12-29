@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -29,6 +31,14 @@ public class SimpleTest {
             LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(tvf.getT()), ZoneId.systemDefault());
             System.out.println(localDateTime);
         }
+    }
+
+    @Test
+    public void testBadTable() throws IOException {
+        int exist = tvfMapper.exist("xxxxx");
+        System.out.println(exist);
+        exist = tvfMapper.exist("bool_826_2018_02");
+        System.out.println(exist);
     }
 
     @Test
@@ -62,5 +72,19 @@ public class SimpleTest {
             System.out.println(localDateTime + " " + tvf.getV());
         }
     }
+
+    @Test
+    public void test5() throws IOException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd HH:mm:ss");
+        LocalDateTime start = LocalDateTime.of(2019, 12, 29, 00, 00);
+        LocalDateTime end = LocalDateTime.of(2020, 02, 01, 00, 00);
+
+        for(LocalDateTime s = start; !s.isAfter(end); s = s.plusMonths(1).withDayOfMonth(1)){
+            String str = s.format(formatter);
+            System.out.println(str.substring(0, 7));
+        }
+    }
+
+
 
 }

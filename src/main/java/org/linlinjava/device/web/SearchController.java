@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,24 +35,38 @@ public class SearchController {
         LocalDateTime end = searchQuery.getEnd();
         String level = searchQuery.getLevel();
 
+        List<String> tableList = getTables(device, points, start, end);
         SearchData searchData = null;
         if(level.equals("s")){
-            searchData = tvfService.selectInS(device, points, start, end);
+            searchData = tvfService.selectInS(tableList, points, start, end);
         }
         else if(level.equals("m")){
-            searchData = tvfService.selectInM(device, points, start, end);
+            searchData = tvfService.selectInM(tableList, points, start, end);
         }
         else if(level.equals("h")){
-            searchData = tvfService.selectInH(device, points, start, end);
+            searchData = tvfService.selectInH(tableList, points, start, end);
         }
         else if(level.equals("d")){
-            searchData = tvfService.selectInD(device, points, start, end);
+            searchData = tvfService.selectInD(tableList, points, start, end);
         }
         else {
             searchData = selectTest(device, points, start, end);
         }
 
         return ResponseUtil.ok(searchData);
+    }
+
+    private List<String> getTables(String device, List<String> points,LocalDateTime start, LocalDateTime end) {
+        List<String> tableList = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd HH:mm:ss");
+
+        for(LocalDateTime s = start; !s.isAfter(end); s = s.plusMonths(1).withDayOfMonth(1)){
+            String table = "bool_826_" + s.format(formatter).substring(0, 7);
+            if(tvfService.tableExist(table)) {
+                tableList.add(table);
+            }
+        }
+        return tableList;
     }
 
     private SearchData selectTest(String device, List<String> points,LocalDateTime start, LocalDateTime end) {
