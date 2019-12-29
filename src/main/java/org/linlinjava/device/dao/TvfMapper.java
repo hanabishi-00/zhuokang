@@ -19,7 +19,7 @@ public interface TvfMapper {
     @Select("SELECT count(*) FROM information_schema.TABLES WHERE table_name = #{table}")
     int exist(@Param("table") String table);
 
-    @Select("SELECT * FROM ${table} WHERE t >= #{start} && t < #{end}")
+    @Select("SELECT * FROM ${table} WHERE t >= #{start} && t <= #{end}")
     @Results({
             @Result(property = "t", column = "t"),
             @Result(property = "v", column = "v"),
@@ -28,9 +28,15 @@ public interface TvfMapper {
     List<Tvf> selectBetween(@Param("table") String table, @Param("start") long start, @Param("end") long end);
 
 
-    @Select("SELECT avg(v) FROM ${table} WHERE t >= #{start} && t < #{end}")
+    @Select("SELECT avg(v) FROM ${table} WHERE t >= #{start} && t <= #{end}")
     Float avgBetween(@Param("table") String table, @Param("start") long start, @Param("end") long end);
 
-    @Select("SELECT DATE_FORMAT(FROM_UNIXTIME(t),'%Y-%m-%d %H:%i') minute, AVG(v) avg FROM ${table} WHERE t >= #{start} && t < #{end} group by minute")
+    @Select("SELECT DATE_FORMAT(FROM_UNIXTIME(t),'%Y-%m-%d %H:%i') time, AVG(v) avg FROM ${table} WHERE t >= #{start} && t <= #{end} group by time")
     List<Map> avgBetweenInM(@Param("table") String table, @Param("start") long start, @Param("end") long end);
+
+    @Select("SELECT DATE_FORMAT(FROM_UNIXTIME(t),'%Y-%m-%d %H') time, AVG(v) avg FROM ${table} WHERE t >= #{start} && t <= #{end} group by time")
+    List<Map> avgBetweenInH(@Param("table") String table, @Param("start") long start, @Param("end") long end);
+
+    @Select("SELECT DATE_FORMAT(FROM_UNIXTIME(t),'%Y-%m-%d') time, AVG(v) avg FROM ${table} WHERE t >= #{start} && t <= #{end} group by time")
+    List<Map> avgBetweenInD(@Param("table") String table, @Param("start") long start, @Param("end") long end);
 }

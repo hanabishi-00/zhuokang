@@ -7,8 +7,11 @@ import org.linlinjava.device.vo.SearchData2;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.DateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +106,7 @@ public class TvfService {
                 }
                 Map<Object, Object> minuteMap = new HashMap<>();
                 for (Map map : list) {
-                    String s = (String)map.get("minute");
+                    String s = (String)map.get("time");
                     LocalDateTime d = LocalDateTime.parse(s ,formatter);
                     long m = d.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
                     minuteMap.put(m + "", map.get("avg"));
@@ -133,10 +136,10 @@ public class TvfService {
         SearchData searchData = new SearchData();
 
         java.time.Duration duration = java.time.Duration.between(start, end);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
         long hours = duration.toHours();
         for(int i = 0; i <= hours; i++) {
             LocalDateTime dateTime = start.plusHours(i);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
             searchData.getxList().add(dateTime.format(formatter));
         }
 
@@ -148,22 +151,37 @@ public class TvfService {
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point.get("label").toString());
 
+            long startL = start.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            long endL = end.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            List<Map> list = new ArrayList<Map>();
             for(String table : tableList) {
 
-                for (int i = 0; i <= hours; i++) {
-                    LocalDateTime s = start.plusHours(i);
-                    LocalDateTime e = start.plusHours(i + 1);
-                    long startH = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-                    long endH = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-
-                    Float v = null;
-                    String _table = point.get("key").toString()+table;
-                    if(tableExist(_table)) {
-                        v = tvfMapper.avgBetween(point.get("key").toString()+table, startH, endH);
-                    }
-                    searchData2.getData().add(v);
+                String _table = point.get("key").toString()+table;
+                if(tableExist(_table)) {
+                    list.addAll(tvfMapper.avgBetweenInH(_table, startL, endL));
                 }
             }
+            Map<Object, Object> timeMap = new HashMap<>();
+            for (Map map : list) {
+                String s = (String)map.get("time");
+                LocalDateTime d = LocalDateTime.parse(s ,formatter);
+                long m = d.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+                timeMap.put(m + "", map.get("avg"));
+            }
+
+            for (int i = 0; i <= hours; i++) {
+                String s = searchData.getxList().get(i);
+                LocalDateTime d = LocalDateTime.parse(s, formatter);
+                long min = d.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+
+                Object v = timeMap.get(min + "");
+                if (v != null) {
+                    searchData2.getData().add(v);
+                } else {
+                    searchData2.getData().add(null);
+                }
+            }
+
             searchData.getyList().add(searchData2);
         }
 
@@ -174,10 +192,10 @@ public class TvfService {
         SearchData searchData = new SearchData();
 
         java.time.Duration duration = java.time.Duration.between(start, end);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         long days = duration.toDays();
         for(int i = 0; i <= days; i++) {
-            LocalDateTime dateTime = start.plusDays(i);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate dateTime = start.toLocalDate().plusDays(i);
             searchData.getxList().add(dateTime.format(formatter));
         }
 
@@ -189,21 +207,36 @@ public class TvfService {
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point.get("label").toString());
 
+            long startL = start.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            long endL = end.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
+            List<Map> list = new ArrayList<Map>();
             for(String table : tableList) {
-                for (int i = 0; i <= days; i++) {
-                    LocalDateTime s = start.plusDays(i);
-                    LocalDateTime e = start.plusDays(i + 1);
-                    long startD = s.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-                    long endD = e.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
-
-                    Float v = null;
-                    String _table = point.get("key").toString()+table;
-                    if(tableExist(_table)) {
-                        v = tvfMapper.avgBetween(point.get("key").toString()+table, startD, endD);
-                    }
-                    searchData2.getData().add(v);
+                String _table = point.get("key").toString()+table;
+                if(tableExist(_table)) {
+                    list.addAll(tvfMapper.avgBetweenInD(_table, startL, endL));
                 }
             }
+            Map<Object, Object> timeMap = new HashMap<>();
+            for (Map map : list) {
+                String s = (String)map.get("time");
+                LocalDate d = LocalDate.parse(s ,formatter);
+                long m = d.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+                timeMap.put(m + "", map.get("avg"));
+            }
+
+            for (int i = 0; i <= days; i++) {
+                String s = searchData.getxList().get(i);
+                LocalDate d = LocalDate.parse(s, formatter);
+                long min = d.atStartOfDay(ZoneId.systemDefault()).toEpochSecond();
+
+                Object v = timeMap.get(min + "");
+                if (v != null) {
+                    searchData2.getData().add(v);
+                } else {
+                    searchData2.getData().add(null);
+                }
+            }
+
             searchData.getyList().add(searchData2);
         }
 
