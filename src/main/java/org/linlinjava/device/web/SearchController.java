@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/device")
 public class SearchController {
     private final Log logger = LogFactory.getLog(SearchController.class);
     @Autowired
