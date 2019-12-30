@@ -243,6 +243,10 @@ public class TvfService {
         return searchData;
     }
 
+    public List<Map> getTreDeterpre101001(String preTime) {
+        return tvfMapper.tre_deterpre_101001(preTime);
+    }
+
     public boolean tableExist(String table) {
         return tvfMapper.exist(table) == 1;
     }

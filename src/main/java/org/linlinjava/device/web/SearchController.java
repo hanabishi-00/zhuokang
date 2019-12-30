@@ -28,6 +28,7 @@ public class SearchController {
     @Autowired
     private TvfService tvfService;
 
+    // 测点查询
     @RequestMapping("/search")
     public Object search(@RequestBody SearchQuery searchQuery) {
         logger.debug(searchQuery);
@@ -60,6 +61,12 @@ public class SearchController {
         }
 
         return ResponseUtil.ok(searchData);
+    }
+
+    // 查询劣化趋势预测结果
+    @RequestMapping("/getTreDeterpre101001")
+    public Object getTreDeterpre101001(String preTime){
+        return ResponseUtil.ok(tvfService.getTreDeterpre101001(preTime));
     }
 
     private List<String> getTables(String device,LocalDateTime start, LocalDateTime end) {

@@ -39,4 +39,8 @@ public interface TvfMapper {
 
     @Select("SELECT DATE_FORMAT(FROM_UNIXTIME(t),'%Y-%m-%d') time, AVG(v) avg FROM ${table} WHERE t >= #{start} && t <= #{end} group by time")
     List<Map> avgBetweenInD(@Param("table") String table, @Param("start") long start, @Param("end") long end);
+
+
+    @Select("SELECT * FROM tre_deterpre_101001 WHERE pre_time = ${preTime}")
+    List<Map> tre_deterpre_101001(@Param("preTime") String preTime);
 }
