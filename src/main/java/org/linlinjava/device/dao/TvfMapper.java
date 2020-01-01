@@ -43,4 +43,7 @@ public interface TvfMapper {
 
     @Select("SELECT * FROM tre_deterpre_101001 WHERE pre_time = ${preTime}")
     List<Map> tre_deterpre_101001(@Param("preTime") String preTime);
+
+    @Select("SELECT * FROM eva_res_tur_model_201912010100 WHERE time >= #{start} && time <= #{end}")
+    List<Map> eva_res_tur_model_201912010100(@Param("start") String start, @Param("end") String end);
 }

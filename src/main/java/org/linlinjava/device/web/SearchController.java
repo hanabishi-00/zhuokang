@@ -69,6 +69,12 @@ public class SearchController {
         return ResponseUtil.ok(tvfService.getTreDeterpre101001(preTime));
     }
 
+    // 查询健康趋势分析
+    @RequestMapping("/selectEvaResTurModel201912010100")
+    public Object selectEvaResTurModel201912010100(@RequestBody Map<String, String> map){
+        return ResponseUtil.ok(tvfService.selectEvaResTurModel201912010100(map.get("start").toString(), map.get("end").toString()));
+    }
+
     private List<String> getTables(String device,LocalDateTime start, LocalDateTime end) {
         List<String> tableList = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd HH:mm:ss");

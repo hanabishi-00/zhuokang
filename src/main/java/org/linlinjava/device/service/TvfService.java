@@ -247,6 +247,10 @@ public class TvfService {
         return tvfMapper.tre_deterpre_101001(preTime);
     }
 
+    public List<Map> selectEvaResTurModel201912010100(String start, String end) {
+        return tvfMapper.eva_res_tur_model_201912010100(start, end);
+    }
+
     public boolean tableExist(String table) {
         return tvfMapper.exist(table) == 1;
     }
