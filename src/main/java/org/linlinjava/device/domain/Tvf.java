@@ -5,7 +5,7 @@ import javax.annotation.Generated;
 public class Tvf {
     private Integer t;
 
-    private Byte v;
+    private Float v;
 
     private Byte f;
 
@@ -17,11 +17,11 @@ public class Tvf {
         this.t = t;
     }
 
-    public Byte getV() {
+    public Float getV() {
         return v;
     }
 
-    public void setV(Byte v) {
+    public void setV(Float v) {
         this.v = v;
     }
 
