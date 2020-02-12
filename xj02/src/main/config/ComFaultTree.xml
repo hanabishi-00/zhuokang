@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WorkFlow>
+    <WorkNode ID="1" Name="空压机系统故障" NodeType="0" father="null" children="中空压机系统故障，低空压机系统故障" gate="+" x="1000" y="6" Width="100" Height="30"/>
+    <WorkNode ID="21" Name="中空压机系统故障" NodeType="0" father="空压机系统故障" children="中压空压机制动系统漏气，中压空压机效率降低" gate="+" x="666" y="75" Width="100" Height="30"/>
+    <WorkNode ID="22" Name="低空压机系统故障" NodeType="0" father="空压机系统故障" children="低压空压机制动系统漏气，低压空压机效率降低" gate="+" x="1333" y="75" Width="100" Height="30"/>   
+    <WorkNode ID="311" Name="中压空压机制动系统漏气" NodeType="0" father="中空压机系统故障" children="中压空压机停止时长变短 " gate="+" x="50" y="350" Width="100" Height="30"/>
+    <WorkNode ID="312" Name="中压空压机效率降低" NodeType="0" father="中空压机系统故障" children="中压空压机停止时长不变，中压空压机运行时间增加" gate="0" x="300" y="350" Width="100" Height="30"/>
+    <WorkNode ID="321" Name="低压空压机制动系统漏气" NodeType="0" father="低空压机系统故障" children="低压空压机停止时长变短" gate="+" x="550" y="350" Width="100" Height="30"/>
+    <WorkNode ID="322" Name="低压空压机效率降低" NodeType="0" father="低空压机系统故障" children="低压空压机停止时长不变，低压空压机运行时间增加" gate="0" x="800" y="350" Width="100" Height="30"/>    
+    <WorkNode ID="4111" Name="中压空压机停止时长变短" NodeType="0" father="中压空压机制动系统漏气" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>
+    <WorkNode ID="4121" Name="中压空压机停止时长不变" NodeType="0" father="中压空压机效率降低" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>
+    <WorkNode ID="4122" Name="中压空压机运行时间增加" NodeType="0" father="中压空压机效率降低" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>    
+    <WorkNode ID="4211" Name="低压空压机停止时长变短" NodeType="0" father="低压空压机制动系统漏气" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>
+    <WorkNode ID="4221" Name="低压空压机停止时长不变" NodeType="0" father="低压空压机效率降低" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>
+    <WorkNode ID="4222" Name="低压空压机运行时间增加" NodeType="0" father="低压空压机效率降低" children="null" gate="0" x="50" y="600" Width="100" Height="30"/> 
+
+
+
+
+</WorkFlow>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WorkFlow>
+    <WorkNode ID="1" Name="顶盖排水系统故障" NodeType="0" father="null" children="主轴密封故障，顶盖排水泵故障" gate="+" x="1000" y="6" Width="100" Height="30"/>
+    <WorkNode ID="21" Name="主轴密封故障" NodeType="0" father="顶盖排水系统故障" children="漏水量增大，排水能力失衡" gate="+" x="666" y="75" Width="100" Height="30"/>
+    <WorkNode ID="22" Name="顶盖排水泵故障" NodeType="0" father="顶盖排水系统故障" children="排水泵效率降低" gate="+" x="1333" y="75" Width="100" Height="30"/>   
+    <WorkNode ID="311" Name="漏水量增大" NodeType="0" father="主轴密封故障" children="排水泵停泵时长缩短 " gate="+" x="50" y="350" Width="100" Height="30"/>
+    <WorkNode ID="312" Name="排水能力失衡" NodeType="0" father="主轴密封故障" children="排水泵停泵时长过短" gate="+" x="300" y="350" Width="100" Height="30"/>
+    <WorkNode ID="321" Name="排水泵效率降低" NodeType="0" father="顶盖排水泵故障" children="排水泵绝对排水速率降低" gate="+" x="550" y="350" Width="100" Height="30"/>    
+    <WorkNode ID="4111" Name="排水泵停泵时长缩短" NodeType="0" father="漏水量增大" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>
+    <WorkNode ID="4121" Name="排水泵停泵时长过短" NodeType="0" father="排水能力失衡" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>   
+    <WorkNode ID="4211" Name="排水泵绝对排水速率降低" NodeType="0" father="排水泵效率降低" children="null" gate="0" x="50" y="600" Width="100" Height="30"/>
+    
+
+
+
+
+</WorkFlow>
