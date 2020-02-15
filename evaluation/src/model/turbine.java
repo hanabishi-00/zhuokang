@@ -21,7 +21,7 @@ public class turbine {
         if (tree_build_mark) {
             tree temp_eva_tree = new tree("./src/model/水泵水轮机模型.xlsx");//建树
             eva_tree = temp_eva_tree;
-            eva_tree.tree_saver(eva_tree, "tur");
+            tree.tree_saver(eva_tree, "tur");
         }
         else {
             eva_tree = tree.tree_reader("tur");
@@ -53,6 +53,7 @@ public class turbine {
         System.out.println("Calculation finished！");
 
         tree.res_saver(eva_tree, type, unit, time_d);
+        System.out.println("Result Saving finished！");
 
         //List<String[]> min_avg_max=new ArrayList<>();
         //min_avg_max = id_min_avg_max( steady_turbine, eva_tree);//稳态时段内测点值的最小值、平均值与最大值

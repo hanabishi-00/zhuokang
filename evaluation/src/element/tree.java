@@ -316,14 +316,16 @@ public class tree {
         return temp_tree;
     }
 
-    public void tree_saver(tree s_tree, String type) {
+
+
+    public static void tree_saver(tree s_tree, String type) {
         final String database_url = DB_URL_res;
         final String user = USR;
         final String psw = PSW;
         tree_saver(s_tree, type, database_url, user, psw);
     }
 
-    public void tree_saver(tree s_tree, String type, String database_url, String user, String psw) {
+    public static void tree_saver(tree s_tree, String type, String database_url, String user, String psw) {
         final String JDBC_DRIVER = DB_DRIVER;
         final String DB_URL = database_url;
         final String USER = user;
@@ -1358,6 +1360,30 @@ public class tree {
         }
     }
 
+    public static class res_all{
+        private long[] time;//分别存储在线评价时间和离线评价时间
+        private tree tr;
+
+        public void setTime(long[] tm){
+            if (tm.length==2) {//保证为按格式存入在线、离线评价时间的tm
+                long[] ttm = new long[]{tm[0], tm[1]};
+                time = ttm;
+            }
+        }
+
+        public void setTree(tree t){
+            tr=t;
+        }
+
+        public long[] getTime() {
+            return time;
+        }
+
+        public tree getTree(){
+            return tr;
+        }
+    }
+
     public static void offline_res_builder(String flie_addr, String type) {
         final String DB_URL = DB_URL_res;
         final String USER = USR;
@@ -1549,6 +1575,335 @@ public class tree {
         return ROL;
     }
 
+    public static void offline_res_saver(resOffline res_offline, String type, int unit){//保存离线结果
+        final String DB_URL=DB_URL_res;
+        final String USER=USR;
+        final String PASS=PSW;
+        offline_res_saver(res_offline, type, unit, DB_URL, USER, PASS);
+    }
+
+    public static void offline_res_saver(resOffline res_offline, String type, int unit,
+                                         String database_url, String user, String psw){
+        final String JDBC_DRIVER = DB_DRIVER;
+        final String DB_URL=database_url;
+        final String USER=user;
+        final String PASS=psw;
+        Connection conn = null;
+        Statement stmt = null;
+
+        tree tr=tree.tree_reader(type);//读取最新的type类评价树
+        try {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+            System.out.println("连接数据库...");
+
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            // 执行查询
+            System.out.println(" 实例化Statement对象...");
+            stmt = conn.createStatement();
+
+            /*
+            进行模型最新版本搜索
+             */
+            String tb_name_guide = "eva_model_guide";
+            String conditions = "type= '" + type +"'";
+            String sql = "SELECT * FROM " + tb_name_guide + " WHERE " + conditions +" ORDER BY time DESC LIMIT 1";//查询最新记录
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 保存最后一条记录
+            rs.last();
+            String tm = timeUtil.longToString(rs.getLong("time")*1000,"yyyy-MM-dd HH:mm:ss");
+            int version = rs.getInt("version");//最新版本号
+
+            // 输出数据
+            System.out.print("最新模型存储时间: " + tm);
+            System.out.print(", 最新版本号: " + version);
+            System.out.print("\n");
+
+            /*
+            进行离线结果存储
+            */
+            //首先建表
+            String offline_res_tb_name="eva_res_"+type+"_"+version+"_leaf_offline";
+            String sql_offline_res_tb_build=" CREATE TABLE IF NOT EXIST "+offline_res_tb_name+
+                    " ( time INT(11) NOT NULL, unit TINYINT(4) NOT NULL";
+
+            Map<Integer, Float> offline_value_set=res_offline.getRes();
+            int offline_number=offline_value_set.size();
+            for (int j=0;j<offline_number;j++){
+                sql_offline_res_tb_build=sql_offline_res_tb_build+", v"+(j+1)+" FLOAT NOT NULL";
+            }
+            sql_offline_res_tb_build=sql_offline_res_tb_build+", PRIMARY KEY (time, unit));";
+            stmt.execute(sql_offline_res_tb_build);
+
+            //其次插入数据
+            long offline_res_time=res_offline.getTime();
+            String sql_offline_insert=" INSERT INTO "+offline_res_tb_name+" VALUES ("+offline_res_time+", "+unit;
+            leafnode[] LN=tr.get_leaf_nodes();
+            for (int j=0;j<LN.length;j++) {
+                if (LN[j].get_state()==leafnode.state_offline_mark) {
+                    Float value=offline_value_set.get(LN[j].get_index());
+                    if (value!=null) {
+                        sql_offline_insert = sql_offline_insert + ", " +value;
+                    }
+                    else{//未找到点值
+                        throw new Exception("离线结果点编号与评价数离线点编号不对应！数据写入失败！");
+                    }
+                }
+            }
+            sql_offline_insert=sql_offline_insert+");";
+            stmt.execute(sql_offline_insert);
+
+            // 完成后关闭
+            rs.close();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }catch(SQLException se){
+            // 处理 JDBC 错误
+            se.printStackTrace();
+        }catch(Exception e){
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+        }finally{
+            // 关闭资源
+            try{
+                if(stmt!=null) stmt.close();
+            }catch(SQLException se2){
+            }// 什么都不做
+            try{
+                if(conn!=null) conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+    }
+
+    public static List<res_all> res_reader(String type, int unit) throws ParseException {//取最新评价结果
+        Date last_time=timeUtil.longToDate(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss");
+        Date[] time_gap=new Date[]{last_time,last_time};
+        return res_reader(type,unit,time_gap);
+    }
+
+    public static List<res_all> res_reader(String type, int unit, Date[] time_gap){//返回time_gap中的所有评价结果（历史记录查询）
+        final String DB_URL=DB_URL_res;
+        final String USER=USR;
+        final String PASS=PSW;
+        return res_reader( type, unit, time_gap, DB_URL, USER, PASS);
+    }
+
+    public static List<res_all> res_reader(String type, int unit, Date[] time_gap,
+                                           String database_url, String user, String psw){//返回time_gap中的所有评价结果（历史记录查询）
+        List<res_all> res=new ArrayList<>();
+        long[] time_gap_long=new long[]{timeUtil.dateToLong(time_gap[0])/1000,
+                timeUtil.dateToLong(time_gap[1])/1000};
+
+        final String JDBC_DRIVER = DB_DRIVER;
+        final String DB_URL=database_url;
+        final String USER=user;
+        final String PASS=psw;
+        Connection conn = null;
+        Statement stmt = null;
+        try {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+            System.out.println("连接数据库...");
+
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+
+            // 执行查询
+            System.out.println(" 实例化Statement对象...");
+            stmt = conn.createStatement();
+
+            /*
+            进行模型最新版本搜索
+             */
+            String tb_name_guide = "eva_model_guide";
+            String conditions_1 = "type= '" + type +"' AND time<="+time_gap_long[1]+" AND time>="+time_gap_long[0];
+            String sql_1="SELECT * FROM " + tb_name_guide + " WHERE " + conditions_1 +" ORDER BY time DESC";//在时段内的记录
+            String conditions_2 = "type= '" + type +"' AND time<"+time_gap_long[0];
+            String sql_2 = "SELECT * FROM " + tb_name_guide + " WHERE " + conditions_2 +" ORDER BY time DESC LIMIT 1";//在时段前的最近记录
+            String sql=sql_1+" UNION "+sql_2;
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // 读取查询结果
+            List<Integer> version_set=new ArrayList<>();
+            while (rs.next()) {
+                String tm = timeUtil.longToString(rs.getLong("time") * 1000, "yyyy-MM-dd HH:mm:ss");
+                int version = rs.getInt("version");//最新版本号
+                version_set.add(version);
+
+                // 输出数据
+                System.out.print("查询模型存储时间: " + tm);
+                System.out.print(", 版本号: " + version);
+                System.out.print("\n");
+            }
+
+            if (version_set.size()==0){
+                throw new Exception("时段内无评价模型被使用！");
+            }
+
+            //依据涉及到的模型对结果表进行遍历
+            for (int j=0;j<version_set.size();j++){
+                int current_version=version_set.get(j);//当前查询的模型版本号
+                //读取树
+                String mid_model_tb_name="eva_model_"+type+"_"+current_version+"_mid";
+                String leaf_model_tb_name="eva_model_"+type+"_"+current_version+"_leaf";
+                String sql_mid_model="SELECT * FROM "+mid_model_tb_name;
+                String sql_leaf_model="SELECT * FROM "+leaf_model_tb_name;
+                ResultSet rs_mid_model=stmt.executeQuery(sql_mid_model);
+                ResultSet rs_leaf_model=stmt.executeQuery(sql_leaf_model);
+
+                //读取结果
+                String mid_res_tb_name="eva_res_"+type+"_"+current_version+"_mid";
+                String online_res_tb_name="eva_res_"+type+"_"+current_version+"_leaf_online";
+                String offline_res_tb_name="eva_res_"+type+"_"+current_version+"_leaf_offline";
+
+                //首先对mid中间节点结果进行查询，以便获得该次评价的在线、离线评价时间
+                String sql_mid_res=" SELECT * FROM "+mid_res_tb_name+" WHERE unit="+unit+
+                        " AND time_online>="+time_gap_long[0]+" AND time_online<="+time_gap_long[1];
+                ResultSet rs_mid_res=stmt.executeQuery(sql_mid_res);//取时段内的评价记录
+
+                ResultSet temp_rs=rs_mid_res;
+                if (!temp_rs.next()){
+                    temp_rs.close();
+                    throw new Exception("时段内无评价记录！");
+                }
+                temp_rs.close();
+
+                //读取结果
+                while(rs_mid_res.next()){
+                    long[] time_eva_i=new long[]{rs_mid_res.getLong("time_online"),
+                            rs_mid_res.getLong("time_offlone")};//该次评价的在线、离线评价时间
+
+                    tree tr_i=tree.tree_builder_for_res_reader(rs_mid_model, rs_leaf_model);//根据查询结果建树
+
+                    String sql_online_res=" SELECT * FROM "+online_res_tb_name+" WHERE unit="+unit+
+                            " AND time="+time_eva_i[0];
+                    String sql_offline_res=" SELECT * FROM "+offline_res_tb_name+" WHERE unit="+unit+
+                            " AND time="+time_eva_i[1];
+                    ResultSet rs_online_res=stmt.executeQuery(sql_online_res);
+                    ResultSet rs_offline_res=stmt.executeQuery(sql_offline_res);
+
+                    //分别存入相关节点值至树中
+                    //1. 存中间节点
+                    int i_mid=0;
+                    while (rs_mid_res.next()){
+                        tr_i.get_mid_node(i_mid).write_value(rs_mid_res.getFloat(i_mid+3));
+                    }
+                    //2. 存叶子节点
+                    int i_online=0;
+                    int i_offline=0;
+                    int leaf_number=tr_i.get_leaf_nodes().length;
+                    for(int i_leaf=0;i_leaf<leaf_number;i_leaf++){
+                        if (tr_i.get_leaf_node(i_leaf).get_state()==leafnode.state_online_mark){//在线叶子节点
+                            rs_online_res.next();
+                            tr_i.get_leaf_node(i_leaf).write_value(rs_online_res.getFloat(i_online+2));
+                            i_online++;
+                        }
+                        else{//离线叶子节点
+                            rs_offline_res.next();
+                            tr_i.get_leaf_node(i_leaf).write_value(rs_offline_res.getFloat(i_offline+2));
+                            i_offline++;
+                        }
+                    }
+
+                    //存入函数返回结果List中
+                    res_all rs_i=new res_all();
+                    rs_i.setTime(time_eva_i);
+                    rs_i.setTree(tr_i);
+                    res.add(rs_i);
+
+                    //关闭ResultSet
+                    rs_online_res.close();
+                    rs_offline_res.close();
+                }
+                //关闭ResultSet
+                rs_mid_res.close();
+                rs_mid_model.close();
+                rs_leaf_model.close();
+            }
+
+            // 完成后关闭
+            rs.close();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }catch(SQLException se){
+            // 处理 JDBC 错误
+            se.printStackTrace();
+        }catch(Exception e){
+            // 处理 Class.forName 错误
+            e.printStackTrace();
+        }finally{
+            // 关闭资源
+            try{
+                if(stmt!=null) stmt.close();
+            }catch(SQLException se2){
+            }// 什么都不做
+            try{
+                if(conn!=null) conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }
+        }
+        return res;
+    }
+
+    public static tree tree_builder_for_res_reader(ResultSet rs_mid, ResultSet rs_leaf) throws SQLException {//根据查询到的中间节点信息和叶子节点信息建树
+        //为res_reader的子函数
+        tree temp_tree=new tree();
+
+        // 循环存入所有中间节点信息
+        int index, father;
+        String name;
+        while (rs_mid.next()) {
+            index = rs_mid.getInt("id");
+            father = rs_mid.getInt("father");
+            name = rs_mid.getString("name");
+
+            temp_tree.add_node(index, name, father);
+        }
+        rs_mid.close();
+
+        // 循环存入所有叶子节点信息
+        int weight;
+        boolean state;
+        String[] stan_description;
+        Map<Integer, int[][]> points;
+        while (rs_leaf.next()) {
+            index = rs_leaf.getInt("id");
+            father = rs_leaf.getInt("father");
+            name = rs_leaf.getString("name");
+
+            weight = rs_leaf.getInt("weight");
+            state = leafnode.state_offline_mark;
+            if (rs_leaf.getInt("state") == mysql_online_node_mark) {
+                state = leafnode.state_online_mark;
+            }
+            String ts = rs_leaf.getString("stan_description");
+            String tp = rs_leaf.getString("points");
+            stan_description = operation_stan(ts);
+
+            if (state == leafnode.state_offline_mark) {//离线点
+                temp_tree.add_node(index, name, father, weight, stan_description);
+            } else {//在线点
+                points = operation_points(tp);
+                temp_tree.add_node(index, name, father, weight, stan_description, points);
+            }
+        }
+        rs_leaf.close();
+
+        temp_tree.init_val();
+        node[] tt_mid_nodes = temp_tree.get_mid_nodes();
+        System.out.println("Tree " + tt_mid_nodes[0].get_name() + " has been successfully built!");
+
+        return temp_tree;
+    }
+
     public static void res_saver(tree tr, String type, int unit, Date[] time_gap){
         final String DB_URL=DB_URL_res;
         final String USER=USR;
@@ -1622,9 +1977,9 @@ public class tree {
                     " ( time_online INT(11) NOT NULL, time_offline INT(11) NOT NULL, unit TINYINT(4) NOT NULL";
             node[] MN=tr.get_mid_nodes();
             for (int j=0;j<MN.length;j++){
-                sql_online_res_table_build=sql_online_res_table_build+", v"+(j+1)+" FLOAT NOT NULL";
+                sql_mid_res_table_build=sql_mid_res_table_build+", v"+(j+1)+" FLOAT NOT NULL";
             }
-            sql_online_res_table_build=sql_online_res_table_build+", PRIMARY KEY (time, unit));";
+            sql_mid_res_table_build=sql_mid_res_table_build+", PRIMARY KEY (time_online, time_offline, unit));";
             stmt.execute(sql_mid_res_table_build);
 
             //之后插入数据
