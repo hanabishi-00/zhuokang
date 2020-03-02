@@ -41,7 +41,7 @@ public interface TvfMapper {
     List<Map> avgBetweenInD(@Param("table") String table, @Param("start") long start, @Param("end") long end);
 
 
-    @Select("SELECT * FROM tre_deterpre_101001 WHERE pre_time = ${preTime}")
+    @Select("SELECT * FROM tre_deterpre_101001 WHERE pretime = ${preTime}")
     List<Map> tre_deterpre_101001(@Param("preTime") String preTime);
 
     @Select("SELECT * FROM eva_res_tur_model_201912010100 WHERE time >= #{start} && time <= #{end}")
