@@ -11,13 +11,13 @@
         </commentGenerator>
         <!--数据库连接信息-->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://118.24.0.153:3306/litemall?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
-                        userId="litemall"
-                        password="litemall123456"/>
+                        connectionURL="jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC&amp;verifyServerCertificate=false&amp;useSSL=false"
+                        userId="huake"
+                        password="huake@123"/>
 
-        <javaModelGenerator targetPackage="com.huake.device.domain" targetProject="src/main/java"/>
-        <javaClientGenerator targetPackage="com.huake.device.dao"  targetProject="src/main/java"/>
-        <table tableName="bool_826_2018_02"/>
-        <table tableName="bool_826_2018_02"/>
+        <javaModelGenerator targetPackage="com.huake.device.domain.generator" targetProject="src/main/java"/>
+        <javaClientGenerator targetPackage="com.huake.device.dao.generator" targetProject="src/main/java"/>
+
+        <table tableName="%" />
     </context>
 </generatorConfiguration>
