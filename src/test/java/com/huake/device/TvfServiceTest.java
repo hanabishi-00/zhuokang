@@ -1,12 +1,12 @@
-package org.linlinjava.device;
+package com.huake.device;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.linlinjava.device.dao.TvfMapper;
-import org.linlinjava.device.domain.Tvf;
-import org.linlinjava.device.service.TvfService;
-import org.linlinjava.device.vo.SearchData;
-import org.linlinjava.device.vo.SearchData2;
+import com.huake.device.dao.TvfMapper;
+import com.huake.device.domain.Tvf;
+import com.huake.device.service.TvfService;
+import com.huake.device.vo.SearchData;
+import com.huake.device.vo.SearchData2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,6 +24,7 @@ public class TvfServiceTest {
     @Autowired
     private TvfService tvfService;
 
+    /*
     @Test
     public void testS() throws IOException {
         String device = "";
@@ -124,4 +125,5 @@ public class TvfServiceTest {
             }
         }
     }
+*/
 }

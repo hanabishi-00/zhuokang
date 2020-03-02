@@ -1,4 +1,4 @@
-package org.linlinjava.device.vo;
+package com.huake.device.vo;
 
 import java.util.ArrayList;
 import java.util.List;

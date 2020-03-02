@@ -1,13 +1,13 @@
-package org.linlinjava.device.web;
+package com.huake.device.web;
 
+import com.huake.device.dto.SearchQuery;
+import com.huake.device.service.TvfService;
+import com.huake.device.util.RandomUtil;
+import com.huake.device.vo.SearchData2;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.device.dto.SearchQuery;
-import org.linlinjava.device.service.TvfService;
-import org.linlinjava.device.util.RandomUtil;
-import org.linlinjava.device.util.ResponseUtil;
-import org.linlinjava.device.vo.SearchData;
-import org.linlinjava.device.vo.SearchData2;
+import com.huake.device.util.ResponseUtil;
+import com.huake.device.vo.SearchData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

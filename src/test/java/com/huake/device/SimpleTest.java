@@ -1,9 +1,9 @@
-package org.linlinjava.device;
+package com.huake.device;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.linlinjava.device.dao.TvfMapper;
-import org.linlinjava.device.domain.Tvf;
+import com.huake.device.dao.TvfMapper;
+import com.huake.device.domain.Tvf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;

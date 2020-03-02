@@ -1,4 +1,4 @@
-package org.linlinjava.device.util;
+package com.huake.device.util;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;

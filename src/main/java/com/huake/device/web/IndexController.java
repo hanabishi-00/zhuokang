@@ -1,8 +1,8 @@
-package org.linlinjava.device.web;
+package com.huake.device.web;
 
+import com.huake.device.util.ResponseUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.linlinjava.device.util.ResponseUtil;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,4 +1,4 @@
-package org.linlinjava.device.util;
+package com.huake.device.util;
 
 import java.util.Random;
 

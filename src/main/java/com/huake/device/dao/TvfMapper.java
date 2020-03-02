@@ -1,7 +1,7 @@
-package org.linlinjava.device.dao;
+package com.huake.device.dao;
 
 import org.apache.ibatis.annotations.*;
-import org.linlinjava.device.domain.Tvf;
+import com.huake.device.domain.Tvf;
 
 import java.util.List;
 import java.util.Map;

@@ -50,5 +50,5 @@
     </root>
     <logger name="org.mybatis" level="ERROR" />
     <logger name="org.springframework" level="ERROR" />
-    <logger name="org.linlinjava.device" level="DEBUG" />
+    <logger name="com.huake.device" level="DEBUG" />
 </configuration>

@@ -1,4 +1,4 @@
-package org.linlinjava.device.domain;
+package com.huake.device.domain;
 
 import javax.annotation.Generated;
 

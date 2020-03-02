@@ -15,8 +15,8 @@
                         userId="litemall"
                         password="litemall123456"/>
 
-        <javaModelGenerator targetPackage="org.linlinjava.device.domain" targetProject="src/main/java"/>
-        <javaClientGenerator targetPackage="org.linlinjava.device.dao"  targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.huake.device.domain" targetProject="src/main/java"/>
+        <javaClientGenerator targetPackage="com.huake.device.dao"  targetProject="src/main/java"/>
         <table tableName="bool_826_2018_02"/>
         <table tableName="bool_826_2018_02"/>
     </context>

@@ -1,4 +1,4 @@
-package org.linlinjava.device.dto;
+package com.huake.device.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
