@@ -4,6 +4,7 @@ import com.huake.device.domain.dto.SearchQuery;
 import com.huake.device.service.TvfService;
 import com.huake.device.util.RandomUtil;
 import com.huake.device.domain.vo.SearchData2;
+import io.swagger.annotations.Api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.huake.device.util.ResponseUtil;
