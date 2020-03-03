@@ -1,4 +1,4 @@
-package com.huake.device.vo;
+package com.huake.device.domain.vo;
 
 import java.util.ArrayList;
 import java.util.List;

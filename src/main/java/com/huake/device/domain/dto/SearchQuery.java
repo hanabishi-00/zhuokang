@@ -1,6 +1,5 @@
-package com.huake.device.dto;
+package com.huake.device.domain.dto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 

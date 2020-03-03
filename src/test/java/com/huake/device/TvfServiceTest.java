@@ -1,22 +1,10 @@
 package com.huake.device;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import com.huake.device.dao.TvfMapper;
-import com.huake.device.domain.Tvf;
 import com.huake.device.service.TvfService;
-import com.huake.device.vo.SearchData;
-import com.huake.device.vo.SearchData2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

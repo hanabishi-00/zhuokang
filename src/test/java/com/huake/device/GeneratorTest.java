@@ -43,7 +43,6 @@ public class GeneratorTest {
 
     @Test
     public void selectOne() throws IOException {
-//        com.huake.device.domain.generator.Test test = mapper.selectOne(SelectDSLCompleter.allRows()).get();
         com.huake.device.domain.generator.Test test = mapper.selectOne(
                 c -> c.where(TestDynamicSqlSupport.name, isEqualTo("张三"))
         ).get();

@@ -1,9 +1,9 @@
 package com.huake.device.service;
 
 import com.huake.device.dao.TvfMapper;
-import com.huake.device.vo.SearchData2;
+import com.huake.device.domain.vo.SearchData2;
 import com.huake.device.domain.Tvf;
-import com.huake.device.vo.SearchData;
+import com.huake.device.domain.vo.SearchData;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
