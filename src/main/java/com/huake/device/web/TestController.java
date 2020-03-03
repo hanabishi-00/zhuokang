@@ -37,15 +37,9 @@ public class TestController {
         throw new MyException(ResponseUtil.serious());
     }
 
-    @RequestMapping(value = "/getTest", method = RequestMethod.POST)
+    @RequestMapping(value = "/getTest", method = RequestMethod.GET)
     @ApiOperation("获取")
-    public Object getTest(@RequestBody Test test) {
-        return ResponseUtil.ok(testService.getTest(test.getName()));
-    }
-
-    @RequestMapping(value = "/getTest2", method = RequestMethod.GET)
-    @ApiOperation("获取2")
-    public Object getTest2(String name) {
+    public Object getTest(String name) {
         return ResponseUtil.ok(testService.getTest(name));
     }
 
