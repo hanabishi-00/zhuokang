@@ -34,4 +34,16 @@ public class TestService {
         List<Test> list = testMapper.select(completer);
         return list;
     }
+
+    public int updateTest(Test test) {
+        return testMapper.updateByPrimaryKeySelective(test);
+    }
+
+    public int insertTest(Test test) {
+        return testMapper.insertSelective(test);
+    }
+
+    public int deleteTest(String name) {
+        return testMapper.deleteByPrimaryKey(name);
+    }
 }

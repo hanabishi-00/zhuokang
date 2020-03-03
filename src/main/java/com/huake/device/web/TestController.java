@@ -46,5 +46,20 @@ public class TestController {
         return ResponseUtil.ok(testService.getTestList(test));
     }
 
+    @RequestMapping("/updateTest")
+    public Object updateTest(@RequestBody Test test) {
+        return ResponseUtil.ok(testService.updateTest(test));
+    }
+
+    @RequestMapping("/insertTest")
+    public Object insertTest(@RequestBody Test test) {
+        return ResponseUtil.ok(testService.insertTest(test));
+    }
+
+    @RequestMapping("/deleteTest")
+    public Object deleteTest(String name) {
+        return ResponseUtil.ok(testService.deleteTest(name));
+    }
+
 
 }
