@@ -1,6 +1,8 @@
 package com.huake.device.web;
 
+import com.huake.device.domain.dto.Redis;
 import com.huake.device.domain.generator.Test;
+import com.huake.device.service.IRedisService;
 import com.huake.device.service.TestService;
 import com.huake.device.util.MyException;
 import com.huake.device.util.ResponseUtil;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 /**
  * 测试服务
  */
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
     @Autowired
+    private IRedisService redisService;
+    @Resource
     private TestService testService;
     private final Log logger = LogFactory.getLog(TestController.class);
 
@@ -65,6 +71,18 @@ public class TestController {
     @ApiOperation("删除")
     public Object deleteTest(String name) {
         return ResponseUtil.ok(testService.deleteTest(name));
+    }
+
+    @RequestMapping(value = "/redis/get", method = RequestMethod.GET)
+    @ApiOperation("读取redis")
+    public Object redisGet(String name) {
+        return ResponseUtil.ok(redisService.get(name));
+    }
+
+    @RequestMapping(value = "/redis/set", method = RequestMethod.GET)
+    @ApiOperation("设置redis")
+    public Object redisSet(Redis redis) {
+        return ResponseUtil.ok(redisService.set(redis.getKey(), redis.getValue(), redis.getExpire()));
     }
 
 
