@@ -27,22 +27,33 @@ public class TreeController {
         return ResponseUtil.ok("hello world, this is demo service");
     }
 
-    @RequestMapping(value = "/getDeviceList", method = RequestMethod.GET)
-    @ApiOperation("getDeviceList")
+    @RequestMapping(value = "/getTreeDeviceList", method = RequestMethod.GET)
+    @ApiOperation("getTreeDeviceList")
     public Object getDeviceList() {
-        return ResponseUtil.ok(treeService.getDeviceList());
+        return ResponseUtil.ok(treeService.getTreeDeviceList());
     }
 
-    @RequestMapping(value = "/getDevice", method = RequestMethod.GET)
-    @ApiOperation("getDevice")
+    @RequestMapping(value = "/getTreeDevice", method = RequestMethod.GET)
+    @ApiOperation("getTreeDevice")
     public Object getDevice(int id) {
-        return ResponseUtil.ok(treeService.getDevice(id));
+        return ResponseUtil.ok(treeService.getTreeDevice(id));
     }
 
-    @RequestMapping(value = "/getDiagUnit", method = RequestMethod.GET)
-    @ApiOperation("getDiagUnit")
+    @RequestMapping(value = "/getTreeDiagUnit", method = RequestMethod.GET)
+    @ApiOperation("getTreeDiagUnit")
     public Object getDiagUnit() {
-        return ResponseUtil.ok(treeService.getDiagUnit());
+        return ResponseUtil.ok(treeService.getTreeDiagUnit());
     }
 
+    @RequestMapping(value = "/getTreeEvaUnit", method = RequestMethod.GET)
+    @ApiOperation("getTreeEvaUnit")
+    public Object getTreeEvaUnit() {
+        return ResponseUtil.ok(treeService.getTreeEvaUnit());
+    }
+
+    @RequestMapping(value = "/getTreePreUnit", method = RequestMethod.GET)
+    @ApiOperation("getTreePreUnit")
+    public Object getTreePreUnit() {
+        return ResponseUtil.ok(treeService.getTreePreUnit());
+    }
 }
