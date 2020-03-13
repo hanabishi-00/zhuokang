@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -67,6 +68,16 @@ public class TreeService {
         com.huake.device.domain.generator.TreePreMeasure treePreMeasure = optional.isPresent() ? optional.get() : null;
         return treePreMeasure;
     }
+
+    public List<TreePreMeasure> getTreePreMeasureList(){
+        List<TreePreMeasure> list = treePreMeasureMapper.select(SelectDSLCompleter.allRows());
+        return list;
+    }
+
+//    public TreePreMeasure getTreePreMeasureByList(List<TreePreMeasure> ls){
+//        Map<Integer,Object> map = new HashMap<>();
+//        map = ls.stream().collect(Collectors.toMap(TreePreMeasure::getId,TreePreMeasure::getName));
+//    }
 
     //public List<Object> GenerateTreeFormat(Object obj,)
 
@@ -150,6 +161,9 @@ public class TreeService {
 
     public Object getTreePreUnit(){
         List<TreePreUnit> list = treePreUnitMapper.select(SelectDSLCompleter.allRows());
+        List<TreePreMeasure> list1 = getTreePreMeasureList();
+        Map<Integer,Object> map = new HashMap<>();
+        map = list1.stream().collect(Collectors.toMap(TreePreMeasure::getId,TreePreMeasure::getName));
         List<Object> rst = new ArrayList<Object>();
         for (TreePreUnit treePreUnit : list)
         {
@@ -158,7 +172,11 @@ public class TreeService {
             String[] ls = treePreUnit.getMeasureId().split(",");
             for (String str:ls)
             {
-                lst.add(getTreePreMeasure(Integer.parseInt(str)));
+                //lst.add(getTreePreMeasure(Integer.parseInt(str)));
+                TreePreMeasure treePreMeasure = new TreePreMeasure();
+                treePreMeasure.setId(Integer.parseInt(str));
+                treePreMeasure.setName(map.get(Integer.parseInt(str)).toString());
+                lst.add(treePreMeasure);
             }
             treePreUnitMap.put("id",treePreUnit.getUnitId());
             treePreUnitMap.put("name",treePreUnit.getUnitId().toString() + "#机组");
