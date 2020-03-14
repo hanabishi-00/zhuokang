@@ -35,7 +35,7 @@ import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 @Mapper
 public interface TreDeterThresholdMapper {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    BasicColumn[] selectList = BasicColumn.columnList(modelNumber, modelName, deterdataTable, preResultTable, warnThreshold);
+    BasicColumn[] selectList = BasicColumn.columnList(modelNumber, modelName, warnThreshold);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -63,8 +63,6 @@ public interface TreDeterThresholdMapper {
     @Results(id="TreDeterThresholdResult", value = {
         @Result(column="model_number", property="modelNumber", jdbcType=JdbcType.INTEGER, id=true),
         @Result(column="model_name", property="modelName", jdbcType=JdbcType.CHAR),
-        @Result(column="deterdata_table", property="deterdataTable", jdbcType=JdbcType.CHAR),
-        @Result(column="pre_result_table", property="preResultTable", jdbcType=JdbcType.CHAR),
         @Result(column="warn_threshold", property="warnThreshold", jdbcType=JdbcType.REAL)
     })
     List<TreDeterThreshold> selectMany(SelectStatementProvider selectStatement);
@@ -95,8 +93,6 @@ public interface TreDeterThresholdMapper {
         return MyBatis3Utils.insert(this::insert, record, treDeterThreshold, c ->
             c.map(modelNumber).toProperty("modelNumber")
             .map(modelName).toProperty("modelName")
-            .map(deterdataTable).toProperty("deterdataTable")
-            .map(preResultTable).toProperty("preResultTable")
             .map(warnThreshold).toProperty("warnThreshold")
         );
     }
@@ -106,8 +102,6 @@ public interface TreDeterThresholdMapper {
         return MyBatis3Utils.insertMultiple(this::insertMultiple, records, treDeterThreshold, c ->
             c.map(modelNumber).toProperty("modelNumber")
             .map(modelName).toProperty("modelName")
-            .map(deterdataTable).toProperty("deterdataTable")
-            .map(preResultTable).toProperty("preResultTable")
             .map(warnThreshold).toProperty("warnThreshold")
         );
     }
@@ -117,8 +111,6 @@ public interface TreDeterThresholdMapper {
         return MyBatis3Utils.insert(this::insert, record, treDeterThreshold, c ->
             c.map(modelNumber).toPropertyWhenPresent("modelNumber", record::getModelNumber)
             .map(modelName).toPropertyWhenPresent("modelName", record::getModelName)
-            .map(deterdataTable).toPropertyWhenPresent("deterdataTable", record::getDeterdataTable)
-            .map(preResultTable).toPropertyWhenPresent("preResultTable", record::getPreResultTable)
             .map(warnThreshold).toPropertyWhenPresent("warnThreshold", record::getWarnThreshold)
         );
     }
@@ -154,8 +146,6 @@ public interface TreDeterThresholdMapper {
     static UpdateDSL<UpdateModel> updateAllColumns(TreDeterThreshold record, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(modelNumber).equalTo(record::getModelNumber)
                 .set(modelName).equalTo(record::getModelName)
-                .set(deterdataTable).equalTo(record::getDeterdataTable)
-                .set(preResultTable).equalTo(record::getPreResultTable)
                 .set(warnThreshold).equalTo(record::getWarnThreshold);
     }
 
@@ -163,8 +153,6 @@ public interface TreDeterThresholdMapper {
     static UpdateDSL<UpdateModel> updateSelectiveColumns(TreDeterThreshold record, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(modelNumber).equalToWhenPresent(record::getModelNumber)
                 .set(modelName).equalToWhenPresent(record::getModelName)
-                .set(deterdataTable).equalToWhenPresent(record::getDeterdataTable)
-                .set(preResultTable).equalToWhenPresent(record::getPreResultTable)
                 .set(warnThreshold).equalToWhenPresent(record::getWarnThreshold);
     }
 
@@ -172,8 +160,6 @@ public interface TreDeterThresholdMapper {
     default int updateByPrimaryKey(TreDeterThreshold record) {
         return update(c ->
             c.set(modelName).equalTo(record::getModelName)
-            .set(deterdataTable).equalTo(record::getDeterdataTable)
-            .set(preResultTable).equalTo(record::getPreResultTable)
             .set(warnThreshold).equalTo(record::getWarnThreshold)
             .where(modelNumber, isEqualTo(record::getModelNumber))
         );
@@ -183,8 +169,6 @@ public interface TreDeterThresholdMapper {
     default int updateByPrimaryKeySelective(TreDeterThreshold record) {
         return update(c ->
             c.set(modelName).equalToWhenPresent(record::getModelName)
-            .set(deterdataTable).equalToWhenPresent(record::getDeterdataTable)
-            .set(preResultTable).equalToWhenPresent(record::getPreResultTable)
             .set(warnThreshold).equalToWhenPresent(record::getWarnThreshold)
             .where(modelNumber, isEqualTo(record::getModelNumber))
         );

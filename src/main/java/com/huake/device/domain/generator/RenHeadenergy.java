@@ -2,43 +2,43 @@ package com.huake.device.domain.generator;
 
 import javax.annotation.Generated;
 
-public class TreDeterThreshold {
+public class RenHeadenergy {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer modelNumber;
+    private Integer unit;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String modelName;
+    private Float a;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Float warnThreshold;
+    private Float b;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getModelNumber() {
-        return modelNumber;
+    public Integer getUnit() {
+        return unit;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setModelNumber(Integer modelNumber) {
-        this.modelNumber = modelNumber;
+    public void setUnit(Integer unit) {
+        this.unit = unit;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getModelName() {
-        return modelName;
+    public Float getA() {
+        return a;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
+    public void setA(Float a) {
+        this.a = a;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Float getWarnThreshold() {
-        return warnThreshold;
+    public Float getB() {
+        return b;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setWarnThreshold(Float warnThreshold) {
-        this.warnThreshold = warnThreshold;
+    public void setB(Float b) {
+        this.b = b;
     }
 }
