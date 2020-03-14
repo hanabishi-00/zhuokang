@@ -46,8 +46,8 @@ public class DiagTreeService {
             mmp = fillMapByDiagTree(mmp,getDiagTreeRecord(id));
         }
 
-        Map<String,Object> MMap = new HashMap<>();
-        //List<Map<String,Object>> mapList =new ArrayList<>(Map<String,Object>);
+        //Map<String,Object> MMap = new HashMap<>();
+        List<Map<String,Object>> mapList =new ArrayList<Map<String,Object>>();
         boolean a = false;
         for (DiagTree diagTree: list)
         {
@@ -58,16 +58,17 @@ public class DiagTreeService {
                 myMap = getDiagTree(diagTree.getId(),list,null);
                 //mapList.add(myMap);
                 //myMap.put("children","{}");
-                MMap.put(diagTree.getId(),myMap);
+                //MMap.put(diagTree.getId(),myMap);bak
+                mapList.add(myMap);
             }
         }
 
         if (a)
         {
-            mmp.put("children",MMap);
+            mmp.put("children",mapList);
         }else
         {
-            mmp.put("children","{}");
+            mmp.put("children","[]");
         }
 
         return  mmp;
