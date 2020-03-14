@@ -1,14 +1,12 @@
 package com.huake.device.service;
 
-public class DiagTreeService {
 import com.huake.device.dao.generator.DiagTreeMapper;
 import com.huake.device.dao.generator.TreeDeviceMapper;
 import com.huake.device.domain.generator.DiagTree;
+import com.huake.device.util.CharUtil;
 import com.huake.device.util.ResponseUtil;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
-
-
 import javax.annotation.Resource;
 import java.util.*;
 
@@ -36,26 +34,40 @@ public class DiagTreeService {
         return mmp;
     }
 
-    public  Object getDiagTree(String id, List<DiagTree> list, Map<String,Object> mmp){
-        if (id.isEmpty())
-            return  ResponseUtil.fail(-1,"id不能为空！");
+    public  Map<String,Object> getDiagTree(String id, List<DiagTree> list, Map<String,Object> mmp){
 
         if (list == null) {
             list = getDiagTreeList();
-            mmp = new HashMap<>();
-            mmp = fillMapByDiagTree(mmp,getDiagTreeRecord(id));
-            //mmp.put("children",getDiagTreeRecord(id));
         }
 
+        if (mmp == null)
+        {
+            mmp = new HashMap<>();
+            mmp = fillMapByDiagTree(mmp,getDiagTreeRecord(id));
+        }
 
+        Map<String,Object> MMap = new HashMap<>();
+        //List<Map<String,Object>> mapList =new ArrayList<>(Map<String,Object>);
+        boolean a = false;
         for (DiagTree diagTree: list)
         {
-            if (diagTree.getPid()= id)
+            if (diagTree.getPid().equals(id))
             {
+                a = true;
                 Map<String,Object> myMap = new HashMap<>();
-
-                myMap.put("children",getDiagTree(diagTree.getId(),list,myMap));
+                myMap = getDiagTree(diagTree.getId(),list,null);
+                //mapList.add(myMap);
+                //myMap.put("children","{}");
+                MMap.put(diagTree.getId(),myMap);
             }
+        }
+
+        if (a)
+        {
+            mmp.put("children",MMap);
+        }else
+        {
+            mmp.put("children","{}");
         }
 
         return  mmp;
@@ -106,7 +118,7 @@ public class DiagTreeService {
         //将入参中有的字段添加，其他字段为空
 
         //获取UUID
-        diagTree.setId(getUUID());
+        diagTree.setId(CharUtil.getUUID());
         DiagTree myDiagTree = getDiagTreeRecord(diagTree.getPid());
         if (myDiagTree!=null) {
             diagTree.setNodetype(myDiagTree.getNodetype().equals("N" )? "G" : "N");
@@ -131,7 +143,7 @@ public class DiagTreeService {
         diagTree.setNodetype(myDiagTree.getNodetype());
         diagTree.setPid(myDiagTree.getPid());
         //获取UUID
-        diagTree.setId(getUUID());
+        diagTree.setId(CharUtil.getUUID());
 
         return diagTreeMapper.insertSelective(diagTree);
     }

@@ -1,6 +1,5 @@
 package com.huake.device.web;
 
-public class DiagTreeController {
 import com.huake.device.domain.generator.DiagTree;
 import com.huake.device.service.DiagTreeService;
 import com.huake.device.util.ResponseUtil;
@@ -27,7 +26,7 @@ public class DiagTreeController {
     {
         if (id.isEmpty())
             return  ResponseUtil.fail(-1,"id不能为空！");
-        return ResponseUtil.ok(diagTreeService.getDiagTree(id,null));
+        return ResponseUtil.ok(diagTreeService.getDiagTree(id,null,null));
     }
 
     @PostMapping("/addDiagTree")
