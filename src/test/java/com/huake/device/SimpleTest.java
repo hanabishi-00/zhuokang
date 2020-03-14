@@ -1,5 +1,6 @@
 package com.huake.device;
 
+import com.huake.device.util.CommonUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import com.huake.device.dao.TvfMapper;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -19,7 +21,7 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class SimpleTest {
-    @Autowired
+    @Resource
     private TvfMapper tvfMapper;
 
     @Test
@@ -88,10 +90,6 @@ public class SimpleTest {
 
     @Test
     public void test6() throws IOException {
-        List<Map> list = tvfMapper.avgBetweenInM("bool_826_2018_02", 1517414400, 1517673600);
-        System.out.println(list.size());
-        for(Map map : list){
-            System.out.println(map.get("minute") + " " + map.get("avg"));
-        }
+        System.out.println(CommonUtil.getUUID());
     }
 }
