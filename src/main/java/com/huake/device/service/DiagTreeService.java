@@ -153,7 +153,7 @@ public class DiagTreeService {
         return diagTreeMapper.insertSelective(diagTree);
     }
 
-    public  Object deleteDiagTreeBrotherNode(String id)
+    public  Object deleteDiagTreeNode(String id)
     {
         List<DiagTree> list = getDiagTreeList();
         for (DiagTree diagTree:list)
