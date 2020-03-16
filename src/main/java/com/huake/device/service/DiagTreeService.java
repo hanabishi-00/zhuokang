@@ -1,5 +1,6 @@
 package com.huake.device.service;
 
+import com.huake.device.dao.generator.DiagTreeDynamicSqlSupport;
 import com.huake.device.dao.generator.DiagTreeMapper;
 import com.huake.device.dao.generator.TreeDeviceMapper;
 import com.huake.device.domain.generator.DiagTree;
@@ -9,6 +10,9 @@ import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.*;
+
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
+import static org.mybatis.dynamic.sql.SqlBuilder.isLikeWhenPresent;
 
 @Service
 public class DiagTreeService {
@@ -160,6 +164,17 @@ public class DiagTreeService {
             }
         }
         return ResponseUtil.ok(diagTreeMapper.deleteByPrimaryKey(id));
+    }
+
+    public  List<DiagTree> getDiagTreeRootNodes()
+    {
+        SelectDSLCompleter completer = selectModelQueryExpressionDSL -> {
+            selectModelQueryExpressionDSL.where()
+                    .and(DiagTreeDynamicSqlSupport.pid, isEqualToWhenPresent("ROOT"));
+            return selectModelQueryExpressionDSL;
+        };
+        List<DiagTree> list = diagTreeMapper.select(completer);
+        return list;
     }
 
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Api(tags = "Tree")
-@RequestMapping("/Tree")
+@RequestMapping("/tree")
 public class TreeController {
     private final Log logger = LogFactory.getLog(SearchController.class);
     @Autowired

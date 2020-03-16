@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @Api(tags = "DiagTree")
-@RequestMapping("/DiagTree")
+@RequestMapping("/diagTree")
 public class DiagTreeController {
 
     @Autowired
@@ -72,6 +72,13 @@ public class DiagTreeController {
         if (id.isEmpty())
             return  ResponseUtil.fail(-1,"id不能为空！");
         return diagTreeService.deleteDiagTreeBrotherNode(id);
+    }
+
+    @GetMapping("/getDiagTreeRootNodes")
+    @ApiOperation("getDiagTreeRootNodes")
+    public  Object getDiagTreeRootNodes()
+    {
+        return  ResponseUtil.ok(diagTreeService.getDiagTreeRootNodes());
     }
 
 }
