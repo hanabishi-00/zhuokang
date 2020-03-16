@@ -65,13 +65,13 @@ public class DiagTreeController {
         return ResponseUtil.ok(diagTreeService.addDiagTreeBrotherNode(diagTree));
     }
 
-    @GetMapping("/deleteDiagTreeBrotherNode")
-    @ApiOperation("deleteDiagTreeBrotherNode")
-    public  Object deleteDiagTreeBrotherNode(String id)
+    @GetMapping("/deleteDiagTreeNode")
+    @ApiOperation("deleteDiagTreeNode")
+    public  Object deleteDiagTreeNode(String id)
     {
         if (id.isEmpty())
             return  ResponseUtil.fail(-1,"id不能为空！");
-        return diagTreeService.deleteDiagTreeBrotherNode(id);
+        return ResponseUtil.ok(diagTreeService.deleteDiagTreeNode(id));
     }
 
     @GetMapping("/getDiagTreeRootNodes")

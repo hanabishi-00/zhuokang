@@ -1,10 +1,12 @@
 package com.huake.device.service;
 
+import com.alibaba.druid.wall.violation.ErrorCode;
 import com.huake.device.dao.generator.DiagTreeDynamicSqlSupport;
 import com.huake.device.dao.generator.DiagTreeMapper;
 import com.huake.device.dao.generator.TreeDeviceMapper;
 import com.huake.device.domain.generator.DiagTree;
 import com.huake.device.util.CharUtil;
+import com.huake.device.util.MyException;
 import com.huake.device.util.ResponseUtil;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,6 @@ import javax.annotation.Resource;
 import java.util.*;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualToWhenPresent;
-import static org.mybatis.dynamic.sql.SqlBuilder.isLikeWhenPresent;
 
 @Service
 public class DiagTreeService {
@@ -115,7 +116,7 @@ public class DiagTreeService {
         return  diagTreeMapper.updateByPrimaryKeySelective(diagTree);
     }
 
-    public Object addDiagTreeChildrenNode(DiagTree diagTree)
+    public Object addDiagTreeChildrenNode(DiagTree diagTree) //throws Exception
     {
         //1. ⾃动⽣成id（采⽤UUID）
         //2. 根据⽗节点判断节点类型（节点-
@@ -128,7 +129,8 @@ public class DiagTreeService {
         if (myDiagTree!=null) {
             diagTree.setNodetype(myDiagTree.getNodetype().equals("N" )? "G" : "N");
         }else
-            return  ResponseUtil.fail(-1,"查询不到父节点");
+            //return  ResponseUtil.fail(-1,"查询不到父节点");
+        throw new MyException(ResponseUtil.fail(-1,"查询不到父节点"));
 
         return diagTreeMapper.insertSelective(diagTree);
     }
@@ -144,7 +146,8 @@ public class DiagTreeService {
 
         DiagTree myDiagTree = getDiagTreeRecord(diagTree.getId());
         if (myDiagTree==null)
-            return  ResponseUtil.fail(-1,"查询不到兄弟节点，请检查id是否正确");
+            //return  ResponseUtil.fail(-1,"查询不到兄弟节点，请检查id是否正确");
+            throw new MyException(ResponseUtil.fail(-1,"查询不到兄弟节点，请检查id是否正确"));
         diagTree.setNodetype(myDiagTree.getNodetype());
         diagTree.setPid(myDiagTree.getPid());
         //获取UUID
@@ -153,17 +156,20 @@ public class DiagTreeService {
         return diagTreeMapper.insertSelective(diagTree);
     }
 
-    public  Object deleteDiagTreeBrotherNode(String id)
+    public  Object deleteDiagTreeNode(String id)
     {
+        DiagTree tpDiagTree = getDiagTreeRecord(id);
+        if (tpDiagTree == null)
+            throw new MyException(ResponseUtil.fail(-1,"没有找到这个节点，请确认输入id是否有效！"));
         List<DiagTree> list = getDiagTreeList();
         for (DiagTree diagTree:list)
         {
             if (diagTree.getPid().equals(id))
             {
-                return ResponseUtil.fail(-1,"该节点还有⼦节点不允许删除");
+                throw new MyException(ResponseUtil.fail(-1,"该节点还有⼦节点不允许删除"));
             }
         }
-        return ResponseUtil.ok(diagTreeMapper.deleteByPrimaryKey(id));
+        return diagTreeMapper.deleteByPrimaryKey(id);
     }
 
     public  List<DiagTree> getDiagTreeRootNodes()
