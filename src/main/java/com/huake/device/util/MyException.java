@@ -11,6 +11,10 @@ public class MyException extends RuntimeException {
         this.object = object;
     }
 
+    public MyException(String msg) {
+        this.object = ResponseUtil.fail(-1, msg);
+    }
+
     public MyException(int code, String msg) {
         this.object = ResponseUtil.fail(code, msg);
     }
