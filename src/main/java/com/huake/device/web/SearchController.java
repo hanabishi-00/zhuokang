@@ -1,10 +1,12 @@
 package com.huake.device.web;
 
 import com.huake.device.domain.dto.SearchQuery;
+import com.huake.device.service.CommonService;
 import com.huake.device.service.TvfService;
 import com.huake.device.util.RandomUtil;
 import com.huake.device.domain.vo.SearchData2;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.huake.device.util.ResponseUtil;
@@ -12,8 +14,10 @@ import com.huake.device.domain.vo.SearchData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -23,14 +27,19 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/device")
+@Api(tags = "查询接口")
+@RequestMapping("/search")
 public class SearchController {
     private final Log logger = LogFactory.getLog(SearchController.class);
-    @Autowired
+    @Resource
     private TvfService tvfService;
 
+    @Resource
+    private CommonService commonService;
+
     // 测点查询
-    @RequestMapping("/search")
+    @RequestMapping(value = "/getPoint", method = RequestMethod.POST)
+    @ApiOperation("测点查询")
     public Object search(@RequestBody SearchQuery searchQuery) {
         logger.debug(searchQuery);
 
@@ -65,15 +74,24 @@ public class SearchController {
     }
 
     // 查询劣化趋势预测结果
-    @RequestMapping("/getTreDeterpre101001")
+    @RequestMapping(value = "/getTreDeterpre101001", method = RequestMethod.GET)
+    @ApiOperation("查询劣化趋势预测结果")
     public Object getTreDeterpre101001(String preTime){
         return ResponseUtil.ok(tvfService.getTreDeterpre101001(preTime));
     }
 
     // 查询健康趋势分析
-    @RequestMapping("/selectEvaResTurModel201912010100")
+    @RequestMapping(value = "/selectEvaResTurModel201912010100", method = RequestMethod.POST)
+    @ApiOperation("查询健康趋势分析")
     public Object selectEvaResTurModel201912010100(@RequestBody Map<String, String> map){
         return ResponseUtil.ok(tvfService.selectEvaResTurModel201912010100(map.get("start").toString(), map.get("end").toString()));
+    }
+
+    // 获取发电量规划数据
+    @RequestMapping(value = "/getRenHeadenergyList", method = RequestMethod.GET)
+    @ApiOperation("获取发电量规划数据")
+    public Object getRenHeadenergyList(){
+        return ResponseUtil.ok(commonService.getRenHeadenergyList());
     }
 
     private List<String> getTables(String device,LocalDateTime start, LocalDateTime end) {
