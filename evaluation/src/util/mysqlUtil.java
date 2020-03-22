@@ -24,6 +24,11 @@ public class mysqlUtil {
     static final String USER = "remote";
     static final String PASS = "123456";
 
+    // 机组状态测点号
+    static final int[] pump_state_point_id=new int[]{826, 2740, 4654, 6568};//各机组抽水态id
+    static final int[] tur_state_point_id=new int[]{822, 2736, 4650, 6564};//各机组发电态id
+    static final int[] terminal_point_id=new int[]{819, 2733, 4647, 6561};//各机组停机态id
+
     //定义结果中每一行的对象，单精量resFloat，状态量resBool
     public static class resFloat{
         private long time;
@@ -533,6 +538,7 @@ public class mysqlUtil {
 
     public static Date[][] steadyTimeSimple(Date[] time_gap, int id, int steadyThreshold) throws ParseException {//查询发电态、抽水态的稳态时段（设置达到稳态的时间为开机后steadyThreshold秒）
         //作为steadyTime的子函数使用
+        int close_threshold=120;//关机前120s为稳态结束时刻
         Date[][] passage = null;//每行存储一对符合要求的稳态工况起始时段
         long gap=(timeUtil.dateToLong(time_gap[1])-timeUtil.dateToLong(time_gap[0]))/1000;
         if (gap>steadyThreshold) {//如果查询时间>threshold
@@ -573,10 +579,10 @@ public class mysqlUtil {
                 }
 
                 if (neighbor_time_gap!=null) {
-                    if ((neighbor_time_gap[1] - neighbor_time_gap[0]) > steadyThreshold) {
+                    if ((neighbor_time_gap[1] - neighbor_time_gap[0]) > steadyThreshold+close_threshold) {
                         //如果前一上升沿时间与后一个下降沿时间差大于达稳态时间阈值
                         per_passage_long[0] = neighbor_time_gap[0] + steadyThreshold;
-                        per_passage_long[1] = neighbor_time_gap[1];
+                        per_passage_long[1] = neighbor_time_gap[1]-close_threshold;
 
                         Date[] per_passage = new Date[2];
                         per_passage[0] = timeUtil.longToDate(per_passage_long[0] * 1000, "yyyy-MM-dd HH:mm:ss");
@@ -609,12 +615,12 @@ public class mysqlUtil {
         //首先定义各机组的状态测点
         switch (type){//判断查询状态
             case tree.work_condition_pump://抽水工况
-                state_point_id=new int[]{826, 2740, 4654, 6568};//各机组抽水态id
+                state_point_id=pump_state_point_id;//各机组抽水态id
                 int unit_choushui_id=state_point_id[unit_id-1];
                 res_time_psg=steadyTimeSimple(time_gap, unit_choushui_id,steadyThreshold);
                 break;
             default://非-1表示正功率，发电，受其他机组启停的影响
-                state_point_id=new int[]{822, 2736, 4650, 6564};//各机组发电态id
+                state_point_id=tur_state_point_id;//各机组发电态id
                 int unit_fadian_id=state_point_id[unit_id-1];
                 Date[][] current_unit_time_psg=steadyTimeSimple(time_gap, unit_fadian_id,steadyThreshold);//查询当前机组的启停状态
                 if (current_unit_time_psg==null){
@@ -694,6 +700,89 @@ public class mysqlUtil {
 
         int steadyThreshold=1200;
         Date[][] res=steadyTime( time_gap,  unit_id,  type, steadyThreshold);
+        return res;
+    }
+
+    public static Date[][] workTime(Date[] time_gap, int unit_id, int work_type ) throws ParseException {
+        Date[][] res;
+        List<Date[]> time_psg=new ArrayList<>();
+        int[] mark = {1, 0};//默认为统计1到0的时段
+        int[] state_point_id=tur_state_point_id;//根据工况类型设置状态测点id
+        if (work_type==tree.work_condition_pump){
+            state_point_id=pump_state_point_id;
+        }
+
+        //统计对应工况时段
+        List<resBool> ori_data_pump=searchBool(time_gap, state_point_id[unit_id-1]);
+        ori_data_pump=cut_redundency(ori_data_pump);
+        for (int ii = 1; ii < ori_data_pump.size()-1; ii++) {
+            if (ori_data_pump.get(ii).getValue()==mark[0]&&ori_data_pump.get(ii+1).getValue()==mark[1]){
+                Date t_ii_mk0=timeUtil.longToDate(ori_data_pump.get(ii).getTime()*1000,
+                        "yyyy-MM-dd HH:mm:ss");
+                Date t_ii_mk1=timeUtil.longToDate(ori_data_pump.get(ii+1).getTime()*1000,
+                        "yyyy-MM-dd HH:mm:ss");
+                time_psg.add(new Date[]{t_ii_mk0,t_ii_mk1});
+            }
+        }
+        if (ori_data_pump.get(ori_data_pump.size()-2).getValue()==mark[0]&&
+                ori_data_pump.get(ori_data_pump.size()-1).getValue()==mark[0]){
+            Date t_ii_mk0=timeUtil.longToDate(ori_data_pump.get(ori_data_pump.size()-2).getTime()*1000,
+                    "yyyy-MM-dd HH:mm:ss");
+            Date t_ii_mk1=timeUtil.longToDate(ori_data_pump.get(ori_data_pump.size()-1).getTime()*1000,
+                    "yyyy-MM-dd HH:mm:ss");
+            time_psg.add(new Date[]{t_ii_mk0,t_ii_mk1});
+        }
+
+        res=new Date[time_psg.size()][];
+        for (int i=0;i<res.length;i++){//组织输出
+            res[i]=time_psg.get(i);
+        }
+
+        return res;
+    }
+
+    public static Date[][] terminalTime(Date[] time_gap, int unit_id, int type) throws ParseException {
+        Date[][] res;
+        List<long[]> time_psg=new ArrayList<>();
+        int[] mark = {1, 0};//默认为统计1到0的时段
+        int[] state_point_id=terminal_point_id;//设置状态测点id
+
+        //统计对应工况时段
+        List<resBool> ori_data_pump=searchBool(time_gap, state_point_id[unit_id-1]);
+        ori_data_pump=cut_redundency(ori_data_pump);
+        for (int ii = 1; ii < ori_data_pump.size()-1; ii++) {
+            if (ori_data_pump.get(ii).getValue()==mark[0]&&ori_data_pump.get(ii+1).getValue()==mark[1]){
+                time_psg.add(new long[]{ori_data_pump.get(ii).getTime(),ori_data_pump.get(ii+1).getTime()});
+            }
+        }
+        if (ori_data_pump.get(ori_data_pump.size()-2).getValue()==mark[0]&&
+                ori_data_pump.get(ori_data_pump.size()-1).getValue()==mark[0]){
+            time_psg.add(new long[]{ori_data_pump.get(ori_data_pump.size()-2).getTime(),ori_data_pump.get(ori_data_pump.size()-1).getTime()});
+        }
+
+        //若为停机稳态，则需进行时段筛选
+        if (type>0) {
+            List<long[]> temp_time_psg = new ArrayList<>();
+            for (int i = 0; i < time_psg.size(); i++) {
+                long t1 = time_psg.get(i)[0] + 3600;
+                long t2 = time_psg.get(i)[1] - 120;
+                if (t1 < t2) {
+                    temp_time_psg.add(new long[]{t1, t2});
+                }
+            }
+            time_psg=temp_time_psg;
+        }
+
+        //整理结果
+        res=new Date[time_psg.size()][];
+        for (int i=0;i<res.length;i++){//组织输出
+            Date t1=timeUtil.longToDate(time_psg.get(i)[0]*1000,
+                    "yyyy-MM-dd HH:mm:ss");
+            Date t2=timeUtil.longToDate(time_psg.get(i)[1]*1000,
+                    "yyyy-MM-dd HH:mm:ss");
+            res[i]=new Date[]{t1,t2};
+        }
+
         return res;
     }
 

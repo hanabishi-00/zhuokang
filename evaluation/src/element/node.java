@@ -4,7 +4,7 @@ public class node {
     private String name;
     private float value=0;
     private int father;
-    private int weight=-1;
+    private int weight=1;
 
     public node(){
 
