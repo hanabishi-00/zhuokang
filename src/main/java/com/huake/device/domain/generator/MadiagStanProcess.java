@@ -2,82 +2,82 @@ package com.huake.device.domain.generator;
 
 import javax.annotation.Generated;
 
-public class TreDeterThreshold {
+public class MadiagStanProcess {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer unit;
+    private Integer measId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer id;
+    private Integer unitId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer version;
+    private String equipPro;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String name;
+    private Integer stepId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Float val;
+    private String measName;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String relativeIds;
+    private Integer proInt;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getUnit() {
-        return unit;
+    public Integer getMeasId() {
+        return measId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setUnit(Integer unit) {
-        this.unit = unit;
+    public void setMeasId(Integer measId) {
+        this.measId = measId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getId() {
-        return id;
+    public Integer getUnitId() {
+        return unitId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setId(Integer id) {
-        this.id = id;
+    public void setUnitId(Integer unitId) {
+        this.unitId = unitId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getVersion() {
-        return version;
+    public String getEquipPro() {
+        return equipPro;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVersion(Integer version) {
-        this.version = version;
+    public void setEquipPro(String equipPro) {
+        this.equipPro = equipPro;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getName() {
-        return name;
+    public Integer getStepId() {
+        return stepId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setName(String name) {
-        this.name = name;
+    public void setStepId(Integer stepId) {
+        this.stepId = stepId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Float getVal() {
-        return val;
+    public String getMeasName() {
+        return measName;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVal(Float val) {
-        this.val = val;
+    public void setMeasName(String measName) {
+        this.measName = measName;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getRelativeIds() {
-        return relativeIds;
+    public Integer getProInt() {
+        return proInt;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setRelativeIds(String relativeIds) {
-        this.relativeIds = relativeIds;
+    public void setProInt(Integer proInt) {
+        this.proInt = proInt;
     }
 }

@@ -2,34 +2,21 @@ package com.huake.device.domain.generator;
 
 import javax.annotation.Generated;
 
-public class TreDeterThreshold {
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer unit;
-
+public class MadiagSingHis {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private Integer id;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer version;
+    private Integer hisId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String name;
+    private Integer histtepId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Float val;
+    private String hismeasName;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String relativeIds;
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getUnit() {
-        return unit;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setUnit(Integer unit) {
-        this.unit = unit;
-    }
+    private Integer hisproInt;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public Integer getId() {
@@ -42,42 +29,42 @@ public class TreDeterThreshold {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getVersion() {
-        return version;
+    public Integer getHisId() {
+        return hisId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVersion(Integer version) {
-        this.version = version;
+    public void setHisId(Integer hisId) {
+        this.hisId = hisId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getName() {
-        return name;
+    public Integer getHisttepId() {
+        return histtepId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setName(String name) {
-        this.name = name;
+    public void setHisttepId(Integer histtepId) {
+        this.histtepId = histtepId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Float getVal() {
-        return val;
+    public String getHismeasName() {
+        return hismeasName;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVal(Float val) {
-        this.val = val;
+    public void setHismeasName(String hismeasName) {
+        this.hismeasName = hismeasName;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getRelativeIds() {
-        return relativeIds;
+    public Integer getHisproInt() {
+        return hisproInt;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setRelativeIds(String relativeIds) {
-        this.relativeIds = relativeIds;
+    public void setHisproInt(Integer hisproInt) {
+        this.hisproInt = hisproInt;
     }
 }

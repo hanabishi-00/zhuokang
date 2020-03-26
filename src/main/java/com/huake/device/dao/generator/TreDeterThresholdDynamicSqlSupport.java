@@ -10,21 +10,36 @@ public final class TreDeterThresholdDynamicSqlSupport {
     public static final TreDeterThreshold treDeterThreshold = new TreDeterThreshold();
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public static final SqlColumn<Integer> modelNumber = treDeterThreshold.modelNumber;
+    public static final SqlColumn<Integer> unit = treDeterThreshold.unit;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public static final SqlColumn<String> modelName = treDeterThreshold.modelName;
+    public static final SqlColumn<Integer> id = treDeterThreshold.id;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public static final SqlColumn<Float> warnThreshold = treDeterThreshold.warnThreshold;
+    public static final SqlColumn<Integer> version = treDeterThreshold.version;
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public static final SqlColumn<String> name = treDeterThreshold.name;
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public static final SqlColumn<Float> val = treDeterThreshold.val;
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public static final SqlColumn<String> relativeIds = treDeterThreshold.relativeIds;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public static final class TreDeterThreshold extends SqlTable {
-        public final SqlColumn<Integer> modelNumber = column("model_number", JDBCType.INTEGER);
+        public final SqlColumn<Integer> unit = column("unit", JDBCType.INTEGER);
 
-        public final SqlColumn<String> modelName = column("model_name", JDBCType.CHAR);
+        public final SqlColumn<Integer> id = column("id", JDBCType.INTEGER);
 
-        public final SqlColumn<Float> warnThreshold = column("warn_threshold", JDBCType.REAL);
+        public final SqlColumn<Integer> version = column("version", JDBCType.INTEGER);
+
+        public final SqlColumn<String> name = column("name", JDBCType.CHAR);
+
+        public final SqlColumn<Float> val = column("val", JDBCType.REAL);
+
+        public final SqlColumn<String> relativeIds = column("relative_ids", JDBCType.VARCHAR);
 
         public TreDeterThreshold() {
             super("tre_deter_threshold");

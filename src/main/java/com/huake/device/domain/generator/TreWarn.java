@@ -2,7 +2,7 @@ package com.huake.device.domain.generator;
 
 import javax.annotation.Generated;
 
-public class TreDeterThreshold {
+public class TreWarn {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private Integer unit;
 
@@ -10,16 +10,16 @@ public class TreDeterThreshold {
     private Integer id;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer version;
+    private Integer type;
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    private Integer time;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private String name;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Float val;
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String relativeIds;
+    private Integer warn;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public Integer getUnit() {
@@ -42,13 +42,23 @@ public class TreDeterThreshold {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getVersion() {
-        return version;
+    public Integer getType() {
+        return type;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVersion(Integer version) {
-        this.version = version;
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public Integer getTime() {
+        return time;
+    }
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public void setTime(Integer time) {
+        this.time = time;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -62,22 +72,12 @@ public class TreDeterThreshold {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Float getVal() {
-        return val;
+    public Integer getWarn() {
+        return warn;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVal(Float val) {
-        this.val = val;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getRelativeIds() {
-        return relativeIds;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setRelativeIds(String relativeIds) {
-        this.relativeIds = relativeIds;
+    public void setWarn(Integer warn) {
+        this.warn = warn;
     }
 }

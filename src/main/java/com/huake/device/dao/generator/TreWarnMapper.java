@@ -1,8 +1,8 @@
 package com.huake.device.dao.generator;
 
-import static com.huake.device.dao.generator.TreDeterThresholdDynamicSqlSupport.*;
+import static com.huake.device.dao.generator.TreWarnDynamicSqlSupport.*;
 
-import com.huake.device.domain.generator.TreDeterThreshold;
+import com.huake.device.domain.generator.TreWarn;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +32,9 @@ import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 
 @Mapper
-public interface TreDeterThresholdMapper {
+public interface TreWarnMapper {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    BasicColumn[] selectList = BasicColumn.columnList(unit, id, version, name, val, relativeIds);
+    BasicColumn[] selectList = BasicColumn.columnList(unit, id, type, time, name, warn);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
@@ -46,28 +46,28 @@ public interface TreDeterThresholdMapper {
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @InsertProvider(type=SqlProviderAdapter.class, method="insert")
-    int insert(InsertStatementProvider<TreDeterThreshold> insertStatement);
+    int insert(InsertStatementProvider<TreWarn> insertStatement);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @InsertProvider(type=SqlProviderAdapter.class, method="insertMultiple")
-    int insertMultiple(MultiRowInsertStatementProvider<TreDeterThreshold> multipleInsertStatement);
+    int insertMultiple(MultiRowInsertStatementProvider<TreWarn> multipleInsertStatement);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @ResultMap("TreDeterThresholdResult")
-    Optional<TreDeterThreshold> selectOne(SelectStatementProvider selectStatement);
+    @ResultMap("TreWarnResult")
+    Optional<TreWarn> selectOne(SelectStatementProvider selectStatement);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @Results(id="TreDeterThresholdResult", value = {
+    @Results(id="TreWarnResult", value = {
         @Result(column="unit", property="unit", jdbcType=JdbcType.INTEGER),
         @Result(column="id", property="id", jdbcType=JdbcType.INTEGER),
-        @Result(column="version", property="version", jdbcType=JdbcType.INTEGER),
-        @Result(column="name", property="name", jdbcType=JdbcType.CHAR),
-        @Result(column="val", property="val", jdbcType=JdbcType.REAL),
-        @Result(column="relative_ids", property="relativeIds", jdbcType=JdbcType.VARCHAR)
+        @Result(column="type", property="type", jdbcType=JdbcType.INTEGER),
+        @Result(column="time", property="time", jdbcType=JdbcType.INTEGER),
+        @Result(column="name", property="name", jdbcType=JdbcType.VARCHAR),
+        @Result(column="warn", property="warn", jdbcType=JdbcType.INTEGER)
     })
-    List<TreDeterThreshold> selectMany(SelectStatementProvider selectStatement);
+    List<TreWarn> selectMany(SelectStatementProvider selectStatement);
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @UpdateProvider(type=SqlProviderAdapter.class, method="update")
@@ -75,87 +75,87 @@ public interface TreDeterThresholdMapper {
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     default long count(CountDSLCompleter completer) {
-        return MyBatis3Utils.countFrom(this::count, treDeterThreshold, completer);
+        return MyBatis3Utils.countFrom(this::count, treWarn, completer);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     default int delete(DeleteDSLCompleter completer) {
-        return MyBatis3Utils.deleteFrom(this::delete, treDeterThreshold, completer);
+        return MyBatis3Utils.deleteFrom(this::delete, treWarn, completer);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default int insert(TreDeterThreshold record) {
-        return MyBatis3Utils.insert(this::insert, record, treDeterThreshold, c ->
+    default int insert(TreWarn record) {
+        return MyBatis3Utils.insert(this::insert, record, treWarn, c ->
             c.map(unit).toProperty("unit")
             .map(id).toProperty("id")
-            .map(version).toProperty("version")
+            .map(type).toProperty("type")
+            .map(time).toProperty("time")
             .map(name).toProperty("name")
-            .map(val).toProperty("val")
-            .map(relativeIds).toProperty("relativeIds")
+            .map(warn).toProperty("warn")
         );
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default int insertMultiple(Collection<TreDeterThreshold> records) {
-        return MyBatis3Utils.insertMultiple(this::insertMultiple, records, treDeterThreshold, c ->
+    default int insertMultiple(Collection<TreWarn> records) {
+        return MyBatis3Utils.insertMultiple(this::insertMultiple, records, treWarn, c ->
             c.map(unit).toProperty("unit")
             .map(id).toProperty("id")
-            .map(version).toProperty("version")
+            .map(type).toProperty("type")
+            .map(time).toProperty("time")
             .map(name).toProperty("name")
-            .map(val).toProperty("val")
-            .map(relativeIds).toProperty("relativeIds")
+            .map(warn).toProperty("warn")
         );
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default int insertSelective(TreDeterThreshold record) {
-        return MyBatis3Utils.insert(this::insert, record, treDeterThreshold, c ->
+    default int insertSelective(TreWarn record) {
+        return MyBatis3Utils.insert(this::insert, record, treWarn, c ->
             c.map(unit).toPropertyWhenPresent("unit", record::getUnit)
             .map(id).toPropertyWhenPresent("id", record::getId)
-            .map(version).toPropertyWhenPresent("version", record::getVersion)
+            .map(type).toPropertyWhenPresent("type", record::getType)
+            .map(time).toPropertyWhenPresent("time", record::getTime)
             .map(name).toPropertyWhenPresent("name", record::getName)
-            .map(val).toPropertyWhenPresent("val", record::getVal)
-            .map(relativeIds).toPropertyWhenPresent("relativeIds", record::getRelativeIds)
+            .map(warn).toPropertyWhenPresent("warn", record::getWarn)
         );
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default Optional<TreDeterThreshold> selectOne(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectOne(this::selectOne, selectList, treDeterThreshold, completer);
+    default Optional<TreWarn> selectOne(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectOne(this::selectOne, selectList, treWarn, completer);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default List<TreDeterThreshold> select(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectList(this::selectMany, selectList, treDeterThreshold, completer);
+    default List<TreWarn> select(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectList(this::selectMany, selectList, treWarn, completer);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default List<TreDeterThreshold> selectDistinct(SelectDSLCompleter completer) {
-        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, treDeterThreshold, completer);
+    default List<TreWarn> selectDistinct(SelectDSLCompleter completer) {
+        return MyBatis3Utils.selectDistinct(this::selectMany, selectList, treWarn, completer);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     default int update(UpdateDSLCompleter completer) {
-        return MyBatis3Utils.update(this::update, treDeterThreshold, completer);
+        return MyBatis3Utils.update(this::update, treWarn, completer);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    static UpdateDSL<UpdateModel> updateAllColumns(TreDeterThreshold record, UpdateDSL<UpdateModel> dsl) {
+    static UpdateDSL<UpdateModel> updateAllColumns(TreWarn record, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(unit).equalTo(record::getUnit)
                 .set(id).equalTo(record::getId)
-                .set(version).equalTo(record::getVersion)
+                .set(type).equalTo(record::getType)
+                .set(time).equalTo(record::getTime)
                 .set(name).equalTo(record::getName)
-                .set(val).equalTo(record::getVal)
-                .set(relativeIds).equalTo(record::getRelativeIds);
+                .set(warn).equalTo(record::getWarn);
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    static UpdateDSL<UpdateModel> updateSelectiveColumns(TreDeterThreshold record, UpdateDSL<UpdateModel> dsl) {
+    static UpdateDSL<UpdateModel> updateSelectiveColumns(TreWarn record, UpdateDSL<UpdateModel> dsl) {
         return dsl.set(unit).equalToWhenPresent(record::getUnit)
                 .set(id).equalToWhenPresent(record::getId)
-                .set(version).equalToWhenPresent(record::getVersion)
+                .set(type).equalToWhenPresent(record::getType)
+                .set(time).equalToWhenPresent(record::getTime)
                 .set(name).equalToWhenPresent(record::getName)
-                .set(val).equalToWhenPresent(record::getVal)
-                .set(relativeIds).equalToWhenPresent(record::getRelativeIds);
+                .set(warn).equalToWhenPresent(record::getWarn);
     }
 }

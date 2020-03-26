@@ -2,82 +2,69 @@ package com.huake.device.domain.generator;
 
 import javax.annotation.Generated;
 
-public class TreDeterThreshold {
+public class RelationPoints {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer unit;
+    private Long id;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer id;
+    private String type;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer version;
+    private Long relationId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String name;
+    private String relationType;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Float val;
+    private Float percent;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String relativeIds;
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getUnit() {
-        return unit;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setUnit(Integer unit) {
-        this.unit = unit;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getVersion() {
-        return version;
+    public String getType() {
+        return type;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVersion(Integer version) {
-        this.version = version;
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getName() {
-        return name;
+    public Long getRelationId() {
+        return relationId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setName(String name) {
-        this.name = name;
+    public void setRelationId(Long relationId) {
+        this.relationId = relationId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Float getVal() {
-        return val;
+    public String getRelationType() {
+        return relationType;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVal(Float val) {
-        this.val = val;
+    public void setRelationType(String relationType) {
+        this.relationType = relationType;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getRelativeIds() {
-        return relativeIds;
+    public Float getPercent() {
+        return percent;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setRelativeIds(String relativeIds) {
-        this.relativeIds = relativeIds;
+    public void setPercent(Float percent) {
+        this.percent = percent;
     }
 }

@@ -2,53 +2,30 @@ package com.huake.device.domain.generator;
 
 import javax.annotation.Generated;
 
-public class TreDeterThreshold {
+public class Classifiedquerytree {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer unit;
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer id;
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer version;
+    private Long id;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private String name;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Float val;
+    private Byte isParentid;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private String relativeIds;
+    private Long parentId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getUnit() {
-        return unit;
-    }
+    private Integer sort;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setUnit(Integer unit) {
-        this.unit = unit;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getVersion() {
-        return version;
-    }
-
-    @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
@@ -62,22 +39,32 @@ public class TreDeterThreshold {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Float getVal() {
-        return val;
+    public Byte getIsParentid() {
+        return isParentid;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setVal(Float val) {
-        this.val = val;
+    public void setIsParentid(Byte isParentid) {
+        this.isParentid = isParentid;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public String getRelativeIds() {
-        return relativeIds;
+    public Long getParentId() {
+        return parentId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setRelativeIds(String relativeIds) {
-        this.relativeIds = relativeIds;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public Integer getSort() {
+        return sort;
+    }
+
+    @Generated("org.mybatis.generator.api.MyBatisGenerator")
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 }
