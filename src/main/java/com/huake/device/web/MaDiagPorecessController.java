@@ -23,7 +23,7 @@ public class MaDiagPorecessController {
     //返回：[{机组、设备流程名称}]
     //备注：Group by 机组、设备流程名称
     @GetMapping("/getEquipList")
-    @ApiOperation("getEquipList")
+    @ApiOperation("获取标准流程列表")
     public Object getEquipList(Integer uid) {
         return ResponseUtil.ok(maDiagProcessService.getEquipList(uid));
     }
@@ -33,7 +33,7 @@ public class MaDiagPorecessController {
     //⼊参：机组（必填）、设备流程名称（必填）
     //返回：数组
     @GetMapping("/getStdProcess")
-    @ApiOperation("getStdProcess")
+    @ApiOperation("获取标准流程")
     public Object getStdProcess(Integer uid, String equip_pro) {
         return ResponseUtil.ok(maDiagProcessService.getStdProcess(uid, equip_pro));
     }
@@ -44,7 +44,7 @@ public class MaDiagPorecessController {
     //返回：数组
     //备注：⼊参的时间格式后端来定
     @GetMapping("/queryHisProcess")
-    @ApiOperation("queryHisProcess")
+    @ApiOperation("查询历史流程")
     public Object queryHisProcess(Integer uid, String equip_pro, String stime, String etime) {
         return ResponseUtil.ok(maDiagProcessService.queryHisProcess(uid, equip_pro, stime, etime));
     }
@@ -55,7 +55,7 @@ public class MaDiagPorecessController {
     //返回：数组
     //备注：单次历史流程表.his_id = 历史流程表.id
     @GetMapping("/viewHisProcess")
-    @ApiOperation("viewHisProcess")
+    @ApiOperation("获取单次历史流程")
     public Object viewHisProcess(Integer id) {
         return ResponseUtil.ok(maDiagProcessService.viewHisProcess(id));
     }
@@ -66,7 +66,7 @@ public class MaDiagPorecessController {
     //返回：数组
     //备注：对⽐结果表.id = 历史流程表.id
     @GetMapping("/viewConRes")
-    @ApiOperation("viewConRes")
+    @ApiOperation("获取对⽐结果")
     public Object viewConRes(Integer id) {
         return ResponseUtil.ok(maDiagProcessService.viewConRes(id));
     }

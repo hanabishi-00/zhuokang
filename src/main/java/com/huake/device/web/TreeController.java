@@ -21,12 +21,6 @@ public class TreeController {
     @Autowired
     private TreeService treeService;
 
-    @RequestMapping(value = "/demo", method = RequestMethod.GET)
-    @ApiOperation("demo")
-    public Object demo() {
-        return ResponseUtil.ok("hello world, this is demo service");
-    }
-
     @RequestMapping(value = "/getTreeDeviceList", method = RequestMethod.GET)
     @ApiOperation("getTreeDeviceList")
     public Object getDeviceList() {

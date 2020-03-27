@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@Api(tags = "DiagTree")
+@Api(tags = "故障树")
 @RequestMapping("/diagTree")
 public class DiagTreeController {
 

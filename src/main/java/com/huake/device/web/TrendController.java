@@ -56,4 +56,10 @@ public class TrendController {
         return ResponseUtil.ok(trendService.updateTreAnaThreshold(treAnaThreshold));
     }
 
+    @RequestMapping(value = "/get24HWarnEventSummary", method = RequestMethod.GET)
+    @ApiOperation("获取24小时内报警事件统计")
+    public Object get24HWarnEventSummary() {
+        return ResponseUtil.ok(trendService.getTreAnaThresholdList());
+    }
+
 }

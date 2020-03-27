@@ -18,6 +18,8 @@ public class TrendService {
     TreDeterThresholdMapper treDeterThresholdMapper;
     @Resource
     TreAnaThresholdMapper treAnaThresholdMapper;
+    @Resource
+    TreWarnMapper treWarnMapper;
 
     // 获取劣化预测阈值表
     public List<TreDeterThreshold> getTreDeterThresholdList() {
@@ -47,5 +49,10 @@ public class TrendService {
                         .where(TreAnaThresholdDynamicSqlSupport.unit, isEqualTo(record::getUnit))
                         .and(TreAnaThresholdDynamicSqlSupport.id, isEqualTo(record::getId))
         );
+    }
+
+    // 获取24小时内报警事件统计
+    public void get24HWarnEventSummary() {
+//        treWarnMapper.
     }
 }

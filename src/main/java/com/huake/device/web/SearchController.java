@@ -1,6 +1,10 @@
 package com.huake.device.web;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.huake.device.domain.dto.SearchQuery;
+import com.huake.device.domain.generator.Classifiedquerytree;
 import com.huake.device.service.CommonService;
 import com.huake.device.service.TvfService;
 import com.huake.device.util.RandomUtil;
@@ -23,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,19 +59,15 @@ public class SearchController {
 
         List<String> tableList = getTables(device, start, end);
         SearchData searchData = null;
-        if(level.equals("s")){
+        if (level.equals("s")) {
             searchData = tvfService.selectInS(tableList, points, start, end);
-        }
-        else if(level.equals("m")){
+        } else if (level.equals("m")) {
             searchData = tvfService.selectInM(tableList, points, start, end);
-        }
-        else if(level.equals("h")){
+        } else if (level.equals("h")) {
             searchData = tvfService.selectInH(tableList, points, start, end);
-        }
-        else if(level.equals("d")){
+        } else if (level.equals("d")) {
             searchData = tvfService.selectInD(tableList, points, start, end);
-        }
-        else {
+        } else {
             searchData = selectTest(device, points, start, end);
         }
 
@@ -76,45 +77,69 @@ public class SearchController {
     // 查询劣化趋势预测结果
     @RequestMapping(value = "/getTreDeterpre101001", method = RequestMethod.GET)
     @ApiOperation("查询劣化趋势预测结果")
-    public Object getTreDeterpre101001(String preTime){
+    public Object getTreDeterpre101001(String preTime) {
         return ResponseUtil.ok(tvfService.getTreDeterpre101001(preTime));
     }
 
     // 查询健康趋势分析
     @RequestMapping(value = "/selectEvaResTurModel201912010100", method = RequestMethod.POST)
     @ApiOperation("查询健康趋势分析")
-    public Object selectEvaResTurModel201912010100(@RequestBody Map<String, String> map){
+    public Object selectEvaResTurModel201912010100(@RequestBody Map<String, String> map) {
         return ResponseUtil.ok(tvfService.selectEvaResTurModel201912010100(map.get("start").toString(), map.get("end").toString()));
     }
 
     // 获取发电量规划数据
     @RequestMapping(value = "/getRenHeadenergyList", method = RequestMethod.GET)
     @ApiOperation("获取发电量规划数据")
-    public Object getRenHeadenergyList(){
+    public Object getRenHeadenergyList() {
         return ResponseUtil.ok(commonService.getRenHeadenergyList());
     }
 
-    private List<String> getTables(String device,LocalDateTime start, LocalDateTime end) {
+    // 获取测点列表（用于分组）
+    @RequestMapping(value = "/getClassifiedPointList", method = RequestMethod.GET)
+    @ApiOperation("获取测点列表（用于分组）")
+    public Object getClassifiedPointList() {
+        List<Classifiedquerytree> list = commonService.getClassifiedPointList();
+        JSONArray array = new JSONArray();
+        JSONObject map = new JSONObject();
+        for (Classifiedquerytree classifiedquerytree : list) {
+            JSONObject item = new JSONObject();
+            item.put("key", classifiedquerytree.getId());
+            item.put("label", classifiedquerytree.getName());
+            if(classifiedquerytree.getIsParentid() == 1){
+                item.put("children", new JSONArray());
+            }
+            map.put(classifiedquerytree.getId().toString(), item);
+            if(classifiedquerytree.getSort() == 1){
+                array.add(map.get(classifiedquerytree.getId().toString()));
+            } else {
+                map.getJSONObject(classifiedquerytree.getParentId().toString()).getJSONArray("children").add(item);
+            }
+        }
+        return ResponseUtil.ok(array);
+    }
+
+    private List<String> getTables(String device, LocalDateTime start, LocalDateTime end) {
         List<String> tableList = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd HH:mm:ss");
 
-        for(LocalDateTime s = start; !s.isAfter(end); s = s.plusMonths(1).withDayOfMonth(1)){
+        for (LocalDateTime s = start; !s.isAfter(end); s = s.plusMonths(1).withDayOfMonth(1)) {
             String table = "_" + s.format(formatter).substring(0, 7);
             tableList.add(table);
         }
         return tableList;
     }
 
-    private SearchData selectTest(String device, List<Map<String, String>> points,LocalDateTime start, LocalDateTime end) {
+    private SearchData selectTest(String device, List<Map<String, String>> points, LocalDateTime start, LocalDateTime end) {
         SearchData searchData = new SearchData();
-        for(int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
             searchData.getxList().add(String.valueOf(i));
         }
 
-        for(Map<String, String> point : points){
+        for (Map<String, String> point : points) {
             SearchData2 searchData2 = new SearchData2();
             searchData2.setLabel(point.get("label").toString());
-            for(int i = 0; i < 100; i++){
+            for (int i = 0; i < 100; i++) {
                 searchData2.getData().add(RandomUtil.next100());
             }
             searchData.getyList().add(searchData2);
