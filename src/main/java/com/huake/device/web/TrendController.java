@@ -1,5 +1,6 @@
 package com.huake.device.web;
 
+import com.huake.device.domain.dto.HistoryEvent;
 import com.huake.device.domain.dto.Redis;
 import com.huake.device.domain.generator.Test;
 import com.huake.device.domain.generator.TreAnaThreshold;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 测试服务
@@ -57,9 +59,20 @@ public class TrendController {
     }
 
     @RequestMapping(value = "/get24HWarnEventSummary", method = RequestMethod.GET)
-    @ApiOperation("获取24小时内报警事件统计")
+    @ApiOperation("获取24小时内事件统计(报警/预警)")
     public Object get24HWarnEventSummary() {
-        return ResponseUtil.ok(trendService.getTreAnaThresholdList());
+        return ResponseUtil.ok(trendService.get24HWarnEventSummary());
     }
 
+    @RequestMapping(value = "/get24HWarnEventList", method = RequestMethod.GET)
+    @ApiOperation("获取24小时内事件列表(报警/预警)")
+    public Object get24HWarnEventList() {
+        return ResponseUtil.ok(trendService.get24HWarnEventList());
+    }
+
+    @RequestMapping(value = "/selectHistoryWarnEventList", method = RequestMethod.POST)
+    @ApiOperation("查询历史事件列表")
+    public Object selectHistoryWarnEventList(@RequestBody HistoryEvent historyEvent) {
+        return ResponseUtil.ok(trendService.selectHistoryWarnEventList(historyEvent));
+    }
 }
