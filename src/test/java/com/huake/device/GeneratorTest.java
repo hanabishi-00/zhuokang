@@ -3,6 +3,7 @@ package com.huake.device;
 import com.alibaba.fastjson.JSON;
 import com.huake.device.dao.generator.TestDynamicSqlSupport;
 import com.huake.device.dao.generator.TestMapper;
+import com.huake.device.util.CharUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.dynamic.sql.select.CountDSLCompleter;
@@ -108,6 +109,11 @@ public class GeneratorTest {
     public void delete() throws IOException {
         int num = mapper.deleteByPrimaryKey("张三2");
         System.out.println("删除（条数据）：" + num);
+    }
+
+    @Test
+    public void test_fillTimestamp() throws IOException {
+        System.out.println(CharUtil.fillTimestamp("987654321"));
     }
 
 }

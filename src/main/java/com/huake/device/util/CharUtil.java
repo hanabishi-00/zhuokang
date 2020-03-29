@@ -7,4 +7,9 @@ public class CharUtil {
     public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
+
+    public static String fillTimestamp(String timestamp){
+        return (Long.valueOf(timestamp) + 10000000000l + "").substring(1);
+    }
+
 }

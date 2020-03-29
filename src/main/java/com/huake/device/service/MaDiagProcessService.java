@@ -4,6 +4,7 @@ import com.huake.device.dao.generator.*;
 import com.huake.device.domain.generator.MadiagConRes;
 import com.huake.device.domain.generator.MadiagHisProcess;
 import com.huake.device.domain.generator.MadiagSingHis;
+import com.huake.device.util.CharUtil;
 import com.huake.device.util.MyException;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,8 @@ public class MaDiagProcessService {
         SelectDSLCompleter completer = selectModelQueryExpressionDSL -> {
             selectModelQueryExpressionDSL.where()
                     .and(MadiagStanProcessDynamicSqlSupport.unitId, isEqualToWhenPresent(uid))
-                    .and(MadiagStanProcessDynamicSqlSupport.equipPro, isEqualToWhenPresent(equip_pro));
+                    .and(MadiagStanProcessDynamicSqlSupport.equipPro, isEqualToWhenPresent(equip_pro))
+                    .orderBy(MadiagStanProcessDynamicSqlSupport.stepId, MadiagStanProcessDynamicSqlSupport.measName);
             return selectModelQueryExpressionDSL;
         };
         return madiagStanProcessMapper.select(completer);
@@ -65,13 +67,13 @@ public class MaDiagProcessService {
     public List<MadiagHisProcess> queryHisProcess(Integer uid, String equip_pro, String stime, String etime) {
         if (uid == null || equip_pro == null || stime == null || etime == null)
             throw new MyException(-1, "机组号、设备流程名称、开始时间和结束时间均不能为空！");
-        if (stime.compareTo(etime) > 0)
+        if (Long.valueOf(stime) > Long.valueOf(etime))
             throw new MyException(-1, "开始时间不能大于结束时间！");
         SelectDSLCompleter completer = selectModelQueryExpressionDSL -> {
             selectModelQueryExpressionDSL.where()
                     .and(MadiagHisProcessDynamicSqlSupport.unitId, isEqualToWhenPresent(uid))
                     .and(MadiagHisProcessDynamicSqlSupport.equipPro, isEqualToWhenPresent(equip_pro))
-                    .and(MadiagHisProcessDynamicSqlSupport.time, isBetween(stime).and(etime));
+                    .and(MadiagHisProcessDynamicSqlSupport.time, isBetween(CharUtil.fillTimestamp(stime)).and(CharUtil.fillTimestamp(etime)));
             return selectModelQueryExpressionDSL;
         };
         return madiagHisProcessMapper.select(completer);
@@ -82,7 +84,8 @@ public class MaDiagProcessService {
             throw new MyException(-1, "id不能为空！");
         SelectDSLCompleter completer = selectModelQueryExpressionDSL -> {
             selectModelQueryExpressionDSL.where()
-                    .and(MadiagSingHisDynamicSqlSupport.id, isEqualToWhenPresent(id));
+                    .and(MadiagSingHisDynamicSqlSupport.id, isEqualToWhenPresent(id))
+                    .orderBy(MadiagSingHisDynamicSqlSupport.histtepId, MadiagSingHisDynamicSqlSupport.hismeasName);
             return selectModelQueryExpressionDSL;
         };
         return madiagSingHisMapper.select(completer);
