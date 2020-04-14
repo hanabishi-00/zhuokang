@@ -26,10 +26,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @Api(tags = "查询接口")
@@ -118,6 +115,24 @@ public class SearchController {
         }
         return ResponseUtil.ok(array);
     }
+
+    // 获取测点完整名称
+    @RequestMapping(value = "/getPointIdByName", method = RequestMethod.GET)
+    @ApiOperation("根据机组和名称获取测点id")
+    public Object getPointIdByName(int unit, String points) {
+        String[] ss = points.split(",");
+        List<String> pointList = new ArrayList<String>();
+        for(int i = 0; i < ss.length; i++){
+            pointList.add(ss[i]);
+        }
+        // 根据机组和测点名称，获取测点全称
+        Set<String> list = commonService.getPointFullname(unit, pointList);
+        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        map.put("float", commonService.getFloatList(list));// 获取测点id
+        map.put("bool", commonService.getBoolList(list));// 获取测点id
+        return ResponseUtil.ok(map);
+    }
+
 
     private List<String> getTables(String device, LocalDateTime start, LocalDateTime end) {
         List<String> tableList = new ArrayList<>();
