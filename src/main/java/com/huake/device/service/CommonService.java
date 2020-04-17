@@ -47,11 +47,11 @@ public class CommonService {
         return listReplaced;
     }
 
-    public List<String> getFloatList(Set<String> points){
+    public List<Map<String, String>> getFloatList(Set<String> points){
         return commonMapper.getFloatList(points);
     }
 
-    public List<String> getBoolList(Set<String> points){
+    public List<Map<String, String>> getBoolList(Set<String> points){
         return commonMapper.getBoolList(points);
     }
 

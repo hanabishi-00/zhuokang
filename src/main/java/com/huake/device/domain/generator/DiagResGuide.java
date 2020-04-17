@@ -4,18 +4,18 @@ import javax.annotation.Generated;
 
 public class DiagResGuide {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    private Integer recordId;
+    private String recordId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     private Integer time;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public Integer getRecordId() {
+    public String getRecordId() {
         return recordId;
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public void setRecordId(Integer recordId) {
+    public void setRecordId(String recordId) {
         this.recordId = recordId;
     }
 

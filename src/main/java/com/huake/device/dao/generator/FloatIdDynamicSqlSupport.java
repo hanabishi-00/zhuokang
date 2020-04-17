@@ -22,7 +22,7 @@ public final class FloatIdDynamicSqlSupport {
         public final SqlColumn<String> name = column("name", JDBCType.VARCHAR);
 
         public FloatId() {
-            super("float _id");
+            super("float_id");
         }
     }
 }

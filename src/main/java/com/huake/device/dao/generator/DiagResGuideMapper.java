@@ -61,7 +61,7 @@ public interface DiagResGuideMapper {
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     @SelectProvider(type=SqlProviderAdapter.class, method="select")
     @Results(id="DiagResGuideResult", value = {
-        @Result(column="record_id", property="recordId", jdbcType=JdbcType.INTEGER, id=true),
+        @Result(column="record_id", property="recordId", jdbcType=JdbcType.CHAR, id=true),
         @Result(column="time", property="time", jdbcType=JdbcType.INTEGER)
     })
     List<DiagResGuide> selectMany(SelectStatementProvider selectStatement);
@@ -81,7 +81,7 @@ public interface DiagResGuideMapper {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default int deleteByPrimaryKey(Integer recordId_) {
+    default int deleteByPrimaryKey(String recordId_) {
         return delete(c -> 
             c.where(recordId, isEqualTo(recordId_))
         );
@@ -127,7 +127,7 @@ public interface DiagResGuideMapper {
     }
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    default Optional<DiagResGuide> selectByPrimaryKey(Integer recordId_) {
+    default Optional<DiagResGuide> selectByPrimaryKey(String recordId_) {
         return selectOne(c ->
             c.where(recordId, isEqualTo(recordId_))
         );

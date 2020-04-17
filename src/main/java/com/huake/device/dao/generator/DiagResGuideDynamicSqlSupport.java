@@ -10,14 +10,14 @@ public final class DiagResGuideDynamicSqlSupport {
     public static final DiagResGuide diagResGuide = new DiagResGuide();
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
-    public static final SqlColumn<Integer> recordId = diagResGuide.recordId;
+    public static final SqlColumn<String> recordId = diagResGuide.recordId;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public static final SqlColumn<Integer> time = diagResGuide.time;
 
     @Generated("org.mybatis.generator.api.MyBatisGenerator")
     public static final class DiagResGuide extends SqlTable {
-        public final SqlColumn<Integer> recordId = column("record_id", JDBCType.INTEGER);
+        public final SqlColumn<String> recordId = column("record_id", JDBCType.CHAR);
 
         public final SqlColumn<Integer> time = column("time", JDBCType.INTEGER);
 

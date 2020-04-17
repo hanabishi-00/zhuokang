@@ -127,7 +127,7 @@ public class SearchController {
         }
         // 根据机组和测点名称，获取测点全称
         Set<String> list = commonService.getPointFullname(unit, pointList);
-        Map<String, List<String>> map = new HashMap<String, List<String>>();
+        Map<String, List<Map<String, String>>> map = new HashMap<String, List<Map<String, String>>>();
         map.put("float", commonService.getFloatList(list));// 获取测点id
         map.put("bool", commonService.getBoolList(list));// 获取测点id
         return ResponseUtil.ok(map);
