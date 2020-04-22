@@ -1,5 +1,7 @@
 package com.huake.device;
 
+import com.huake.device.domain.generator.Hdbid;
+import com.huake.device.service.CommonService;
 import com.huake.device.service.EvaService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -17,6 +20,15 @@ public class TvfServiceTest {
     private TvfService tvfService;
     @Autowired
     private EvaService evaService;
+
+    @Autowired
+    private CommonService commonService;
+
+    @Test
+    public void test(){
+        List<Hdbid> list = this.commonService.getPointList();
+        System.out.println(list);
+    }
 
     @Test
     public void test1() throws Exception {

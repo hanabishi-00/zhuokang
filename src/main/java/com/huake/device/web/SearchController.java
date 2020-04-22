@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.huake.device.domain.dto.SearchQuery;
 import com.huake.device.domain.generator.Classifiedquerytree;
+import com.huake.device.domain.generator.Hdbid;
 import com.huake.device.service.CommonService;
 import com.huake.device.service.TvfService;
 import com.huake.device.util.RandomUtil;
@@ -15,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.huake.device.util.ResponseUtil;
 import com.huake.device.domain.vo.SearchData;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -131,6 +133,34 @@ public class SearchController {
         map.put("float", commonService.getFloatList(list));// 获取测点id
         map.put("bool", commonService.getBoolList(list));// 获取测点id
         return ResponseUtil.ok(map);
+    }
+
+    // 获取所有测点列表
+    @RequestMapping(value = "/getPointList", method = RequestMethod.GET)
+    @ApiOperation("获取所有测点列表")
+    public Object getPointList() {
+        List<Hdbid> list = commonService.getPointList();
+        return ResponseUtil.ok(list);
+    }
+
+    // 获取测点名称以及hdbId
+    @RequestMapping(value = "/getPointFullName", method = RequestMethod.POST)
+    @ApiOperation("获取测点名称以及hdbId")
+    public Object getPointFullName(@RequestBody SearchQuery searchQuery) {
+        logger.debug(searchQuery);
+
+        String device = searchQuery.getDevice();
+        List<Map<String, String>> points = searchQuery.getPoints();
+        List<Hdbid> list = new ArrayList<>();
+        for (Map<String, String> map : points){
+            String prefix = this.commonService.getPointFullName(map.get("key"));
+            if(prefix.contains("X")){
+                prefix = prefix.replace("X", searchQuery.getDevice());
+            }
+            prefix = prefix+map.get("label");
+            list.add(commonService.getPointListByName(prefix));
+        }
+        return ResponseUtil.ok(list);
     }
 
 

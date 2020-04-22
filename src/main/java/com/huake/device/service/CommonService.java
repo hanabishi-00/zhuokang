@@ -5,6 +5,7 @@ import com.huake.device.dao.generator.ClassifiedquerytreeDynamicSqlSupport;
 import com.huake.device.dao.generator.ClassifiedquerytreeMapper;
 import com.huake.device.dao.generator.RenHeadenergyMapper;
 import com.huake.device.domain.generator.Classifiedquerytree;
+import com.huake.device.domain.generator.Hdbid;
 import com.huake.device.domain.generator.RenHeadenergy;
 import org.mybatis.dynamic.sql.select.SelectDSLCompleter;
 import org.springframework.stereotype.Service;
@@ -55,4 +56,16 @@ public class CommonService {
         return commonMapper.getBoolList(points);
     }
 
+    public List<Hdbid> getPointList() {
+        return this.commonMapper.getPointList();
+    }
+
+    public String getPointFullName(String key) {
+
+        return this.commonMapper.getPointFullName(key);
+    }
+
+    public Hdbid getPointListByName(String name) {
+        return this.commonMapper.getPointListByName(name);
+    }
 }
