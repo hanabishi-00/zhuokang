@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 
+import main.service.SpecialTree;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -116,11 +117,11 @@ public class MakeFaultTree {
                 return p1;
             case "BooltimeTree":
                 BoolTree bool2 = new BoolTree();
-                ArrayList<String> measureID = new ArrayList<String>();
+                ArrayList<String> measureID1 = new ArrayList<String>();
                 for (ArrayList<String> d:mon) {
-                    measureID.add(d.get(unitID-1));
+                    measureID1.add(d.get(unitID-1));
                 }
-                p1 = bool2.BooltimeTree(measureID,time);
+                p1 = bool2.BooltimeTree(measureID1,time);
                 return p1;
             case "FloateanTree":  //FloateanTree
                 FloatTree float2 = new FloatTree();
@@ -143,16 +144,35 @@ public class MakeFaultTree {
                 }
                 p1 = float4.SpeedTrendTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
                 return p1;
-            case "SumFloateanTree":  //SumFloateanTree
+
+            case "SpecialTree1":  //SumFloateanTree
                 FloatTree float5 = new FloatTree();
                 if (thr.size()==1){
                     thr.add("null");
                 }
-                ArrayList<String> measureID1 = new ArrayList<String>();
+                ArrayList<String> measureID = new ArrayList<String>();
                 for (ArrayList<String> d:mon) {
-                    measureID1.add(d.get(unitID-1));
+                    measureID.add(d.get(unitID-1));
                 }
-                p1 = float5.SumFloateanTree(measureID1, time,thr.get(0),thr.get(1));
+                p1 = float5.SumFloateanTree(measureID, time,thr.get(0),thr.get(1));
+                return p1;
+            case "SpecialTree2":
+                SpecialTree sp1 = new SpecialTree();
+                if (thr.size()==1){
+                    thr.add("null");
+                }
+                ArrayList<String> measureID2 = new ArrayList<String>();
+                for (ArrayList<String> d:mon) {
+                    measureID2.add(d.get(unitID-1));
+                }
+                p1=sp1.SpecialTree2(measureID2,time);
+                return p1;
+            case "SpecialTree3":
+                SpecialTree sp2 = new SpecialTree();
+                if (thr.size()==1){
+                    thr.add("null");
+                }
+                p1=sp2.SpecialTree3(mon.get(0).get(unitID-1),time);
                 return p1;
             default:return p1;
         }

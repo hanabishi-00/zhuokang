@@ -460,7 +460,7 @@ public class CaculateMinCutset1 {
         ArrayList<Node> testnodes = new ArrayList<Node>();
         long date = 12345678;
         int Uid =1;
-        MakeFaultTree.InitialNodes(testnodes, date,Uid);
+        MakeFaultTree.InitialNodes(testnodes, date,Uid,1);
 //        System.out.println(testnodes.size());
 //        for (Node d:testnodes){
 //            System.out.println(d.getName());
