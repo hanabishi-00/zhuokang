@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<WorkFlow>
+  <WorkNode ID="1" Name="球阀本体故障" fatherId="0" fatherName="null" children="球阀开启失败,工作密封异常" gate="+" monitorId="null" judgment="null" threshold="null"/>
+  <WorkNode ID="21" Name="球阀开启失败" fatherId="1" fatherName="球阀本体故障" children="锁定撤出异常,密封撤出异常" gate="+" monitorId="null" judgment="null" threshold="null"/>
+  <WorkNode ID="22" Name="工作密封异常" fatherId="1" fatherName="球阀本体故障" children="球阀发生水力自激振荡,工作密封投退异常" gate="0" monitorId="null" judgment="null" threshold="null"/>
+  <WorkNode ID="311" Name="锁定撤出异常" fatherId="21" fatherName="球阀开启失败" children="球阀开启命令正常发出的情况下球阀全开位置信号异常,锁定撤出命令正常发出的情况下锁定撤出信号异常" gate="0" monitorId="null" judgment="null" threshold="null"/>
+  <WorkNode ID="312" Name="密封撤出异常" fatherId="21" fatherName="球阀开启失败" children="球阀开启命令正常发出情况下球阀全开位置信号异常,密封撤出命令正常发出的情况下密封撤出信号异常" gate="0" monitorId="null" judgment="null" threshold="null"/>
+  <WorkNode ID="321" Name="球阀发生水力自激振荡" fatherId="22" fatherName="工作密封异常" children="停机工况下压力钢管压力频繁超限,调相工况下压力钢管压力频繁超限" gate="+" monitorId="null" judgment="null" threshold="null"/>
+  <WorkNode ID="322" Name="工作密封投退异常" fatherId="22" fatherName="工作密封异常" children="停机工况下工作密封投入信号丢失,调相工况下工作密封投入信号丢失,投退频繁" gate="+" monitorId="null" judgment="null" threshold="null"/>
+  <WorkNode ID="4111" Name="球阀开启命令正常发出的情况下球阀全开位置信号异常" fatherId="311" fatherName="锁定撤出异常" children="null" gate="0" monitorId="1635,3549,5463,7377;1638,3552,5466,7380" judgment="BooltimeTree" threshold="null"/>
+  <WorkNode ID="4112" Name="锁定撤出命令正常发出的情况下锁定撤出信号异常" fatherId="311" fatherName="锁定撤出异常" children="null" gate="0" monitorId="1649,3563,5477,7391;1640,3554,5468,7382" judgment="BooltimeTree" threshold="null"/>
+  <WorkNode ID="4121" Name="球阀开启命令正常发出情况下球阀全开位置信号异常" fatherId="312" fatherName="密封撤出异常" children="null" gate="0" monitorId="1635,3549,5463,7377;1638,3552,5466,7380" judgment="BooltimeTree" threshold="null"/>
+  <WorkNode ID="4122" Name="密封撤出命令正常发出的情况下密封撤出信号异常" fatherId="312" fatherName="密封撤出异常" children="null" gate="0" monitorId="1642,3556,5470,7384;1625,3539,5453,7367" judgment="BooltimeTree" threshold="null"/>
+  <WorkNode ID="4211" Name="停机工况下压力钢管压力频繁超限" fatherId="321" fatherName="球阀发生水力自激振荡" children="null" gate="0" monitorId="819,2733,4647,6561;50,762,1474,2186  " judgment="SpecialTree2" threshold="null"/>
+  <WorkNode ID="4212" Name="调相工况下压力钢管压力频繁超限" fatherId="321" fatherName="球阀发生水力自激振荡" children="null" gate="0" monitorId="827,2741,4655,6569;50,762,1474,2186" judgment="SpecialTree2" threshold="null"/>
+  <WorkNode ID="4221" Name="停机工况下工作密封投入信号丢失" fatherId="322" fatherName="工作密封投退异常" children="null" gate="0" monitorId="819,2733,4647,6561;1624,3538,5452,7366 " judgment="BooltimeTree" threshold="null"/>
+  <WorkNode ID="4222" Name="调相工况下工作密封投入信号丢失" fatherId="322" fatherName="工作密封投退异常" children="null" gate="0" monitorId="827,2741,4655,6569;1624,3538,5452,7366 " judgment="BooltimeTree" threshold="null"/>
+  <WorkNode ID="4223" Name="投退频繁" fatherId="322" fatherName="工作密封投退异常" children="null" gate="0" monitorId="1625,3539,5453,7367" judgment="SpecialTree3" threshold="null"/>
+</WorkFlow>
