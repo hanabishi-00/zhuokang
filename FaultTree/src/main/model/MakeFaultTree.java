@@ -1,25 +1,21 @@
 package main.model;
 
+import main.config.db2xml;
+import main.service.BoolTree;
+import main.service.FloatTree;
+import main.service.SpecialTree;
+import org.dom4j.Document;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import java.io.File;
+import java.io.FileWriter;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
-
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-
-
-import main.service.SpecialTree;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
-import main.service.BoolTree;
-import main.service.FloatTree;
 
 
 /**
@@ -35,14 +31,6 @@ public class MakeFaultTree {
     /**
      * 处理后的等式集
      */
-    public MakeFaultTree(ArrayList<Node> equations) {
-        nodes = equations;
-    }
-    public MakeFaultTree(Long time,ArrayList<Node> equations) {
-        super();
-        this.time = time;
-        this.equations = equations;
-    }
     /**
      * 递归实现树的构建
      * treeNode树根节点
@@ -110,18 +98,10 @@ public class MakeFaultTree {
 
     public static double getfreValue(long time, int unitID, ArrayList<ArrayList<String>> mon, ArrayList<String> thr, String judg) throws ClassNotFoundException, SQLException, ParseException {
         double p1 = 0.0;
-        switch (judg){   //这里的abcdef分别对应几种判断方法，可根据实际情况做相应更改
+        switch (judg){   //这里的abcde分别对应几种判断方法，可根据实际情况做相应更改
             case "BooleanTree":  //BooleanTree
                 BoolTree bool1 = new BoolTree();
                 p1 = bool1.BooleanTree(mon.get(0).get(unitID-1),time,thr.get(0));
-                return p1;
-            case "BooltimeTree":
-                BoolTree bool2 = new BoolTree();
-                ArrayList<String> measureID1 = new ArrayList<String>();
-                for (ArrayList<String> d:mon) {
-                    measureID1.add(d.get(unitID-1));
-                }
-                p1 = bool2.BooltimeTree(measureID1,time);
                 return p1;
             case "FloateanTree":  //FloateanTree
                 FloatTree float2 = new FloatTree();
@@ -144,7 +124,6 @@ public class MakeFaultTree {
                 }
                 p1 = float4.SpeedTrendTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
                 return p1;
-
             case "SpecialTree1":  //SumFloateanTree
                 FloatTree float5 = new FloatTree();
                 if (thr.size()==1){
@@ -186,65 +165,68 @@ public class MakeFaultTree {
      */
     @SuppressWarnings("rawtypes")
     public static void  InitialNodes(ArrayList<Node> Inodes, long time, int Uid, int kind) throws ClassNotFoundException,SQLException{
-        ArrayList<String> xmldir = new ArrayList<>();
-        xmldir.add( "src/main/config/FT_test1.xml");
-        xmldir.add( "src/main/config/FT_test2.xml");
-        String result = xmldir.get(kind-1);
-        File file = new File(result);
-        if (file.exists()){
-            try{
-                SAXReader reader = new SAXReader();// 创建SAXReader
-                Document document =reader.read(file);//从xml文件获取数据
-                Element rootElement = document.getRootElement();// 获取根节点 (WorkNode)
+        //构建故障树
+//        String result1 = GovXMLUtils.GetXMLPath("FT_test2");
+////        System.out.println("文件读取成功！");
+//        System.out.println(result1);
 
-                /**
-                 * 得到第一层节点
-                 */
-                List list = rootElement.elements("WorkNode");//得到所有(WorkNode)元素
-                Iterator iter = list.iterator();//遍历元素
-                while (iter.hasNext()) {
-                    Element ele = (Element) iter.next();
-                    Node temp = new Node();
-                    temp.name = ele.attribute("Name").getValue();
-                    temp.Id = ele.attribute("ID").getValue();
-                    String[] childs = ele.attribute("children").getValue().split(",");
-                    for (int i =0; i<childs.length; i++) {
-                        if (!childs[i].equals("null")) {
-                            temp.children.add(childs[i]);
-                            if (i==childs.length-1){
-                                temp.freq = 0.0;
-                            }
-                        }else if (ele.attribute("monitorId").getValue()==null || ele.attribute("monitorId").getValue().equals("null")){
-                            ArrayList<String> qwe = new ArrayList<>();
-                            qwe.add("null");
-                            temp.monitorid.add(qwe);
-                            temp.judgment="null";
-                            temp.threshold.add("null");
-                            temp.freq = 0.0;
-                            }
-                        else{
-                            for (String d:ele.attribute("monitorId").getValue().split(";")) {
-                                ArrayList<String> newarray = new ArrayList<>();
-                                newarray.addAll(Arrays.asList(d.split(",")));
-                                temp.monitorid.add((ArrayList<String>)newarray.clone());
-                            }
-                            temp.threshold.addAll(Arrays.asList(ele.attribute("threshold").getValue().split(",")));
-                            temp.judgment = ele.attribute("judgment").getValue();
-                            temp.freq =  getfreValue(time,Uid,temp.getMonitorid(),temp.getThreshold(),temp.getJudgment());
-                        }
+        db2xml que = new db2xml();
+        ArrayList<ArrayList<String>> data=que.saveFile(kind);
+//        System.out.println(data);
+        for(ArrayList<String> data1:data) {
+
+            //            System.out.println(data1);
+//            Node temp = new Node();
+            Node temp = new Node();
+            temp.name = data1.get(1);
+
+            temp.Id = data1.get(0);
+            String[] childs = data1.get(8).split(",");
+            for (int i =0; i<childs.length; i++) {
+                if (!childs[i].equals("null")) {
+                    temp.children.add(childs[i]);
+                    if (i==childs.length-1){
+                        temp.freq = 0.0;
                     }
-                    temp.gate = ele.attribute("gate").getValue();
-
-                    if (!ele.attribute("fatherName").getValue().equals("null")) {
-                        temp.father = ele.attribute("fatherName").getValue();
-                    }
-                    Inodes.add(temp);
-
+                }else if (data1.get(5)==null || data1.get(5).equals("null")){
+                    ArrayList<String> qwe = new ArrayList<>();
+                    qwe.add("null");
+                    temp.monitorid.add(qwe);
+                    temp.judgment="null";
+                    temp.threshold.add("null");
+                    temp.freq = 0.0;
                 }
-
-            }catch (DocumentException | ParseException e) {
-                e.printStackTrace();
+                else{
+//                            System.out.println(ele.attribute("monitorId").getValue());
+                    for (String d:data1.get(5).split(";")) {
+                        ArrayList<String> newarray = new ArrayList<>();
+                        newarray.addAll(Arrays.asList(d.split(",")));
+                        temp.monitorid.add((ArrayList<String>)newarray.clone());
+//                                newarray.clear();
+                    }
+                    temp.threshold.addAll(Arrays.asList(data1.get(7).split(",")));
+                    temp.judgment = data1.get(6);
+//                            System.out.println(temp.name);
+//                            System.out.println(temp.judgment);
+//                            System.out.println(temp.threshold);
+//                            System.out.println(temp.monitorid);
+                    try {
+                        temp.freq =  getfreValue(time,Uid,temp.getMonitorid(),temp.getThreshold(),temp.getJudgment());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+//                            System.out.println(temp.freq);
+                }
             }
+            temp.gate = data1.get(4);
+//                    Long time = TimeUtils.stringToLong(date,"yyyy-MM-dd HH:mm:ss")/1000;
+//                    此处为temp.freq赋值，需利用相关函数，暂且空缺
+
+            if (!data1.get(3).equals("null")) {
+                temp.father = data1.get(3);
+            }
+//                    temp.gate = ele.attribute("gate").getValue();
+            Inodes.add(temp);
         }
 
         for (int i = 0; i < Inodes.size();i++) {
@@ -254,25 +236,20 @@ public class MakeFaultTree {
                 Inodes.set(i, tempn);
             }
         }
-//        System.out.println(Inodes.size());
     }
 
-    public Long getTime() {
-        return time;
-    }
-    public void setTime(Long time) {
-        this.time = time;
-    }
+
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ArrayList<Node> Inodes = new ArrayList<>();
         long d1= 11111111;
-        MakeFaultTree.InitialNodes(Inodes,d1,1,2);
+        MakeFaultTree asd = new MakeFaultTree();
+        asd.InitialNodes(Inodes,d1,1,2);
         for (Node d2:Inodes){
             if (d2.getId().equals("4311")){
-                System.out.println(d2.getThreshold().get(0).equals("null"));
+//                System.out.println(d2.getThreshold().get(0).equals("null"));
             }
-            System.out.println(d2.getId()+" "+d2.getName()+" " +d2.getFather()+" " +d2.getChildren()+" " +d2.getMonitorid()+" " +d2.getThreshold()+" " +d2.getJudgment());
+//            System.out.println(d2.getId()+" "+d2.getName()+" " +d2.getFather()+" " +d2.getChildren()+" " +d2.getMonitorid()+" " +d2.getThreshold()+" " +d2.getJudgment());
         }
 
     }

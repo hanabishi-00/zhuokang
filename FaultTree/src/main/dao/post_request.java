@@ -29,9 +29,9 @@ public class post_request {
                 "id",id,"starttime",stime,"endtime",etime
                 ,"datatype",1,"interval",-1
         ).body();
-        JSONObject jsonObject=  JSON.parseObject(body1);
-        JSONObject jsonObject1= (JSONObject) JSON.parseArray(jsonObject.getString("result")).get(0);
-        List<Point> pointList = JSON.parseArray(jsonObject1.getString(id),Point.class);
+        Response response = JSON.parseObject(body1, Response.class);
+        List<Point> pointList = response.getResult();
+
 
         for(Point p1:pointList){
             data.addTime(p1.getTm());
@@ -58,9 +58,9 @@ public class post_request {
                 "id",id,"starttime",stime,"endtime",etime
                 ,"datatype",1,"interval",-1
         ).body();
-            JSONObject jsonObject=  JSON.parseObject(body1);
-            JSONObject jsonObject1= (JSONObject) JSON.parseArray(jsonObject.getString("result")).get(0);
-            List<Point> pointList = JSON.parseArray(jsonObject1.getString(id),Point.class);
+            Response response = JSON.parseObject(body1, Response.class);
+            List<Point> pointList = response.getResult();
+
 
             if (pointList.size()!=0) {
                 for (Point p1 : pointList) {
