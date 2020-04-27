@@ -16,7 +16,7 @@ public class db2xml {
         }
         try{
             //更改故障树节点的数据库
-            con =DriverManager.getConnection("jdbc:mysql://localhost:3306/xjnode?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true","root","123456");
+            con =DriverManager.getConnection("jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true","huake","huake@123");
         }catch (SQLException e){
             e.printStackTrace();
         }

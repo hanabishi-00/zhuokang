@@ -42,7 +42,7 @@ public class FloatTree {
         int y = 0; //y表示不越限的次数
 
         if((Hlimite.equals("null")) && (Llimite.equals("null"))){
-            DataFloatUtils data1 = post_request.queFloat(id, time, 2592000);
+            DataFloatUtils data1 = post_request.queFloat(id, time, 604800);
             ArrayList<Float> value1 = data1.getValue();
             ArrayList<Double> par = StandardDiv(value1);
             for (Float d : value) {
@@ -93,7 +93,7 @@ public class FloatTree {
             for (int i=0;i<value.size()-1;i++) {
                 value2.add((value.get(i+1)-value.get(i))/(time1.get(i+1)-time1.get(i)));
             }
-            DataFloatUtils data1 = post_request.queFloat(id, time, 2592000);
+            DataFloatUtils data1 = post_request.queFloat(id, time, 604800);
             ArrayList<Float> value3 = new ArrayList<>();
             ArrayList<Float> value1 = data1.getValue();
             ArrayList<Long> time2 = data1.getTime();
@@ -151,7 +151,7 @@ public class FloatTree {
             for (int i=0;i<value.size()-2;i++) {
                 value2.add((value.get(i+2)-value.get(i+1))/(time1.get(i+2)-time1.get(i+1))-(value.get(i+1)-value.get(i))/(time1.get(i+1)-time1.get(i)));
             }
-            DataFloatUtils data1 = post_request.queFloat(id, time, 2592000);
+            DataFloatUtils data1 = post_request.queFloat(id, time, 604800);
             ArrayList<Float> value3 = new ArrayList<>();
             ArrayList<Float> value1 = data1.getValue();
             ArrayList<Long> time2 = data1.getTime();
@@ -236,7 +236,7 @@ public class FloatTree {
             ArrayList<Float> value3 = new ArrayList<>();
             ArrayList<Long> time3 = new ArrayList<>();
             for (int i = 0; i<id.size();i++){
-                DataFloatUtils data = post_request.queFloat(id.get(i), time, 2592000);
+                DataFloatUtils data = post_request.queFloat(id.get(i), time, 604800);
                 if(data.getValue().size()<=0){
                     return 0.0;
                 }

@@ -3,6 +3,10 @@
     <output-path>$PROJECT_DIR$/out/artifacts/FaultTree_jar</output-path>
     <root id="archive" name="FaultTree.jar">
       <element id="module-output" name="FaultTree" />
+      <element id="dir-copy" path="D:/dom4j-2.1.1" />
+      <element id="extracted-dir" path="D:/Java_jdk/http-request-6.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/MysqlFiles(x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.18.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="D:/Java_jdk/fastjson-1.2.66.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/struts-2.5.22-all/struts-2.5.22/lib/asm-7.1.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/struts-2.5.22-all/struts-2.5.22/lib/bsh-2.0b4.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/struts-2.5.22-all/struts-2.5.22/lib/dwr-1.1.1.jar" path-in-jar="/" />
@@ -94,10 +98,6 @@
       <element id="extracted-dir" path="D:/struts-2.5.22-all/struts-2.5.22/lib/struts2-pell-multipart-plugin-2.5.22.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/struts-2.5.22-all/struts-2.5.22/lib/plexus-container-default-1.0-alpha-10.jar" path-in-jar="/" />
       <element id="extracted-dir" path="D:/struts-2.5.22-all/struts-2.5.22/lib/struts2-bean-validation-plugin-2.5.22.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="D:/Java_jdk/http-request-6.0.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="D:/MysqlFiles(x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.18.jar" path-in-jar="/" />
-      <element id="dir-copy" path="D:/dom4j-2.1.1" />
-      <element id="extracted-dir" path="D:/Java_jdk/fastjson-1.2.66.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

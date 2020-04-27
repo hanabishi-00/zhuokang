@@ -27,7 +27,7 @@ public class post_request {
         String stime = String.valueOf(starttime*1000);
         String body1 = HttpRequest.get("http://118.178.136.233:80/ecidi-cmp/his_data/query1", true,
                 "id",id,"starttime",stime,"endtime",etime
-                ,"datatype",1,"interval",-1
+                ,"datatype",0,"interval",-1
         ).body();
         Response response = JSON.parseObject(body1, Response.class);
         List<Point> pointList = response.getResult();
@@ -72,10 +72,12 @@ public class post_request {
     }
 
     public static void main(String[] args){
+        long date1 = System.currentTimeMillis()/1000;
         post_request c = new post_request();
-        DataBoolUtils qwe= c.queBool("1579",1548950400);
-        for (int b=0;b<qwe.getValue().size();b++){
-            System.out.println(qwe.getValue().get(b)+":"+qwe.getTime().get(b));
+        DataBoolUtils qwe= c.queBool("1601",1513670197);
+        DataFloatUtils asd = c.queFloat("16",1533670197);
+        for (int b=0;b<asd.getValue().size();b++){
+            System.out.println(asd.getValue().get(b)+":"+asd.getTime().get(b));
         }
 
     }

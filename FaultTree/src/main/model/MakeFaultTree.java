@@ -175,7 +175,7 @@ public class MakeFaultTree {
 //        System.out.println(data);
         for(ArrayList<String> data1:data) {
 
-            //            System.out.println(data1);
+//                        System.out.println(data1);
 //            Node temp = new Node();
             Node temp = new Node();
             temp.name = data1.get(1);
@@ -244,7 +244,7 @@ public class MakeFaultTree {
         ArrayList<Node> Inodes = new ArrayList<>();
         long d1= 11111111;
         MakeFaultTree asd = new MakeFaultTree();
-        asd.InitialNodes(Inodes,d1,1,2);
+        asd.InitialNodes(Inodes,d1,1,1);
         for (Node d2:Inodes){
             if (d2.getId().equals("4311")){
 //                System.out.println(d2.getThreshold().get(0).equals("null"));
