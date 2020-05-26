@@ -12,7 +12,7 @@ import main.model.MakeFaultTree;
 public class ResultSave {
 
     // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
-    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+    static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     static final String USER = "huake";
     static final String PASS = "huake@123";
@@ -26,7 +26,7 @@ public class ResultSave {
 //        tablename += time;
         String creatsql = "CREATE TABLE "+tablename+"(id int not null auto_increment, record_id char(20)," +
                 " node_id int, freq float, " +
-                "sugg_id int, primary key (id))auto_increment=1";
+                "sugg_id int, model_edition int(20), primary key (id))auto_increment=1";
         Connection conn = null;
         Statement stmt = null;
         PreparedStatement sql;
@@ -39,6 +39,22 @@ public class ResultSave {
             String DB_URL = DB_URL_result;
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
+            int model_edition=0;
+            int model_edition3=0;
+            ResultSet model_edition1 = stmt.executeQuery("select max(model_edition) from diag_model_bvb");
+            while(model_edition1.next()){
+                model_edition = model_edition1.getInt(1);
+            }
+            model_edition1.close();
+            ResultSet model_edition2 = stmt.executeQuery("select max(model_edition) from diag_model_bvo");
+            while(model_edition2.next()){
+                model_edition3 = model_edition2.getInt(1);
+            }
+            model_edition2.close();
+            ArrayList<Integer> m_edi=new ArrayList<>();
+            m_edi.add(model_edition);
+            m_edi.add(model_edition3);
+
             ResultSet sugg_id = stmt.executeQuery("select * from diag_sugg");
             ArrayList<String> sugg_id1 = new ArrayList<>();
             while(sugg_id.next()){
@@ -56,7 +72,7 @@ public class ResultSave {
                 }
                 tables.close();
 
-                sql = conn.prepareStatement("insert into "+tablename+"(record_id,node_id,freq,sugg_id) values(?,?,?,?)");
+                sql = conn.prepareStatement("insert into "+tablename+"(record_id,node_id,freq,sugg_id,model_edition) values(?,?,?,?,?)");
                 for (int i=0;i<resultnode.size();i++){
                     sql.setString(1,tname.get(kind-1)+"_"+Uid+"_"+time);
                     sql.setInt(2,Integer.parseInt(resultnode.get(i).getId()));
@@ -67,6 +83,7 @@ public class ResultSave {
                     else {
                         sql.setInt(4, -1);
                     }
+                    sql.setInt(5,m_edi.get(kind-1));
                     sql.executeUpdate();
                 }
                 conn.close();

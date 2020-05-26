@@ -99,32 +99,40 @@ public class MakeFaultTree {
     public static double getfreValue(long time, int unitID, ArrayList<ArrayList<String>> mon, ArrayList<String> thr, String judg) throws ClassNotFoundException, SQLException, ParseException {
         double p1 = 0.0;
         switch (judg){   //这里的abcde分别对应几种判断方法，可根据实际情况做相应更改
-            case "BooleanTree":  //BooleanTree
+            case "Boolean":  //BooleanTree
                 BoolTree bool1 = new BoolTree();
                 p1 = bool1.BooleanTree(mon.get(0).get(unitID-1),time,thr.get(0));
                 return p1;
-            case "FloateanTree":  //FloateanTree
+            case "Booltime":
+                BoolTree bool2 = new BoolTree();
+                ArrayList<String> measureID1 = new ArrayList<String>();
+                for (ArrayList<String> d:mon) {
+                    measureID1.add(d.get(unitID-1));
+                }
+                p1 = bool2.BooltimeTree(measureID1,time);
+                return p1;
+            case "Floatean":  //FloateanTree
                 FloatTree float2 = new FloatTree();
                 if (thr.size()==1){
                     thr.add("null");
                 }
                 p1 = float2.FloateanTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
                 return p1;
-            case "TrendTree":  //TrendTree
+            case "Trend":  //TrendTree
                 FloatTree float3 = new FloatTree();
                 if (thr.size()==1){
                     thr.add("null");
                 }
                 p1 = float3.TrendTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
                 return p1;
-            case "SpeedTrendTree":  //SpeedTrendTree
+            case "SpeedTrend":  //SpeedTrendTree
                 FloatTree float4 = new FloatTree();
                 if (thr.size()==1){
                     thr.add("null");
                 }
                 p1 = float4.SpeedTrendTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
                 return p1;
-            case "SpecialTree1":  //SumFloateanTree
+            case "Special1":  //SumFloateanTree
                 FloatTree float5 = new FloatTree();
                 if (thr.size()==1){
                     thr.add("null");
@@ -135,7 +143,7 @@ public class MakeFaultTree {
                 }
                 p1 = float5.SumFloateanTree(measureID, time,thr.get(0),thr.get(1));
                 return p1;
-            case "SpecialTree2":
+            case "Special2":
                 SpecialTree sp1 = new SpecialTree();
                 if (thr.size()==1){
                     thr.add("null");
@@ -146,7 +154,7 @@ public class MakeFaultTree {
                 }
                 p1=sp1.SpecialTree2(measureID2,time);
                 return p1;
-            case "SpecialTree3":
+            case "Special3":
                 SpecialTree sp2 = new SpecialTree();
                 if (thr.size()==1){
                     thr.add("null");

@@ -93,7 +93,7 @@ public class FloatTree {
             for (int i=0;i<value.size()-1;i++) {
                 value2.add((value.get(i+1)-value.get(i))/(time1.get(i+1)-time1.get(i)));
             }
-            DataFloatUtils data1 = post_request.queFloat(id, time, 604800);
+            DataFloatUtils data1 = post_request.queFloat(id, time, 86400);
             ArrayList<Float> value3 = new ArrayList<>();
             ArrayList<Float> value1 = data1.getValue();
             ArrayList<Long> time2 = data1.getTime();

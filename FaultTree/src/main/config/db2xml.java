@@ -10,7 +10,7 @@ public class db2xml {
     //Kind表示本体与油系统，1表示本体，2表示油系统
     public ArrayList<ArrayList<String>> saveFile(int Kind){
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
         }catch (ClassNotFoundException e){
             e.printStackTrace();
         }
@@ -25,8 +25,8 @@ public class db2xml {
         try{
             sql=con.createStatement();
             ArrayList<String> sqls=new ArrayList<>();
-            sqls.add("select * from diag_model_bvb"); //本体故障树信息
-            sqls.add("select * from diag_model_bvo");  //油系统故障树信息
+            sqls.add("select * from diag_model_bvb where model_edition = (select max(model_edition) from diag_model_bvb)"); //本体故障树信息
+            sqls.add("select * from diag_model_bvo where model_edition = (select max(model_edition) from diag_model_bvo)");  //油系统故障树信息
             res=sql.executeQuery(sqls.get(Kind-1));
 
             while(res.next()){

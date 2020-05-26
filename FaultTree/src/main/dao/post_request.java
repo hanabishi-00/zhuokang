@@ -25,11 +25,13 @@ public class post_request {
         long starttime = endtime-interval;
         String etime=String.valueOf(endtime*1000);
         String stime = String.valueOf(starttime*1000);
-        String body1 = HttpRequest.get("http://118.178.136.233:80/ecidi-cmp/his_data/query1", true,
+        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query1", true,
                 "id",id,"starttime",stime,"endtime",etime
                 ,"datatype",0,"interval",-1
         ).body();
+//        System.out.println(body1);
         Response response = JSON.parseObject(body1, Response.class);
+
         List<Point> pointList = response.getResult();
 
 
@@ -54,7 +56,7 @@ public class post_request {
         long starttime = endtime-interval;
         String etime=String.valueOf(endtime*1000);
         String stime = String.valueOf(starttime*1000);
-        String body1 = HttpRequest.get("http://118.178.136.233:80/ecidi-cmp/his_data/query1", true,
+        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query1", true,
                 "id",id,"starttime",stime,"endtime",etime
                 ,"datatype",1,"interval",-1
         ).body();
@@ -74,10 +76,18 @@ public class post_request {
     public static void main(String[] args){
         long date1 = System.currentTimeMillis()/1000;
         post_request c = new post_request();
+
         DataBoolUtils qwe= c.queBool("1601",1513670197);
-        DataFloatUtils asd = c.queFloat("16",1533670197);
-        for (int b=0;b<asd.getValue().size();b++){
-            System.out.println(asd.getValue().get(b)+":"+asd.getTime().get(b));
+//        DataFloatUtils asd = c.queFloat("16",1533670197);
+        System.out.println("1号机组球阀回油箱液位过低信号：");
+        for (int b=0;b<qwe.getValue().size();b++){
+            System.out.println("值："+qwe.getValue().get(b)+"；时间戳："+qwe.getTime().get(b));
+        }
+        DataBoolUtils qwe1= c.queBool("585",1513670197);
+//        DataFloatUtils asd = c.queFloat("16",1533670197);
+        System.out.println("1号机组球阀压力油罐油混水信号：");
+        for (int b=0;b<qwe1.getValue().size();b++){
+            System.out.println("值："+qwe1.getValue().get(b)+"；时间戳："+qwe1.getTime().get(b));
         }
 
     }
