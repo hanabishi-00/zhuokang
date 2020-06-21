@@ -10,7 +10,7 @@ public class Node {
     String father;
     ArrayList<ArrayList<String>> monitorid = new ArrayList<>();     //叶节点对应的测点
     String judgment;                //判据类型
-    ArrayList<String> threshold = new ArrayList<>();     //阈值
+    ArrayList<ArrayList<String>> threshold = new ArrayList<>();     //阈值
 
 
     public String getName() {
@@ -57,10 +57,10 @@ public class Node {
     public void setMonitorid(ArrayList<ArrayList<String>> monitorid) {
         this.monitorid = monitorid;
     }
-    public ArrayList<String> getThreshold() {
+    public ArrayList<ArrayList<String>> getThreshold() {
         return threshold;
     }
-    public void setThreshold(ArrayList<String> threshold) {
+    public void setThreshold(ArrayList<ArrayList<String>> threshold) {
         this.threshold = threshold;
     }
     public String getJudgment() {

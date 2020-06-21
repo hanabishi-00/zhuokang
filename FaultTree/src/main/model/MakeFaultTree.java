@@ -96,12 +96,18 @@ public class MakeFaultTree {
     }
 
 
-    public static double getfreValue(long time, int unitID, ArrayList<ArrayList<String>> mon, ArrayList<String> thr, String judg) throws ClassNotFoundException, SQLException, ParseException {
+    public static double getfreValue(long time, int unitID, ArrayList<ArrayList<String>> mon, ArrayList<ArrayList<String>> thr, String judg) throws ClassNotFoundException, SQLException, ParseException {
         double p1 = 0.0;
         switch (judg){   //这里的abcde分别对应几种判断方法，可根据实际情况做相应更改
             case "Boolean":  //BooleanTree
+                ArrayList<String> thr1= new ArrayList<>();
+                if(thr.size()==1){
+                    thr1=thr.get(0);
+                }else{
+                    thr1=thr.get(unitID-1);
+                }
                 BoolTree bool1 = new BoolTree();
-                p1 = bool1.BooleanTree(mon.get(0).get(unitID-1),time,thr.get(0));
+                p1 = bool1.BooleanTree(mon.get(0).get(unitID-1),time,thr1.get(0));
                 return p1;
             case "Booltime":
                 BoolTree bool2 = new BoolTree();
@@ -113,51 +119,87 @@ public class MakeFaultTree {
                 return p1;
             case "Floatean":  //FloateanTree
                 FloatTree float2 = new FloatTree();
-                if (thr.size()==1){
-                    thr.add("null");
+                ArrayList<String> thr2= new ArrayList<>();
+                if(thr.size()==1){
+                    thr2=thr.get(0);
+                }else{
+                    thr2=thr.get(unitID-1);
                 }
-                p1 = float2.FloateanTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
+                if (thr2.size()==1){
+                    thr2.add("null");
+                }
+                p1 = float2.FloateanTree(mon.get(0).get(unitID-1), time,thr2.get(0),thr2.get(1));
                 return p1;
             case "Trend":  //TrendTree
                 FloatTree float3 = new FloatTree();
-                if (thr.size()==1){
-                    thr.add("null");
+                ArrayList<String> thr3= new ArrayList<>();
+                if(thr.size()==1){
+                    thr3=thr.get(0);
+                }else{
+                    thr3=thr.get(unitID-1);
                 }
-                p1 = float3.TrendTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
+                if (thr3.size()==1){
+                    thr3.add("null");
+                }
+                p1 = float3.TrendTree(mon.get(0).get(unitID-1), time,thr3.get(0),thr3.get(1));
                 return p1;
             case "SpeedTrend":  //SpeedTrendTree
                 FloatTree float4 = new FloatTree();
-                if (thr.size()==1){
-                    thr.add("null");
+                ArrayList<String> thr4= new ArrayList<>();
+                if(thr.size()==1){
+                    thr4=thr.get(0);
+                }else{
+                    thr4=thr.get(unitID-1);
                 }
-                p1 = float4.SpeedTrendTree(mon.get(0).get(unitID-1), time,thr.get(0),thr.get(1));
+                if (thr4.size()==1){
+                    thr4.add("null");
+                }
+                p1 = float4.SpeedTrendTree(mon.get(0).get(unitID-1), time,thr4.get(0),thr4.get(1));
                 return p1;
             case "Special1":  //SumFloateanTree
                 FloatTree float5 = new FloatTree();
-                if (thr.size()==1){
-                    thr.add("null");
+                ArrayList<String> thr5= new ArrayList<>();
+                if(thr.size()==1){
+                    thr5=thr.get(0);
+                }else{
+                    thr5=thr.get(unitID-1);
+                }
+                if (thr5.size()==1){
+                    thr5.add("null");
                 }
                 ArrayList<String> measureID = new ArrayList<String>();
                 for (ArrayList<String> d:mon) {
                     measureID.add(d.get(unitID-1));
                 }
-                p1 = float5.SumFloateanTree(measureID, time,thr.get(0),thr.get(1));
+                p1 = float5.SumFloateanTree(measureID, time,thr5.get(0),thr5.get(1));
                 return p1;
             case "Special2":
                 SpecialTree sp1 = new SpecialTree();
-                if (thr.size()==1){
-                    thr.add("null");
+                ArrayList<String> thr6= new ArrayList<>();
+                if(thr.size()==1){
+                    thr6=thr.get(0);
+                }else{
+                    thr6=thr.get(unitID-1);
+                }
+                if (thr6.size()==1){
+                    thr6.add("null");
                 }
                 ArrayList<String> measureID2 = new ArrayList<String>();
                 for (ArrayList<String> d:mon) {
                     measureID2.add(d.get(unitID-1));
                 }
-                p1=sp1.SpecialTree2(measureID2,time);
+                p1=sp1.SpecialTree2(measureID2,time,thr6.get(1));
                 return p1;
             case "Special3":
+                ArrayList<String> thr7= new ArrayList<>();
+                if(thr.size()==1){
+                    thr7=thr.get(0);
+                }else{
+                    thr7=thr.get(unitID-1);
+                }
                 SpecialTree sp2 = new SpecialTree();
-                if (thr.size()==1){
-                    thr.add("null");
+                if (thr7.size()==1){
+                    thr7.add("null");
                 }
                 p1=sp2.SpecialTree3(mon.get(0).get(unitID-1),time);
                 return p1;
@@ -201,7 +243,7 @@ public class MakeFaultTree {
                     qwe.add("null");
                     temp.monitorid.add(qwe);
                     temp.judgment="null";
-                    temp.threshold.add("null");
+                    temp.threshold.add(qwe);
                     temp.freq = 0.0;
                 }
                 else{
@@ -212,7 +254,13 @@ public class MakeFaultTree {
                         temp.monitorid.add((ArrayList<String>)newarray.clone());
 //                                newarray.clear();
                     }
-                    temp.threshold.addAll(Arrays.asList(data1.get(7).split(",")));
+                    for (String d:data1.get(7).split(";")) {
+                        ArrayList<String> newarray = new ArrayList<>();
+                        newarray.addAll(Arrays.asList(d.split(",")));
+                        temp.threshold.add((ArrayList<String>)newarray.clone());
+//                                newarray.clear();
+                    }
+//                    temp.threshold.addAll(Arrays.asList(data1.get(7).split(",")));
                     temp.judgment = data1.get(6);
 //                            System.out.println(temp.name);
 //                            System.out.println(temp.judgment);

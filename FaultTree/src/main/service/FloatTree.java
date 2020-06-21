@@ -73,6 +73,9 @@ public class FloatTree {
         }else{
             p = (double)(x/(x+y));
         }
+        if(p<=0.0001){
+            p=0.0;
+        }
         return p;
     }
     //得到模拟量，得到趋势值
@@ -130,9 +133,12 @@ public class FloatTree {
         }else{
             p = (double)(x/(x+y));
         }
+        if(p<=0.0001){
+            p=0.0;
+        }
         return p;
     }
-    //得到模拟量，得到模拟量变化速度的值
+    //得到模拟量，得到模拟量速度变化速度的值
     //大于某个值即认为测量量的变化速率过大，小于某个值即认为测量量的变化速率过小
 //    public double SpeedTrendTree(String table, String id, long time, double Hlimite, double Llimite)throws ClassNotFoundException, SQLException {
     public double SpeedTrendTree(String id, long time, String Llimite, String Hlimite){
@@ -189,6 +195,9 @@ public class FloatTree {
             p = 0;
         }else{
             p = (double)(x/(x+y));
+        }
+        if(p<=0.0001){
+            p=0.0;
         }
         return p;
     }
@@ -268,31 +277,34 @@ public class FloatTree {
             ArrayList<Double> par = StandardDiv(value3);
             for (Float d : d1) {
                 if(d<=par.get(0)+3*par.get(1) && d>=par.get(0)-3*par.get(1)){
-                    y+=1;
-                }else if(d>=par.get(0)+3*par.get(1) || d<=par.get(0)-3*par.get(1)){
                     x+=1;
+                }else if(d>=par.get(0)+3*par.get(1) || d<=par.get(0)-3*par.get(1)){
+                    y+=1;
                 }
             }
         }
 
         for (Float d : d1) {
             if (!(Hlimite.equals("null")) && d <= Double.parseDouble(Hlimite) && !(Llimite.equals("null")) && d >= Double.parseDouble(Llimite)) {
-                y += 1;
+                x += 1;
             }else if((Hlimite.equals("null")) && !(Llimite.equals("null")) && d >= Double.parseDouble(Llimite)){
-                y += 1;
+                x += 1;
             }else if((Llimite.equals("null")) && !(Hlimite.equals("null")) && d <= Double.parseDouble(Hlimite)){
-                y += 1;
+                x += 1;
             }
             else if (!(Llimite.equals("null")) && d <= Double.parseDouble(Llimite)) {
-                x += 1;
+                y += 1;
             } else if (!(Hlimite.equals("null")) && d >= Double.parseDouble(Hlimite)) {
-                x += 1;
+                y += 1;
             }
         }
         if (x + y == 0) {
             p = 0;
         }else{
             p = (double)(x/(x+y));
+        }
+        if(p<=0.0001){
+            p=0.0;
         }
         return p;
     }

@@ -383,13 +383,13 @@ public class TreeUpdate {
             }
 
             ////检查输入的阈值是否符合格式，eg. 1或1,2或null,1
-            if(ary2.get(8).equals("null")){
-                continue;
-            }else{
-                if(ary2.get(8).split(",").length>2){
-                    flag=false;
-                }
-            }
+//            if(ary2.get(8).equals("null")){
+//                continue;
+//            }else{
+//                if(ary2.get(8).split(",").length>2){
+//                    flag=false;
+//                }
+//            }
 
             //判断是否存在不存在子节点的非叶子节点
             if(ary2.get(6).equals("null") && searchstr(ary1,3,ary2.get(0)).size()==0){

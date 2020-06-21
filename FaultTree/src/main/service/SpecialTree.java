@@ -7,8 +7,9 @@ import main.util.DataFloatUtils;
 import java.util.ArrayList;
 
 public class SpecialTree {
-    public double SpecialTree2(ArrayList<String> id, long time){
+    public double SpecialTree2(ArrayList<String> id, long time, String Hlimit){
         double p=0.0;
+        double hlimit=0.0;
         ArrayList<Integer> value1 = new ArrayList<>();
         ArrayList<Long> time1 = new ArrayList<>();
         DataBoolUtils data1 = post_request.queBool(id.get(0),time);
@@ -29,11 +30,16 @@ public class SpecialTree {
                         if(value2.size()==0){
                             value2.add((float) 0);
                         }
-                        ArrayList<Long> time2 = data2.getTime();
+//                        ArrayList<Long> time2 = data2.getTime();
                         ArrayList<Double> pra = FloatTree.StandardDiv(value2);
+                        if(!Hlimit.equals("null")){
+                            hlimit= Double.parseDouble(Hlimit);
+                        }else{
+                            hlimit= pra.get(0)+3*pra.get(1);
+                        }
                         int num=0;
                         for(float v2:value2){
-                            if(v2>pra.get(0)+3*pra.get(1)){
+                            if(v2>hlimit){
                                 num+=1;
                             }
                         }

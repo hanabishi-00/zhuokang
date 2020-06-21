@@ -47,6 +47,7 @@ public class faultrun{
                 if(CaculateMinCutset1.searchfaultnode(Inodes).size()!=0) {
                     ResultSave.savediagres(date1, String.valueOf(Uid), kind, CaculateMinCutset1.searchfaultnode(Inodes));
                     ResultSave.savediagresguide(date1, String.valueOf(Uid), kind);
+                    ResultSave.savediagreport(date1,String.valueOf(Uid),kind);
                 }
 //                long endTime = System.currentTimeMillis();
 //                System.out.println(endTime-startTime+"ms");
