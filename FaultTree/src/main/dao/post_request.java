@@ -14,7 +14,7 @@ public class post_request {
     public static DataFloatUtils queFloat(String id, long endtime) {
         id=id.trim();
         DataFloatUtils data = new DataFloatUtils(id);
-        long interval = 86400;
+        long interval = 3600;
         data = queFloat(id,endtime,interval);
         return data;
     }
@@ -45,7 +45,7 @@ public class post_request {
     public static DataBoolUtils queBool(String id, long endtime) {
         id=id.trim();
         DataBoolUtils data = new DataBoolUtils(id);
-        long interval = 86400;
+        long interval = 3600;
         data = queBool(id,endtime,interval);
         return data;
     }

@@ -261,7 +261,7 @@ public class TreeUpdate {
             }
 
             stmt = conn.createStatement();
-            stmt.executeUpdate("truncate diag_tree_test");
+            stmt.executeUpdate("truncate diag_tree");
 
             sql1 = conn.prepareStatement("insert into diag_tree(id,name,des,pid,nodetype,gatetype," +
                     "isleaf,method,points,threshold) values(?,?,?,?,?,?,?,?,?,?)");
@@ -402,17 +402,17 @@ public class TreeUpdate {
     }
 
     public static void main(String[] args){
-        int num=11;
-        String asd="r123";
+//        int num=11;
+//        String asd="r123";
 //        System.out.println("o"+num);
 
-//        tree2model("o");
-        model2tree();
-        String regex= "^\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*$";
-//        regex = "^[a-z]\\d+$|0";
-//        regex = "0";
-        String asd1=" 1612, 3526, 5440, 7354";
-        System.out.println(tree2model("o"));
+        tree2model("o");
+//        model2tree();
+//        String regex= "^\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*$";
+////        regex = "^[a-z]\\d+$|0";
+////        regex = "0";
+//        String asd1=" 1612, 3526, 5440, 7354";
+//        System.out.println(tree2model("o"));
 //        System.out.println(asd1.matches(regex));
     }
 
