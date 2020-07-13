@@ -1,28 +1,32 @@
 package main.dao;
 
 import java.sql.*;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import main.model.Node;
 import main.model.MakeFaultTree;
 
 public class ResultSave {
 
     // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
+//    jdbc:mysql://localhost:3306/?user=root
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+//    final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+final static String DB_URL_result = "jdbc:mysql://localhost:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     static final String USER = "huake";
     static final String PASS = "huake@123";
+//    final static String DB_URL_result = "jdbc:mysql://localhost:3306/xjresult?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+//    static final String USER = "root";
+//    static final String PASS = "123456";
+
+
+
 
 //    存放单次诊断结果
     public static int savediagres(long time, String Uid, int kind, ArrayList<Node> resultnode){
         ArrayList<String> tname = new ArrayList<>();
         tname.add("Bvb");
         tname.add("Bvo");
-        String tablename = "Diag_result";
+        String tablename = "diag_result";
 //        tablename += time;
         String creatsql = "CREATE TABLE "+tablename+"(id int not null auto_increment, record_id char(20)," +
                 " node_id int, freq float, " +
@@ -100,9 +104,9 @@ public class ResultSave {
         ArrayList<String> tname = new ArrayList<>();
         tname.add("Bvb");
         tname.add("Bvo");
-        String tablename = "Diag_res_guide";
+        String tablename = "diag_res_guide";
 //        tablename += time;
-        String creatsql = "CREATE TABLE "+tablename+"(time int(11), record_id char(20) not null, flag char(1)" +
+        String creatsql = "CREATE TABLE "+tablename+"(time int(11), record_id char(20) not null, flag char(1)," +
                 " primary key (record_id))";
         Connection conn = null;
         Statement stmt = null;
@@ -199,6 +203,7 @@ public class ResultSave {
 
     public static void main(String[] args){
         savediagreport(1513670201,"1",2);
+
     }
 }
 

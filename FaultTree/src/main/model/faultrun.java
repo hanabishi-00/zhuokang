@@ -1,7 +1,9 @@
 package main.model;
 
+import com.alibaba.fastjson.JSONArray;
 import main.config.db2xml;
 import main.dao.ResultSave;
+import main.tool.send_message;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,12 +14,14 @@ import java.util.TimerTask;
 public class faultrun{
     public static void faultmainrun(int timeinter) {
         long date1 = System.currentTimeMillis() / 1000;
-//        date1=1513670201;
+        JSONArray post_msg = new JSONArray();
+//        date1=1513651125;
         if (monitor.valuemonit(timeinter,date1)) {
 
 //        System.out.println(date1);
 
 //        long startTime = System.currentTimeMillis();
+            //1是本体，2是油系统
             for (int kind = 1; kind <= 2; kind++) {
                 for (int Uid = 1; Uid <= 4; Uid++) {
 //                long startTime = System.currentTimeMillis();
@@ -53,10 +57,14 @@ public class faultrun{
                         ResultSave.savediagres(date1, String.valueOf(Uid), kind, CaculateMinCutset1.searchfaultnode(Inodes));
                         ResultSave.savediagresguide(date1, String.valueOf(Uid), kind);
                         ResultSave.savediagreport(date1, String.valueOf(Uid), kind);
+                        post_msg.addAll(send_message.post_msg(date1, String.valueOf(Uid), kind));
                     }
 //                long endTime = System.currentTimeMillis();
 //                System.out.println(endTime-startTime+"ms");
                 }
+            }
+            if(post_msg.size()!=0) {
+                send_message.post_diag(post_msg);
             }
 //                        long endTime = System.currentTimeMillis();
 //                System.out.println(endTime-startTime+"ms");

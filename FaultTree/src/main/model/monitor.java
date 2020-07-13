@@ -244,6 +244,7 @@ public class monitor {
 //        long endTime = System.currentTimeMillis();
 //        System.out.println(endTime-startTime+"ms");
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        System.out.println(sd.format(new Date(1592968764000l)));
+        long tim=1513651116;
+        System.out.println(sd.format(new Date(tim*1000)).getClass());
     }
 }

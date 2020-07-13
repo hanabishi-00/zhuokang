@@ -10,7 +10,8 @@ import java.util.Arrays;
 public class diag_report {
         // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
         static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+        final static String DB_URL_result = "jdbc:mysql://localhost:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+//    final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
         static final String USER = "huake";
         static final String PASS = "huake@123";
 
@@ -64,6 +65,8 @@ public class diag_report {
                 }
                 result.put("result",jarray);
 
+                res.close();
+                conn.close();
 
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
@@ -97,6 +100,7 @@ public class diag_report {
                 while(res.next()) {
                     node_id.add(String.valueOf(res.getInt("node_id")));
                     model_edi.add(res.getInt("model_edition"));
+
                 }
                 String ids = "(";
                 for(int i=0;i<node_id.size();i++){
@@ -113,44 +117,48 @@ public class diag_report {
                     if(!(res.getString("points")==null || res.getString("points").equals(""))){
                         if(Arrays.asList(pointkind1).contains(res.getString("method"))){
                             for(String p1:res.getString("points").split(";")){
-                                if(points.contains(p1.split(",")[Integer.parseInt(reportid_msg[1])-1])) {
+                                if(!points.contains(p1.split(",")[Integer.parseInt(reportid_msg[1])-1])) {
                                     points.add(p1.split(",")[Integer.parseInt(reportid_msg[1]) - 1]);
                                     datatype.add("1");
                                 }
                             }
                         }else if(Arrays.asList(pointkind2).contains(res.getString("method"))){
                             for(String p1:res.getString("points").split(";")){
-                                if(points.contains(p1.split(",")[Integer.parseInt(reportid_msg[1])-1])) {
+                                if(!points.contains(p1.split(",")[Integer.parseInt(reportid_msg[1])-1])) {
                                     points.add(p1.split(",")[Integer.parseInt(reportid_msg[1]) - 1]);
                                     datatype.add("0");
                                 }
                             }
                         }else if(pointkind3.equals(res.getString("method"))){
                             String p1=res.getString("points").split(";")[0];
-                            if(points.contains(p1.split(",")[Integer.parseInt(reportid_msg[1])-1])) {
+                            if(!points.contains(p1.split(",")[Integer.parseInt(reportid_msg[1])-1])) {
                                 points.add(p1.split(",")[Integer.parseInt(reportid_msg[1]) - 1]);
                                 datatype.add("1");
                             }
                             p1=res.getString("points").split(";")[1];
-
-                            points.add(p1.split(",")[Integer.parseInt(reportid_msg[1])-1]);
-                            datatype.add("0");
+                            if(!points.contains(p1.split(",")[Integer.parseInt(reportid_msg[1])-1])) {
+                                points.add(p1.split(",")[Integer.parseInt(reportid_msg[1]) - 1]);
+                                datatype.add("0");
+                            }
                         }
                     }
                 }
+
                 JSONArray jarray = new JSONArray();
 
                 for(int i=0;i<points.size();i++){
                     JSONObject jobject = new JSONObject();
-                    jobject.put("id",points.get(i));
+                    jobject.put("hdbid",points.get(i).trim());
                     jobject.put("datatype",datatype.get(i));
                     jarray.add(jobject);
                 }
                 result.put("result",jarray);
-                String starttime = String.valueOf(Integer.parseInt(reportid_msg[2])-86400);
+                String starttime = String.valueOf(Integer.parseInt(reportid_msg[2])-3600);
                 result.put("starttime",starttime+"000");
                 result.put("endtime",reportid_msg[2]+"000");
 
+                res.close();
+                conn.close();
 
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
@@ -198,10 +206,13 @@ public class diag_report {
                 }
                 result.put("result",jarray);
 
+                res.close();
+                conn.close();
 
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
             }
+
 
             return result;
         }
@@ -251,8 +262,8 @@ public class diag_report {
                     jarray.add(jobject);
                 }
                 result.put("result",jarray);
-
-
+                res.close();
+                conn.close();
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
             }
@@ -300,6 +311,8 @@ public class diag_report {
 
                 }
                 result.put("result",jarray);
+                res.close();
+                conn.close();
 
 
             } catch (ClassNotFoundException | SQLException e) {
@@ -311,12 +324,44 @@ public class diag_report {
 
 
 
+    // 返回故障名称节点id
+    public static ArrayList<String> diag_id(){
+        ArrayList<String> result = new ArrayList<>();
+        Connection conn = null;
+        Statement stmt = null;
+        PreparedStatement sql;
+        try {
+            // 注册 JDBC 驱动
+            Class.forName(JDBC_DRIVER);
+
+            // 打开链接
+//            System.out.println("连接数据库...");
+            String DB_URL = DB_URL_result;
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            stmt = conn.createStatement();
+            ResultSet sugg_id = stmt.executeQuery("select * from diag_sugg");
+            ArrayList<String> sugg_id1 = new ArrayList<>();
+            while(sugg_id.next()){
+                result.add(String.valueOf(sugg_id.getInt("sugg_id")));
+            }
+            sugg_id.close();
+            conn.close();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
         public static void main(String[] args){
             System.out.println(diag_appear("Bvo_3_1588146100"));
             System.out.println(diag_reason("Bvo_3_1588146100"));
             System.out.println(diag_treat("Bvo_3_1588146100"));
             System.out.println(diag_suggest("Bvo_3_1588146100"));
-            System.out.println(diag_data("Bvo_3_1588146100"));
+            System.out.println(diag_data("Bvo_1_1513651125"));
 //            String[] asd={"123","456"};
 //            String qwe="123";
 //            System.out.println(Arrays.asList(asd).contains(qwe));
