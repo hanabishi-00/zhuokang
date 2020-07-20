@@ -26,7 +26,7 @@ public class post_request {
         String etime=String.valueOf(endtime*1000);
         String stime = String.valueOf(starttime*1000);
         //aliyun:47.111.161.164:8081
-        String body1 = HttpRequest.get("http://23.49.171.53:8085/ecidi-cmp/his_data/query1", true,
+        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query1", true,
                 "id",id,"starttime",stime,"endtime",etime
                 ,"datatype",0,"interval",-1
         ).body();
@@ -55,7 +55,7 @@ public class post_request {
         String etime=String.valueOf(endtime*1000);
         String stime = String.valueOf(starttime*1000);
 //         bendi   23.49.171.53:8085
-        String body1 = HttpRequest.get("http://23.49.171.53:8085/ecidi-cmp/his_data/query1", true,
+        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query1", true,
                 "id",id,"starttime",stime,"endtime",etime
                 ,"datatype",1,"interval",-1
         ).body();
@@ -84,11 +84,11 @@ public class post_request {
             System.out.println("值："+qwe.getValue().get(b)+"；时间戳："+qwe.getTime().get(b));
         }
 //
-//        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query2", true,
-//                "id","1601","starttime","1513583797000","endtime","1513670197000"
-//                ,"datatype",1,"datalag",1
-//        ).body();
-//        System.out.println(body1);
+        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query1", true,
+                "id","1601","starttime","1513647525000","endtime","1513651125000"
+                ,"datatype",1,"interval",59
+        ).body();
+        System.out.println(body1);
 //
 //        DataBoolUtils qwe1= c.queBool("827",1513670197);
 //        DataFloatUtils asd = c.queFloat("762",1533670197);

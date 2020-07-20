@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="FaultTree_bendi:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/FaultTree_bendi_jar</output-path>
-    <root id="archive" name="FaultTree_bendi.jar">
+  <artifact type="jar" name="FaultTree:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/FaultTree_jar</output-path>
+    <root id="archive" name="FaultTree.jar">
       <element id="module-output" name="FaultTree" />
       <element id="dir-copy" path="D:/dom4j-2.1.1" />
       <element id="extracted-dir" path="D:/Java_jdk/http-request-6.0.jar" path-in-jar="/" />

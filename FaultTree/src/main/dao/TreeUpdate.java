@@ -1,5 +1,7 @@
 package main.dao;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import main.service.BoolTree;
 
 import java.sql.*;
@@ -10,8 +12,8 @@ import java.util.Map;
 public class TreeUpdate {
     // MySQL 8.0 以下版本 - JDBC 驱动名及数据库 URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-//    final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
-    final static String DB_URL_result = "jdbc:mysql://localhost:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+    final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+//    final static String DB_URL_result = "jdbc:mysql://localhost:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     static final String USER = "huake";
     static final String PASS = "huake@123";
 
@@ -318,7 +320,7 @@ public class TreeUpdate {
                     sql1.setString(4,"bg"+ary1.get(3));         //pid
                 }
                 sql1.setString(5,"N");                  //nodetype
-                sql1.setString(6,"");
+                sql1.setString(6,"");                   //gatetype
                 if(!ary1.get(6).equals("null")){                    //是叶子节点
                     sql1.setString(7,"1");
                     sql1.setString(8,ary1.get(7).equals("null")?"":ary1.get(7));     //method
@@ -358,7 +360,161 @@ public class TreeUpdate {
         }
     }
 
-    public static boolean TreeCheck(ArrayList<ArrayList<String>> ary1){
+    //根据选择的版本载入对应的模型数据
+    public static void m2tbyedi(String x, long edition) {
+        Map<String,String> tname=new HashMap<>();
+        tname.put("o","diag_model_bvo");
+        tname.put("b","diag_model_bvb");
+        ArrayList<ArrayList<String>> otdata = new ArrayList<>();
+        Connection conn = null;
+        Statement stmt = null;
+        PreparedStatement sql1;
+//        PreparedStatement sql2;
+        ResultSet res1;
+        ResultSet res2;
+        ResultSet res3;
+        try {
+            Class.forName(JDBC_DRIVER);
+            String DB_URL = DB_URL_result;
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            //提取指定版本的模型数据
+            stmt = conn.createStatement();
+            res1 = stmt.executeQuery("select * from "+tname.get(x)+" where model_edition = "+edition);
+            while (res1.next()) {
+                ArrayList<String> array2 = new ArrayList<>();
+                array2.add(String.valueOf(res1.getInt("id")));
+                array2.add(res1.getString("name"));
+                array2.add((res1.getString("des") == null || res1.getString("des").equals("")) ? "null" : res1.getString("des"));
+                array2.add(String.valueOf(res1.getInt("pid")));
+                array2.add(res1.getString("father_name"));
+                array2.add(res1.getString("gatetype"));
+                array2.add((res1.getString("points") == null || res1.getString("points").equals("")) ? "null" : res1.getString("points"));
+//                array2.add(( res.getString("叶子节点发生概率")==null || res.getString("叶子节点发生概率").equals(""))?"null":res.getString("叶子节点发生概率"));
+                array2.add((res1.getString("method") == null || res1.getString("method").equals("")) ? "null" : res1.getString("method"));
+                array2.add((res1.getString("threshold") == null || res1.getString("threshold").equals("")) ? "null" : res1.getString("threshold"));
+                otdata.add((ArrayList<String>) array2.clone());
+                array2.clear();
+            }
+            res1.close();
+
+            //删除原来版本的模型数据
+            String sql="delete from diag_tree where id LIKE ?";
+            sql1 = conn.prepareStatement(sql);
+            sql1.setString(1,x+"%");
+            sql1.executeUpdate();
+            //把指定版本的模型数据载入到diag_tree表中
+            sql1 = conn.prepareStatement("insert into diag_tree(id,name,des,pid,nodetype,gatetype," +
+                    "isleaf,method,points,threshold) values(?,?,?,?,?,?,?,?,?,?)");
+            for(ArrayList<String> ary1:otdata){
+                sql1.setString(1,x+ary1.get(0));      //id
+                sql1.setString(2,ary1.get(1));          //name
+                sql1.setString(3,ary1.get(2).equals("null")?"":ary1.get(2));          //des
+                if(ary1.get(3).equals("0")){
+                    sql1.setString(4,"ROOT");           //pid
+                }else{
+                    sql1.setString(4,x+"g"+ary1.get(3));         //pid
+                }
+                sql1.setString(5,"N");                  //nodetype
+                sql1.setString(6,"");                  //gatetype
+                if(!ary1.get(6).equals("null")){
+                    sql1.setString(7,"1");          //isleaf
+                    sql1.setString(8,ary1.get(7).equals("null")?"":ary1.get(7));     //method
+                    sql1.setString(9,ary1.get(6).equals("null")?"":ary1.get(6));     //points
+                    sql1.setString(10,ary1.get(8).equals("null")?"":ary1.get(8));     //threshold
+                    sql1.executeUpdate();
+                }else{
+                    sql1.setString(7,"0");          //isleaf
+                    sql1.setString(8,ary1.get(7).equals("null")?"":ary1.get(7));     //method
+                    sql1.setString(9,ary1.get(6).equals("null")?"":ary1.get(6));     //points
+                    sql1.setString(10,ary1.get(8).equals("null")?"":ary1.get(8));     //threshold
+                    sql1.executeUpdate();
+                    sql1.setString(1,x+"g"+ary1.get(0));
+                    if(ary1.get(5).equals("+")){
+                        sql1.setString(2,"或门");
+                        sql1.setString(6,"或门");
+                    }else{
+                        sql1.setString(2,"与门");
+                        sql1.setString(6,"与门");
+                    }
+                    sql1.setString(5,"G");
+                    sql1.setString(4,x+ary1.get(0));
+                    sql1.setString(7,"0");
+                    sql1.setString(3,"");
+                    sql1.setString(8,"");
+                    sql1.setString(9,"");
+                    sql1.setString(10,"");
+                    sql1.executeUpdate();
+                }
+
+            }
+            sql1.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    //根据给定的时间段得到相应的版本号
+    /**
+     * 根据给定的时间段得到相应的版本号
+     * @param x  表明设备，"o"表示油系统，"b"表示本体
+     * @param startt  搜索的起始时间
+     * @param endt    搜索的终止时间
+     * @param page    需要显示的第几页
+     * @param pagesize   每页的记录个数
+     * @return
+     */
+    public static JSONObject getedi(String x,long startt,long endt,int page,int pagesize) {
+        JSONObject result = new JSONObject();
+        ArrayList<Long> edi= new ArrayList<>();
+        JSONArray edi1=new JSONArray();
+        int count = 0;
+        Map<String, String> tname = new HashMap<>();
+        tname.put("o", "diag_model_bvo");
+        tname.put("b", "diag_model_bvb");
+        Connection conn = null;
+        Statement stmt = null;
+        PreparedStatement sql1;
+//        PreparedStatement sql2;
+        ResultSet res1;
+        ResultSet res2;
+        ResultSet res3;
+        try {
+            Class.forName(JDBC_DRIVER);
+            String DB_URL = DB_URL_result;
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            String sql = "select model_edition from "+tname.get(x)+" where id=1 and model_edition>="+startt+" and model_edition <="+endt+" order by model_edition desc limit ?,?";
+            sql1=conn.prepareStatement(sql);
+            sql1.setInt(1,(page-1)*pagesize);
+            sql1.setInt(2,pagesize);
+            res1=sql1.executeQuery();
+            while(res1.next()){
+                edi.add(res1.getLong(1));
+            }
+            res1.close();
+            sql1.close();
+            sql="select count(model_edition) from "+tname.get(x)+" where id=1 and model_edition>="+startt+" and model_edition <="+endt;
+            stmt=conn.createStatement();
+            res2=stmt.executeQuery(sql);
+            while(res2.next()){
+                count=res2.getInt(1);
+            }
+            res2.close();
+            stmt.close();
+            result.put("edition",edi);
+            result.put("total",(int)Math.ceil((double)count/pagesize));
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+        public static boolean TreeCheck(ArrayList<ArrayList<String>> ary1){
         boolean flag = true;
         String regex;
         for(ArrayList<String> ary2:ary1){
@@ -407,7 +563,9 @@ public class TreeUpdate {
 //        String asd="r123";
 //        System.out.println("o"+num);
 
-        tree2model("o");
+//        tree2model("o");
+//        m2tbyedi("o",1592917956);
+        System.out.println(getedi("b",1,1592917956,1,5));
 //        model2tree();
 //        String regex= "^\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*,\\s*\\d+\\s*$";
 ////        regex = "^[a-z]\\d+$|0";
