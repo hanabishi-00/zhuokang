@@ -118,7 +118,7 @@ public class BoolTree {
         if(x+y==0){
             p=0.0;
         }else {
-            p = (double) (x / (x + y));
+            p = ((double) x / (x + y));
         }
         return p;
     }
@@ -208,7 +208,7 @@ public class BoolTree {
         if(x+y==0){
             p=0.0;
         }else {
-            p = (double) (x / (x + y));
+            p = ((double) x / (x + y));
         }
         return p;
     }

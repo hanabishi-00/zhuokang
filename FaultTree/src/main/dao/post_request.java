@@ -83,12 +83,19 @@ public class post_request {
         for (int b=0;b<qwe.getValue().size();b++){
             System.out.println("值："+qwe.getValue().get(b)+"；时间戳："+qwe.getTime().get(b));
         }
+
+        DataFloatUtils qwe1= c.queFloat("16",1513651125);
+        System.out.println("球阀压力油罐压力：");
+        for (int b=0;b<qwe1.getValue().size();b++){
+            System.out.println("值："+qwe1.getValue().get(b)+"；时间戳："+qwe1.getTime().get(b));
+        }
+
 //
-        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query1", true,
-                "id","1601","starttime","1513647525000","endtime","1513651125000"
-                ,"datatype",1,"interval",59
-        ).body();
-        System.out.println(body1);
+//        String body1 = HttpRequest.get("http://47.111.161.164:8081/ecidi-cmp/his_data/query1", true,
+//                "id","1601","starttime","1513647525000","endtime","1513651125000"
+//                ,"datatype",1,"interval",59
+//        ).body();
+//        System.out.println(body1);
 //
 //        DataBoolUtils qwe1= c.queBool("827",1513670197);
 //        DataFloatUtils asd = c.queFloat("762",1533670197);

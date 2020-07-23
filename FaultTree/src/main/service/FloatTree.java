@@ -76,7 +76,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;
@@ -136,7 +136,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;
@@ -199,7 +199,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;
@@ -306,7 +306,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;
@@ -356,7 +356,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;
@@ -416,7 +416,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;
@@ -479,7 +479,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;
@@ -586,7 +586,7 @@ public class FloatTree {
         if (x + y == 0) {
             p = 0;
         }else{
-            p = (double)(x/(x+y));
+            p = ((double)x/(x+y));
         }
         if(p<=0.0001){
             p=0.0;

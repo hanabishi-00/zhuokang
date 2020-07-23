@@ -140,7 +140,7 @@ public class monitor {
 //            Node temp = new Node();
             Node temp = new Node();
             temp.name = data1.get(1);
-
+            temp.pid = data1.get(2);
             temp.Id = data1.get(0);
             String[] childs = data1.get(8).split(",");
             for (int i =0; i<childs.length; i++) {

@@ -12,7 +12,7 @@ import static main.dao.TreeUpdate.searchstr;
 
 public class tree_show {
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    //        final static String DB_URL_result = "jdbc:mysql://localhost:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
+//            final static String DB_URL_result = "jdbc:mysql://localhost:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     final static String DB_URL_result = "jdbc:mysql://rm-bp19iox2b2ef33bgevo.mysql.rds.aliyuncs.com:3306/hdy?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true";
     static final String USER = "huake";
     static final String PASS = "huake@123";
@@ -50,7 +50,8 @@ public class tree_show {
 //                array2.add(( res.getString("叶子节点发生概率")==null || res.getString("叶子节点发生概率").equals(""))?"null":res.getString("叶子节点发生概率"));  //6
                 array2.add((res.getString("method")==null || res.getString("method").equals(""))?"null":res.getString("method"));   //6
                 array2.add(( res.getString("threshold")==null || res.getString("threshold").equals(""))?"null":res.getString("threshold")); //7
-                array2.add(String.valueOf(model_edition));
+                array2.add((res.getString("des")==null || res.getString("des").equals("null"))?"":res.getString("des"));    //8
+                array2.add(String.valueOf(model_edition));      //9
                 result.add((ArrayList<String>) array2.clone());
                 array2.clear();
             }
@@ -59,7 +60,7 @@ public class tree_show {
                 res=stmt.executeQuery("select freq from diag_result where record_id = '"+record_id+"' and node_id = "+result.get(i).get(0));
 //                System.out.println(res.next());
                 if(!res.next()){
-                    result.get(i).add("0.0");
+                    result.get(i).add("0.0");               //10
                 }else{
                     result.get(i).add(String.valueOf(res.getFloat("freq")));
 
@@ -107,8 +108,9 @@ public class tree_show {
                 midary.add(ary1.get(6).equals("null")?"":ary1.get(6));      //method
                 midary.add(ary1.get(5).equals("null")?"":ary1.get(5));      //points
                 midary.add(ary1.get(7).equals("null")?"":ary1.get(7));      //threshold
-                midary.add(ary1.get(8));                                    //model_edition
-                midary.add(ary1.get(9));                                    //freq
+                midary.add(ary1.get(9));                                    //model_edition
+                midary.add(ary1.get(10));                                    //freq
+                midary.add(ary1.get(8));                                    //des
                 result.add((ArrayList<String>) midary.clone());
                 midary.clear();
             }else{
@@ -116,8 +118,9 @@ public class tree_show {
                 midary.add(ary1.get(6).equals("null")?"":ary1.get(6));
                 midary.add(ary1.get(5).equals("null")?"":ary1.get(5));
                 midary.add(ary1.get(7).equals("null")?"":ary1.get(7));
-                midary.add(ary1.get(8));
                 midary.add(ary1.get(9));
+                midary.add(ary1.get(10));
+                midary.add(ary1.get(8));
                 result.add((ArrayList<String>) midary.clone());
                 midary.clear();
                 midary.add(x+"g"+ary1.get(0));      //id
@@ -138,8 +141,13 @@ public class tree_show {
                 midary.add("");                     //method
                 midary.add("");                     //points
                 midary.add("");                     //threshold
-                midary.add(ary1.get(8));            //model_edition
+                midary.add(ary1.get(9));            //model_edition
                 midary.add("0");                     //freq
+                if(ary1.get(4).equals("+")){
+                    midary.add("或门");               //des
+                }else{
+                    midary.add("与门");
+                }
                 result.add((ArrayList<String>) midary.clone());
                 midary.clear();
             }
@@ -166,6 +174,7 @@ public class tree_show {
         result.put("freq",array2.get(11));
         result.put("modelEdition",array2.get(10));
         result.put("rootFlag","null");
+        result.put("des",array2.get(12));
         if(searchstr(array1,2,array2.get(0)).size()==0){
             result.put("children",childs);
         }else{

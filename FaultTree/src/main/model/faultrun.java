@@ -14,6 +14,7 @@ import java.util.TimerTask;
 public class faultrun{
     public static void faultmainrun(int timeinter) {
         long date1 = System.currentTimeMillis() / 1000;
+//        long date1 = 1513651125;
         JSONArray post_msg = new JSONArray();
 //        date1=1513651125;
         if (monitor.valuemonit(timeinter,date1)) {
@@ -47,7 +48,7 @@ public class faultrun{
                             d1.setFreq(fre);
                         }
                         if (d1.getChildren().size() != 0 && d1.getFather() != null) {
-                            d1.setFreq(CaculateMinCutset1.calcTopPre(CaculateMinCutset1.parttree(d1.getName(), Inodes)));
+                            d1.setFreq(CaculateMinCutset1.calcTopPre(CaculateMinCutset1.parttree(d1.getId(), Inodes)));
                         }
 //                    System.out.println("故障节点编号："+d1.getId());
 //                    System.out.println("故障节点名称："+d1.getName());

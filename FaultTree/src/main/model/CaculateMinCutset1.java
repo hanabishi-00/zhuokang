@@ -220,16 +220,16 @@ public class CaculateMinCutset1 {
 
     /**
      * 寻找名为name的节点
-     * @param name 待寻找节点的name，String型
+     * @param id 待寻找节点的id，String型
      * @param N1 被寻找的节点数组，一维矩阵
      * @return 节点
      */
-    public static Node searchNode(String name, ArrayList<Node> N1) {
+    public static Node searchNode(String id, ArrayList<Node> N1) {
 
         int size = N1.size();
         for (int i = 0; i < size; i++) {
             Node newNode = N1.get(i);
-            if (newNode.name.equals(name))
+            if (newNode.Id.equals(id))
                 return newNode;
         }
         return null;
@@ -373,36 +373,36 @@ public class CaculateMinCutset1 {
      */
     public static ArrayList<Node> searchfaultnode(ArrayList<Node> faultNode){
         ArrayList<Node> fnode = new ArrayList<>();
-        ArrayList<String> fnodename = new ArrayList<>();
+        ArrayList<String> fnodeid = new ArrayList<>();
         for (Node d1 :faultNode){
             if(d1.freq!=0.0){
                 fnode.add(d1);
-                fnodename.add(d1.getName());
+                fnodeid.add(d1.getId());
             }
         }
         for (int i=0;i<fnode.size();i++){
             if(fnode.get(i).getFather()==null){
                 continue;
             }
-            if (!fnodename.contains(fnode.get(i).getFather())){
-                if (searchNode(fnode.get(i).getFather(),faultNode).getGate().equals("0")){
+            if (!fnodeid.contains(fnode.get(i).getpid())){
+                if (searchNode(fnode.get(i).getpid(),faultNode).getGate().equals("0")){
                     int flag =1;
-                    for(String n1:searchNode(fnode.get(i).getFather(),faultNode).getChildren()){
-                        if(!fnodename.contains(n1)){
+                    for(String n1:searchNode(fnode.get(i).getpid(),faultNode).getChildren()){
+                        if(!fnodeid.contains(n1)){
                             flag=0;
                             break;
                         }
                     }
                     if(flag==1){
-                        fnode.add(searchNode(fnode.get(i).getFather(),faultNode));
-                        fnodename.add(searchNode(fnode.get(i).getFather(),faultNode).getName());
+                        fnode.add(searchNode(fnode.get(i).getpid(),faultNode));
+                        fnodeid.add(searchNode(fnode.get(i).getpid(),faultNode).getId());
                     }
                 }
-                else if(searchNode(fnode.get(i).getFather(),faultNode).getGate().equals("+")){
-                    for (String n1:searchNode(fnode.get(i).getFather(),faultNode).getChildren()){
-                        if(fnodename.contains(n1)){
-                            fnode.add(searchNode(fnode.get(i).getFather(),faultNode));
-                            fnodename.add(searchNode(fnode.get(i).getFather(),faultNode).getName());
+                else if(searchNode(fnode.get(i).getpid(),faultNode).getGate().equals("+")){
+                    for (String n1:searchNode(fnode.get(i).getpid(),faultNode).getChildren()){
+                        if(fnodeid.contains(n1)){
+                            fnode.add(searchNode(fnode.get(i).getpid(),faultNode));
+                            fnodeid.add(searchNode(fnode.get(i).getpid(),faultNode).getId());
                             break;
                         }
                     }
@@ -410,26 +410,26 @@ public class CaculateMinCutset1 {
             }
         }
         ArrayList<Node> fnode1 = new ArrayList<>();
-        ArrayList<String> fnodename1 = new ArrayList<>();
+        ArrayList<String> fnodeid1 = new ArrayList<>();
         while(true) {
             for (Node N1 : fnode) {
                 if (N1.getFather() != null) {
-                    if (fnodename.contains(N1.getFather())) {
+                    if (fnodeid.contains(N1.getpid())) {
                         fnode1.add(N1);
-                        fnodename1.add(N1.getName());
+                        fnodeid1.add(N1.getId());
                     }
                 } else {
                     fnode1.add(N1);
-                    fnodename1.add(N1.getName());
+                    fnodeid1.add(N1.getId());
                 }
             }
             if(fnode1.size()==fnode.size()){
                 break;
             }
             fnode= (ArrayList<Node>) fnode1.clone();
-            fnodename= (ArrayList<String>) fnodename1.clone();
+            fnodeid= (ArrayList<String>) fnodeid1.clone();
             fnode1.clear();
-            fnodename1.clear();
+            fnodeid1.clear();
         }
         return fnode1;
     }

@@ -8,6 +8,7 @@ public class Node {
     String gate;
     double freq;
     String father;
+    String pid;
     ArrayList<ArrayList<String>> monitorid = new ArrayList<>();     //叶节点对应的测点
     String judgment;                //判据类型
     ArrayList<ArrayList<String>> threshold = new ArrayList<>();     //阈值
@@ -21,6 +22,8 @@ public class Node {
     }
     public String getId(){return Id;}
     public void setId(String Id){this.Id = Id;}
+    public String getpid(){return pid;}
+    public void setpid(String pid){this.pid = pid;}
     public ArrayList<String> getChildren() {
         return children;
     }

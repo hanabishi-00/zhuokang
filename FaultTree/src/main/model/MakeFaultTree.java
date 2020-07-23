@@ -53,17 +53,17 @@ public class MakeFaultTree {
         }
     }
     /**
-     * 找出指定名称的子节点
+     * 找出指定id的子节点
      *
-     * @param name 节点名称
+     * @param id 节点id
      * @return 结点的子结点
      */
-    public Node searchChildren(String name) {
+    public Node searchChildren(String id) {
 
         int size = nodes.size();
         for (int i = 0; i < size; i++) {
             Node newNode = nodes.get(i);
-            if (newNode.name.equals(name))
+            if (newNode.Id.equals(id))
                 return newNode;
         }
         return null;
@@ -229,7 +229,7 @@ public class MakeFaultTree {
 //            Node temp = new Node();
             Node temp = new Node();
             temp.name = data1.get(1);
-
+            temp.pid = data1.get(2);
             temp.Id = data1.get(0);
             String[] childs = data1.get(8).split(",");
             for (int i =0; i<childs.length; i++) {

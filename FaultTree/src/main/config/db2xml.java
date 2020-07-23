@@ -49,11 +49,11 @@ public class db2xml {
                 String newstr = "";
                 for (ArrayList<String> ary2:array1){
                     StringBuilder newstr1 = new StringBuilder(newstr);
-                    if(ary2.get(3).equals(ary1.get(1))){
+                    if(ary2.get(2).equals(ary1.get(0))){
                         if(!newstr.equals("")){
                             newstr1.append(",");
                         }
-                        newstr1.append(ary2.get(1));
+                        newstr1.append(ary2.get(0));
                     }
                     newstr = newstr1.toString();
                 }
